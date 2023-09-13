@@ -1,35 +1,89 @@
 ---
-export interface Props {
-	title: string;
-}
-
-const { title } = Astro.props;
+import "@fontsource/open-sans";
 ---
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Piotrek Jarzebski</title>
+  </head>
+  <body>
+    <nav class="flex justify-between p-5 bg-white rounded-lg">
+      <h1 class="font-sans text-xl font-bold">Jarzebski</h1>
+      <img
+        id="button"
+        class="h-8 w-8"
+        src="menu.svg"
+        alt="menu hamburger icon"
+      />
+      <div
+        style="display: none;"
+        id="list"
+        class="fixed left-0 top-0 h-screen w-screen bg-main text-white z-50"
+      >
+        <img
+          id="button"
+          class="absolute right-4 top-4 h-9 w-9 sm:right-8"
+          src="close.svg"
+          alt="x"
+        />
+        <ul
+          class="flex h-full w-full flex-col items-center justify-center gap-5 text-3xl"
+        >
+          <li><a href="/">About</a></li>
+          <li><a href="/">Portfolio</a></li>
+          <li><a href="/">News</a></li>
+          <li><a href="/">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  </body>
+  <slot />
+  <script>
+    const list: HTMLElement | null = document.getElementById("list");
+    const buttons = document.querySelectorAll("#button");
+    const handleClick = () => {
+      if (list?.style.display === "none") {
+        list.style.display = "flex";
+        list.classList.remove("move-right-animation");
+        list.classList.add("move-left-animation");
+      } else if (list?.style.display === "flex") {
+        list.classList.remove("move-left-animation");
+        list.classList.add("move-right-animation");
+        setTimeout(() => (list.style.display = "none"), 400);
+        //list.style.display = "none";
+      }
+    };
+    buttons.forEach((button) => {
+      button.addEventListener("click", handleClick);
+    });
+  </script>
+  <style>
+    .move-left-animation {
+      animation: moveLeft 0.5s ease;
+    }
+    .move-right-animation {
+      animation: moveRight 0.5s ease;
+    }
+    @keyframes moveLeft {
+      0% {
+        transform: translateX(100vw);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+    @keyframes moveRight {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(100vw);
+      }
+    }
+  </style>
 </html>
-<style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
-</style>
