@@ -1,0 +1,32 @@
+---
+export interface Props {
+  title: string;
+  body: string;
+  href: string;
+}
+const { href, title, body } = Astro.props;
+---
+
+<li class="link-card bg-g bg relative mt-5 list-none">
+  <a href={href}>
+    <img
+      src="/images/office-1.jpg"
+      alt="project image"
+      class="aspect-square rounded-xl object-cover object-right"
+    />
+    <div
+      class="absolute right-0 top-1/2 flex h-2/3 w-11/12 -translate-y-1/2 flex-col justify-center rounded-l-xl bg-main bg-opacity-95 p-5 text-white"
+    >
+      <h2 class="text-xl font-semibold">
+        {title}
+      </h2>
+      <p class="mt-2">
+        {body}
+      </p>
+      <p class="flex items-center font-semibold">
+        Więcej
+        <span class="mb-1 ml-1 text-3xl text-white">&rarr;</span>
+      </p>
+    </div>
+  </a>
+</li>
