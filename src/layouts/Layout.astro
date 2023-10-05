@@ -11,12 +11,22 @@ import "@fontsource/open-sans";
     <meta name="generator" content={Astro.generator} />
     <title>Piotrek Jarzebski</title>
   </head>
-  <body>
-    <nav class="flex justify-between p-5 bg-white rounded-lg">
-      <h1 class="font-sans text-xl font-bold">Jarzebski</h1>
+  <body class="max-w-7xl m-auto">
+    <nav
+      class="flex justify-between p-5 bg-white items-center lg:sticky top-0 z-[100]"
+    >
+      <a href="/"
+        ><img src="/images/logo.png" alt="logo" class="h-12 lg:h-14" /></a
+      >
+      <ul class="flex gap-5 font-semibold">
+        <li><a href="/">About</a></li>
+        <li><a href="/">Portfolio</a></li>
+        <li><a href="/">News</a></li>
+        <li><a href="/">Contact</a></li>
+      </ul>
       <img
         id="button"
-        class="h-8 w-8"
+        class="h-8 w-8 lg:hidden"
         src="menu.svg"
         alt="menu hamburger icon"
       />
@@ -43,6 +53,29 @@ import "@fontsource/open-sans";
     </nav>
   </body>
   <slot />
+  <section class="bg-zinc-600 text-white p-5 flex flex-col">
+    <div class="bg-white rounded-xl w-max">
+      <img src="/images/logo.png" alt="logo" class="h-12" />
+    </div>
+    <div class="grid grid-cols-2 mt-2">
+      <div class="mt-2">
+        <h3 class="font-semibold">Email:</h3>
+        <p>mail@mail.com</p>
+      </div>
+      <div class="mt-2">
+        <h3 class="font-semibold">Email:</h3>
+        <p>100-200-500</p>
+      </div>
+      <div class="mt-2">
+        <h3 class="font-semibold">Address:</h3>
+        <p>Ulica 12, <br /> Warszawa 01-121</p>
+      </div>
+      <div class="mt-2">
+        <h3 class="font-semibold">Godziny pracy:</h3>
+        <p>Pon-Pt 8:00 - 20:00</p>
+      </div>
+    </div>
+  </section>
   <script>
     const list: HTMLElement | null = document.getElementById("list");
     const buttons = document.querySelectorAll("#button");

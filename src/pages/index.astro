@@ -1,62 +1,81 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Project from "../components/Project.astro";
+import ProjectRed from "../components/Project-red.astro";
 ---
 
 <Layout>
   <main>
-    <section class="p-5">
-      <img
-        class="h-96 w-full rounded-xl object-cover"
-        src="/images/main.jpg"
-        alt="header image"
-      />
-      <a class="mt-2 flex w-fit font-semibold" href="/"
-        ><button>Nasze projekty</button><img
-          class="ml-2 mt-1"
-          src="arrow.svg"
-          alt=""
-        /></a
-      >
-      <h1 class="mt-10 text-4xl font-bold">Budujemy twoje marzenia</h1>
-      <h2 class="mt-10 rounded-xl bg-main p-5 text-white">
-        <span class="font-bold">Jarzebski</span> to firma która funkcjonuje na polskim
-        rynku od 1410 roku kiedy to wygraliśmy bitwe pod grunwaldem.
-      </h2>
+    <section class="p-5 lg:py-20 lg:grid lg:grid-cols-2 gap-10">
+      <div class="lg:grid lg:grid-cols-2 gap-5">
+        <div>
+          <img
+            class="h-96 w-full rounded-xl object-cover"
+            src="/images/main.jpg"
+            alt="header image"
+          />
+          <a class="mt-2 flex w-fit font-semibold" href="/"
+            ><button>Nasze projekty</button><img
+              class="ml-2 mt-1"
+              src="arrow.svg"
+              alt=""
+            /></a
+          >
+        </div>
+        <h1 class="mt-10 lg:mt-0 text-4xl font-bold lg:uppercase lg:text-5xl">
+          Budujemy twoje marzenia
+        </h1>
+      </div>
+      <div class="lg:relative lg:mt-20">
+        <h2
+          class="mt-10 rounded-xl bg-main p-5 text-white lg:absolute z-50 lg:w-64"
+        >
+          <span class="font-bold">Jarzebski</span> to firma która funkcjonuje na
+          polskim rynku od 1410 roku kiedy to wygraliśmy bitwe pod grunwaldem.
+        </h2>
+        <img
+          class="h-96 w-full lg:w-11/12 lg:absolute lg:right-0 rounded-xl object-cover hidden lg:flex"
+          src="/images/2.jpeg"
+          alt="header image"
+        />
+      </div>
     </section>
-    <section class="mt-5 flex flex-col bg-gray-100 p-5">
+    <section class="mt-5 flex flex-col bg-gray-100 p-5 lg:py-20 lg:mt-20 lg:grid lg:grid-cols-7 gap-5">
       <img
-        class="h-96 rounded-r-full object-cover"
+        class="h-96 rounded-r-full object-cover lg:col-span-2"
         src="images/second_section.jpg"
         alt=""
       />
-      <h2 class="mt-10">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-        <br /><br />
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-        eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-        sunt in culpa qui officia deserunt mollit anim id est laborum
-      </h2>
-      <a class="mt-2 flex w-fit font-semibold" href="/"
-        ><button>Czytaj dalej</button><img
-          class="ml-2 mt-1"
-          src="arrow.svg"
-          alt=""
-        /></a
-      >
+      <div class="lg:col-span-3">
+        <h2 class="mt-10">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
+          <br /><br />
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+          eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+          sunt in culpa qui officia deserunt mollit anim id est laborum
+        </h2>
+        <a class="mt-2 flex w-fit font-semibold" href="/"
+          ><button>Czytaj dalej</button><img
+            class="ml-2 mt-1"
+            src="arrow.svg"
+            alt=""
+          /></a
+        >
+      </div>
       <div
-        class="mt-10 rounded-bl-3xl rounded-tr-3xl bg-white p-5 font-bold text-main shadow-md"
+        class="mt-10 rounded-bl-3xl rounded-tr-3xl bg-white p-5 font-bold text-main shadow-md lg:col-span-2"
       >
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore.
         </p>
-        <p class="text-end font-medium text-black">- Ekipa Jarzebski</p>
+        <p class="text-end font-medium text-black lg:mt-5">- Ekipa Jarzebski</p>
       </div>
     </section>
-    <section class="mt-5 p-5">
+    <section class="mt-5 p-5 lg:py-20">
       <h2 class="text-center text-4xl font-bold">Jak działamy</h2>
       <p class="mt-5 text-center">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -121,6 +140,66 @@ import Layout from "../layouts/Layout.astro";
         <div class="swiper-button-prev"></div>
         <div class="swiper-button-next"></div>
       </div>
+    </section>
+    <section class="mt-5 flex flex-col items-center bg-gray-100 p-5 lg:py-20">
+      <h2 class="text-center text-4xl font-bold">Projekty</h2>
+      <div class="mt-5">
+        <Project
+          href="/"
+          title="Projekt pierwszy"
+          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+        />
+        <ProjectRed
+          href="/"
+          title="Projekt pierwszy"
+          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+        />
+        <Project
+          href="/"
+          title="Projekt pierwszy"
+          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
+        />
+      </div>
+      <a href="/"
+        ><button class="mt-5 border-2 border-black p-5 font-bold transition"
+          >Zobacz więcej</button
+        ></a
+      >
+    </section>
+    <section class="mt-5 flex flex-col p-5 lg:py-20">
+      <div>
+        <h2 class="text-xl font-bold text-main">Innowacje</h2>
+        <p class="mt-2">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore.
+        </p>
+      </div>
+      <div class="mt-10">
+        <h2 class="text-xl font-bold text-main">Innowacje</h2>
+        <p class="mt-2">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore.
+        </p>
+      </div>
+      <div class="mt-10">
+        <h2 class="text-xl font-bold text-main">Innowacje</h2>
+        <p class="mt-2">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore.
+        </p>
+      </div>
+      <div class="mt-10">
+        <h2 class="text-xl font-bold text-main">Innowacje</h2>
+        <p class="mt-2">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore.
+        </p>
+      </div>
+      <img
+        class="my-10 h-96 rounded-l-full object-cover"
+        src="images/second_section.jpg"
+        alt=""
+      />
     </section>
   </main>
 </Layout>
