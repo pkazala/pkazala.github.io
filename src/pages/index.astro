@@ -40,7 +40,9 @@ import ProjectRed from "../components/Project-red.astro";
         />
       </div>
     </section>
-    <section class="mt-5 flex flex-col bg-gray-100 p-5 lg:py-20 lg:mt-20 lg:grid lg:grid-cols-7 gap-5">
+    <section
+      class="mt-5 flex flex-col bg-gray-100 p-5 lg:py-20 lg:mt-20 lg:grid lg:grid-cols-7 gap-5"
+    >
       <img
         class="h-96 rounded-r-full object-cover lg:col-span-2"
         src="images/second_section.jpg"
@@ -99,7 +101,7 @@ import ProjectRed from "../components/Project-red.astro";
                   <p class="text-lg font-bold">Design Process</p>
                 </div>
               </div>
-              <img src="/images/1.png" alt="jak działamy" />
+              <img src="/images/1.png" alt="jak działamy" class="max-w-xl" />
             </div>
           </div>
           <div class="swiper-slide">
@@ -116,7 +118,7 @@ import ProjectRed from "../components/Project-red.astro";
                   <p class="text-lg font-bold">Design Process</p>
                 </div>
               </div>
-              <img src="/images/1.png" alt="jak działamy" />
+              <img src="/images/1.png" alt="jak działamy" class="max-w-xl" />
             </div>
           </div>
           <div class="swiper-slide">
@@ -132,7 +134,7 @@ import ProjectRed from "../components/Project-red.astro";
                   <p class="text-lg font-bold">Design Process</p>
                 </div>
               </div>
-              <img src="/images/1.png" alt="jak działamy" />
+              <img src="/images/1.png" alt="jak działamy" class="max-w-xl" />
             </div>
           </div>
         </div>
@@ -166,37 +168,39 @@ import ProjectRed from "../components/Project-red.astro";
         ></a
       >
     </section>
-    <section class="mt-5 flex flex-col p-5 lg:py-20">
-      <div>
-        <h2 class="text-xl font-bold text-main">Innowacje</h2>
-        <p class="mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore.
-        </p>
-      </div>
-      <div class="mt-10">
-        <h2 class="text-xl font-bold text-main">Innowacje</h2>
-        <p class="mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore.
-        </p>
-      </div>
-      <div class="mt-10">
-        <h2 class="text-xl font-bold text-main">Innowacje</h2>
-        <p class="mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore.
-        </p>
-      </div>
-      <div class="mt-10">
-        <h2 class="text-xl font-bold text-main">Innowacje</h2>
-        <p class="mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore.
-        </p>
+    <section class="mt-5 flex flex-col p-5 lg:py-20 lg:grid lg:grid-cols-2 lg:place-items-center">
+      <div class="sm:grid sm:grid-cols-2 gap-10">
+        <div class="lg:mt-10">
+          <h2 class="text-xl font-bold text-main">Innowacje</h2>
+          <p class="mt-2">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore.
+          </p>
+        </div>
+        <div class="mt-10">
+          <h2 class="text-xl font-bold text-main">Innowacje</h2>
+          <p class="mt-2">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore.
+          </p>
+        </div>
+        <div class="mt-10">
+          <h2 class="text-xl font-bold text-main">Innowacje</h2>
+          <p class="mt-2">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore.
+          </p>
+        </div>
+        <div class="mt-10">
+          <h2 class="text-xl font-bold text-main">Innowacje</h2>
+          <p class="mt-2">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore.
+          </p>
+        </div>
       </div>
       <img
-        class="my-10 h-96 rounded-l-full object-cover"
+        class="my-10 h-96 rounded-l-full object-cover lg:w-10/12 lg:my-0 lg:place-self-end"
         src="images/second_section.jpg"
         alt=""
       />

@@ -1,32 +1,32 @@
 ---
 export interface Props {
-	title: string
-	body: string
-	href: string
+  title: string;
+  body: string;
+  href: string;
 }
-const { href, title, body } = Astro.props
+const { href, title, body } = Astro.props;
 ---
 
 <li class="link-card bg-g bg relative mt-5 list-none">
-	<a href={href}>
-		<img
-			src="/images/office-1.jpg"
-			alt="project image"
-			class="aspect-square rounded-xl object-cover object-right"
-		/>
-		<div
-			class="absolute left-0 top-1/2 flex h-2/3 w-11/12 -translate-y-1/2 flex-col justify-center rounded-r-xl bg-white bg-opacity-90 p-5"
-		>
-			<h2 class="text-xl font-semibold">
-				{title}
-			</h2>
-			<p class="mt-2">
-				{body}
-			</p>
-			<p class="flex items-center font-semibold">
-				Więcej
-				<span class="mb-1 ml-1 text-3xl text-main">&rarr;</span>
-			</p>
-		</div>
-	</a>
+  <a href={href}>
+    <img
+      src="/images/office-1.jpg"
+      alt="project image"
+      class="aspect-square sm:aspect-[15/8] lg:aspect-[15/5] rounded-xl object-cover lg:w-10/12 sm:m-auto sm:mr-0"
+    />
+    <div
+      class="absolute right-0 sm:left-0 top-1/2 flex h-2/3 w-11/12 lg:w-4/12 -translate-y-1/2 flex-col justify-center rounded-l-xl sm:rounded-xl bg-white bg-opacity-95 p-5"
+    >
+      <h2 class="text-xl font-semibold">
+        {title}
+      </h2>
+      <p class="mt-2">
+        {body}
+      </p>
+      <p class="flex items-center font-semibold">
+        Więcej
+        <span class="mb-1 ml-1 text-3xl text-main">&rarr;</span>
+      </p>
+    </div>
+  </a>
 </li>
