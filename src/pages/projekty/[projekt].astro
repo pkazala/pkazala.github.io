@@ -1,0 +1,117 @@
+---
+import Layout from "../../layouts/Layout.astro";
+export function getStaticPaths() {
+  return [
+    { params: { projekt: "projekt1" } },
+    { params: { projekt: "projekt2" } },
+    { params: { projekt: "projekt3" } },
+  ];
+}
+
+const { projekt } = Astro.params;
+---
+
+<Layout>
+  <main class="p-5">
+    <img
+      src="/images/2.jpeg"
+      alt="headline image"
+      class="rounded-xl h-96 w-10/12 m-auto object-cover"
+    />
+    <h1 class="text-3xl font-bold text-center p-10">{projekt}</h1>
+    <p
+      class="w-10/12 m-auto whitespace-pre-wrap">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.
+    
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+    <div
+      class="swiper mt-5 w-full"
+      style="--swiper-navigation-color: black; --swiper-pagination-color: black;"
+    >
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="flex flex-col items-center">
+            <img
+              src="/images/office-1.jpg"
+              alt="jak działamy"
+              class="w-10/12"
+            />
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="flex flex-col items-center">
+            <!-- <img src="/images/dots.png" alt="" class="w-24 opacity-25" /> -->
+            <img src="/images/1.png" alt="jak działamy" class="w-10/12" />
+          </div>
+        </div>
+        <div class="swiper-slide">
+          <div class="flex flex-col items-center">
+            <img
+              src="/images/office-1.jpg"
+              alt="jak działamy"
+              class="w-10/12"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </main>
+</Layout>
+<script>
+  // core version + navigation, pagination modules:
+  import Swiper from "swiper";
+  import {
+    Navigation,
+    Pagination,
+    Autoplay,
+    Thumbs,
+    Controller,
+  } from "swiper/modules";
+  // import Swiper and modules styles
+  import "swiper/css";
+  import "swiper/css/navigation";
+  import "swiper/css/pagination";
+  import "swiper/css/autoplay";
+  import "swiper/css/thumbs";
+  import "swiper/css/controller";
+
+  // init Swiper:
+  const swiper = new Swiper(".swiper", {
+    // configure Swiper to use modules
+    modules: [Navigation, Pagination, Autoplay, Thumbs, Controller],
+
+    pagination: {
+      el: ".swiper-pagination",
+    },
+    // Navigation arrows
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+
+    autoplay: {
+      delay: 5000,
+      pauseOnMouseEnter: true,
+    },
+  });
+
+  const thumbs = new Swiper(".thumbs", {
+    spaceBetween: 10,
+    centeredSlides: true,
+    slidesPerView: "auto",
+    touchRatio: 0.2,
+    slideToClickedSlide: true,
+    loop: true,
+    loopedSlides: 4,
+  });
+
+  //swiper.controller.control = thumbs;
+  //thumbs.controller.control = swiper;
+
+  const howList = [1, 2];
+</script>
