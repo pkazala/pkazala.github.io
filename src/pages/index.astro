@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Project from "../components/Project.astro";
 import ProjectRed from "../components/Project-red.astro";
+import Projects from "../components/Projects.astro";
 ---
 
 <Layout>
@@ -14,7 +15,7 @@ import ProjectRed from "../components/Project-red.astro";
             src="/images/main.jpg"
             alt="header image"
           />
-          <a class="mt-2 flex w-fit font-semibold" href="/"
+          <a class="mt-2 flex w-fit font-semibold" href="/projekty"
             ><button>Nasze projekty</button><img
               class="ml-2 mt-1"
               src="arrow.svg"
@@ -22,7 +23,9 @@ import ProjectRed from "../components/Project-red.astro";
             /></a
           >
         </div>
-        <h1 class="mt-10 lg:mt-0 text-4xl font-bold lg:uppercase lg:text-5xl">
+        <h1
+          class="mt-10 lg:mt-0 text-4xl font-extrabold lg:uppercase lg:text-5xl"
+        >
           Budujemy twoje marzenia
         </h1>
       </div>
@@ -59,7 +62,7 @@ import ProjectRed from "../components/Project-red.astro";
           eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
           sunt in culpa qui officia deserunt mollit anim id est laborum
         </h2>
-        <a class="mt-2 flex w-fit font-semibold" href="/"
+        <a class="mt-2 flex w-fit font-semibold" href="/o-nas"
           ><button>Czytaj dalej</button><img
             class="ml-2 mt-1"
             src="arrow.svg"
@@ -146,29 +149,17 @@ import ProjectRed from "../components/Project-red.astro";
     <section class="mt-5 flex flex-col items-center bg-gray-100 p-5 lg:py-20">
       <h2 class="text-center text-4xl font-bold">Projekty</h2>
       <div class="mt-5">
-        <Project
-          href="/"
-          title="Projekt pierwszy"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
-        />
-        <ProjectRed
-          href="/"
-          title="Projekt pierwszy"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
-        />
-        <Project
-          href="/"
-          title="Projekt pierwszy"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore."
-        />
+        <Projects />
       </div>
-      <a href="/"
+      <a href="/projekty"
         ><button class="mt-5 border-2 border-black p-5 font-bold transition"
           >Zobacz więcej</button
         ></a
       >
     </section>
-    <section class="mt-5 flex flex-col p-5 lg:py-20 lg:grid lg:grid-cols-2 lg:place-items-center">
+    <section
+      class="mt-5 flex flex-col p-5 lg:py-20 lg:grid lg:grid-cols-2 lg:place-items-center"
+    >
       <div class="sm:grid sm:grid-cols-2 gap-10">
         <div class="lg:mt-10">
           <h2 class="text-xl font-bold text-main">Innowacje</h2>
