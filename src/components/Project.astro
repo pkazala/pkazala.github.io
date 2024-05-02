@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import Office from "../assets/images/office-1.jpg";
 export interface Props {
   title: string;
   body: string;
@@ -9,8 +11,8 @@ const { href, title, body } = Astro.props;
 
 <li class="link-card bg-g bg relative mt-5 list-none">
   <a href={href}>
-    <img
-      src="/images/office-1.jpg"
+    <Image
+      src={Office}
       alt="project image"
       class="aspect-square sm:aspect-[15/8] lg:aspect-[15/5] rounded-xl object-cover sm:w-10/12 sm:m-auto sm:mr-0"
     />
