@@ -1,76 +1,95 @@
 ---
 import "@fontsource/open-sans";
+import Button from "../components/Button-nav.astro";
+import { Image } from "astro:assets";
+import Menu from "../assets/menu.svg";
+import Logo from "../assets/images/logo.png";
+import Close from "../assets/close.svg";
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/src/assets/images/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>Piotrek Jarzebski</title>
   </head>
-  <body class="max-w-7xl m-auto">
-    <nav
-      class="flex justify-between p-5 bg-white items-center lg:sticky top-0 z-[100]"
-    >
-      <a href="/"
-        ><img src="/images/logo.png" alt="logo" class="h-12 lg:h-14" /></a
-      >
-      <ul class="hidden md:flex gap-10 font-semibold">
-        <li><a href="/o-nas">O nas</a></li>
-        <li><a href="/projekty">Projekty</a></li>
-        <li><a href="/kontakt">Kontakt</a></li>
-      </ul>
-      <img
-        id="button"
-        class="h-8 w-8 md:hidden"
-        src="/menu.svg"
-        alt="menu hamburger icon"
-      />
-      <div
-        style="display: none;"
-        id="list"
-        class="fixed left-0 top-0 h-screen w-screen bg-main text-white z-50"
-      >
-        <img
-          id="button"
-          class="absolute right-4 top-4 h-9 w-9 sm:right-8"
-          src="/close.svg"
-          alt="x"
-        />
-        <ul
-          class="flex h-full w-full flex-col items-center justify-center gap-5 text-3xl"
+  <body class="w-screen m-auto max-w-full">
+    <nav class="m-auto p-2 px-4 bg-white sticky top-0 z-[100] shadow-xl">
+      <div class="flex justify-between items-center max-w-7xl m-auto">
+        <a href="/"
+          ><Image
+            src={Logo}
+            alt="logo"
+            class="p-1 w-44 md:w-56 lg:w-64"
+          /></a
         >
-          <li><a href="/o-nas">O nas</a></li>
-          <li><a href="/projekty">Projekty</a></li>
-          <li><a href="/kontakt">Kontakt</a></li>
+        <ul class="hidden md:flex gap-10 font-semibold text-lg lg:text-xl">
+          <Button href="/o-nas">O nas</Button>
+          <Button href="/oferta">Oferta</Button>
+          <Button href="/realizacje">Realizacje</Button>
+          <Button href="/referencje">Referencje</Button>
+          <Button href="/kontakt">Kontakt</Button>
         </ul>
+        <Image
+          id="button"
+          class="h-8 w-8 md:hidden"
+          src={Menu}
+          alt="menu hamburger icon"
+        />
+        <div
+          style="display: none;"
+          id="list"
+          class="fixed left-0 top-0 h-screen w-screen bg-main text-white z-50"
+        >
+          <Image
+            id="button"
+            class="absolute right-4 top-4 h-9 w-9 sm:right-8"
+            src={Close}
+            alt="x"
+          />
+          <ul
+            class="flex h-full w-full flex-col items-center justify-center gap-5 text-3xl"
+          >
+            <li><a href="/o-nas">O nas</a></li>
+            <li><a href="/oferta">Oferta</a></li>
+            <li><a href="/realizacje">Realizacje</a></li>
+            <li><a href="/referencje">Referencje</a></li>
+            <li><a href="/kontakt">Kontakt</a></li>
+          </ul>
+        </div>
       </div>
     </nav>
   </body>
-  <slot />
-  <section class="bg-zinc-600 text-white p-5 flex flex-col lg:rounded-t-xl">
-    <div class="bg-white rounded-xl w-max">
-      <img src="/images/logo.png" alt="logo" class="h-12" />
-    </div>
-    <div class="grid grid-cols-2 mt-2">
-      <div class="mt-2">
-        <h3 class="font-semibold">Email:</h3>
-        <p>mail@mail.com</p>
+  <section class="m-auto max-w-7xl">
+    <slot />
+  </section>
+  <section
+    class="max-w-7xl m-auto"
+  >
+    <div class="bg-gray-500 text-white p-5 flex flex-col md:rounded-xl m-5">
+      <div class="bg-white p-2 rounded-xl shadow-md w-max">
+        <Image src={Logo} alt="logo" class="p-1 w-40" />
       </div>
-      <div class="mt-2">
-        <h3 class="font-semibold">Email:</h3>
-        <p>100-200-500</p>
-      </div>
-      <div class="mt-2">
-        <h3 class="font-semibold">Address:</h3>
-        <p>Ulica 12, <br /> Warszawa 01-121</p>
-      </div>
-      <div class="mt-2">
-        <h3 class="font-semibold">Godziny pracy:</h3>
-        <p>Pon-Pt 8:00 - 20:00</p>
+      <div class="grid grid-cols-2 mt-2">
+        <div class="mt-2">
+          <h3 class="font-semibold">Email:</h3>
+          <p>mail@mail.com</p>
+        </div>
+        <div class="mt-2">
+          <h3 class="font-semibold">Email:</h3>
+          <p>100-200-500</p>
+        </div>
+        <div class="mt-2">
+          <h3 class="font-semibold">Address:</h3>
+          <p>Ulica 12, <br /> Warszawa 01-121</p>
+        </div>
+        <div class="mt-2">
+          <h3 class="font-semibold">Godziny pracy:</h3>
+          <p>Pon-Pt 8:00 - 20:00</p>
+        </div>
       </div>
     </div>
   </section>

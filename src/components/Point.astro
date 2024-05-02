@@ -1,0 +1,12 @@
+---
+export interface Props {
+  body: string;
+}
+const { body } = Astro.props;
+---
+<div class="flex flex-col items-center">
+  <div class="bg-main p-6 w-24 rounded-full bg-opacity-50">
+    <slot />
+  </div>
+  <h2 class="font-bold">{body}</h2>
+</div>

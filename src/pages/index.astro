@@ -1,8 +1,18 @@
 ---
+import { Image } from "astro:assets";
+import Main from "../assets/images/main.jpg";
+import Arrow from "../assets/arrow.svg";
+import Eco from "../assets/eco.svg";
+import Two from "../assets/images/2.jpeg";
+import Second_Section from "../assets/images/second_section.jpg";
+import Konsultacja from "../assets/images/konsultacja.png";
+import Projekt from "../assets/images/projekt.png";
+import Wycena from "../assets/images/wycena.png";
+import Realizacja from "../assets/images/realizacja.png";
+import Dots from "../assets/images/dots.png";
 import Layout from "../layouts/Layout.astro";
-import Project from "../components/Project.astro";
-import ProjectRed from "../components/Project-red.astro";
 import Projects from "../components/Projects.astro";
+import Point from "../components/Point.astro";
 ---
 
 <Layout>
@@ -10,15 +20,15 @@ import Projects from "../components/Projects.astro";
     <section class="p-5 lg:py-20 lg:grid lg:grid-cols-2 gap-10">
       <div class="lg:grid lg:grid-cols-2 gap-5">
         <div>
-          <img
+          <Image
             class="h-96 w-full rounded-xl object-cover"
-            src="/images/main.jpg"
+            src={Main}
             alt="header image"
           />
-          <a class="mt-2 flex w-fit font-semibold" href="/projekty"
-            ><button>Nasze projekty</button><img
+          <a class="mt-2 flex w-fit font-semibold" href="/realizacje"
+            ><button>Nasze projekty</button><Image
               class="ml-2 mt-1"
-              src="arrow.svg"
+              src={Arrow}
               alt=""
             /></a
           >
@@ -36,19 +46,19 @@ import Projects from "../components/Projects.astro";
           <span class="font-bold">Jarzebski</span> to firma która funkcjonuje na
           polskim rynku od 1410 roku kiedy to wygraliśmy bitwe pod grunwaldem.
         </h2>
-        <img
+        <Image
           class="h-96 w-full lg:w-11/12 lg:absolute lg:right-0 rounded-xl object-cover hidden lg:flex"
-          src="/images/2.jpeg"
+          src={Two}
           alt="header image"
         />
       </div>
     </section>
     <section
-      class="mt-5 flex flex-col bg-gray-100 p-5 lg:py-20 lg:mt-20 lg:grid lg:grid-cols-7 gap-5"
+      class="mt-5 flex flex-col bg-gray-100 p-5 lg:py-20 lg:mt-20 lg:grid lg:grid-cols-7 gap-5 xl:rounded-xl"
     >
-      <img
+      <Image
         class="h-96 rounded-r-full object-cover lg:col-span-2"
-        src="images/second_section.jpg"
+        src={Second_Section}
         alt=""
       />
       <div class="lg:col-span-3">
@@ -63,9 +73,9 @@ import Projects from "../components/Projects.astro";
           sunt in culpa qui officia deserunt mollit anim id est laborum
         </h2>
         <a class="mt-2 flex w-fit font-semibold" href="/o-nas"
-          ><button>Czytaj dalej</button><img
+          ><button>Czytaj dalej</button><Image
             class="ml-2 mt-1"
-            src="arrow.svg"
+            src={Arrow}
             alt=""
           /></a
         >
@@ -80,79 +90,39 @@ import Projects from "../components/Projects.astro";
         <p class="text-end font-medium text-black lg:mt-5">- Ekipa Jarzebski</p>
       </div>
     </section>
-    <section class="mt-5 p-5 lg:py-20">
+    <section class="mt-5 p-5 lg:py-20 flex flex-col items-center">
       <h2 class="text-center text-4xl font-bold">Jak działamy</h2>
       <p class="mt-5 text-center">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore.
+        Działamy sprawnie w 4 krokach.
       </p>
-      <div
-        class="swiper mt-5 w-full"
-        style="--swiper-navigation-color: black; --swiper-navigation-top-offset: 10%; --swiper-pagination-color: black;"
-      >
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="flex flex-col items-center">
-              <div class="relative">
-                <div class="h-16 w-16 rounded-full bg-main"></div>
-                <p
-                  class="absolute left-[50%] top-[25%] translate-x-[-50%] translate-y-[-50%] text-4xl text-white"
-                >
-                  1
-                </p>
-                <div class="my-1 w-16 text-center text-main">
-                  <p class="text-lg font-bold">Design Process</p>
-                </div>
-              </div>
-              <img src="/images/1.png" alt="jak działamy" class="max-w-xl" />
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="flex flex-col items-center">
-              <!-- <img src="/images/dots.png" alt="" class="w-24 opacity-25" /> -->
-              <div class="relative">
-                <div class="h-16 w-16 rounded-full bg-main"></div>
-                <p
-                  class="absolute left-[50%] top-[25%] translate-x-[-50%] translate-y-[-50%] text-4xl text-white"
-                >
-                  2
-                </p>
-                <div class="my-1 w-16 text-center text-main">
-                  <p class="text-lg font-bold">Design Process</p>
-                </div>
-              </div>
-              <img src="/images/1.png" alt="jak działamy" class="max-w-xl" />
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="flex flex-col items-center">
-              <div class="relative">
-                <div class="h-16 w-16 rounded-full bg-main"></div>
-                <p
-                  class="absolute left-[50%] top-[25%] translate-x-[-50%] translate-y-[-50%] text-4xl text-white"
-                >
-                  3
-                </p>
-                <div class="my-1 w-16 text-center text-main">
-                  <p class="text-lg font-bold">Design Process</p>
-                </div>
-              </div>
-              <img src="/images/1.png" alt="jak działamy" class="max-w-xl" />
-            </div>
-          </div>
-        </div>
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
+      <div class="flex gap-4 mt-5 items-center justify-center flex-wrap">
+        <Point body="Konsultacja">
+          <Image src={Konsultacja} alt="" />
+        </Point>
+        <Image src={Dots} alt="dots" class="h-3 w-20 mb-6 hidden md:block" />
+        <Point body="Projekt">
+          <Image src={Projekt} alt="" />
+        </Point>
+        <Image src={Dots} alt="dots" class="h-3 w-20 mb-6 hidden md:block" />
+        <Point body="Wycena">
+          <Image src={Wycena} alt="" />
+        </Point>
+        <Image src={Dots} alt="dots" class="h-3 w-20 mb-6 hidden md:block" />
+        <Point body="Realizacja">
+          <Image src={Realizacja} alt="" />
+        </Point>
       </div>
     </section>
-    <section class="mt-5 flex flex-col items-center bg-gray-100 p-5 lg:py-20">
+    <section
+      class="mt-5 flex flex-col items-center bg-gray-100 p-5 lg:py-20 xl:rounded-xl"
+    >
       <h2 class="text-center text-4xl font-bold">Projekty</h2>
       <div class="mt-5">
         <Projects />
       </div>
-      <a href="/projekty"
-        ><button class="mt-5 border-2 border-black p-5 font-bold transition"
+      <a href="/realizacje"
+        ><button
+          class="mt-5 border-2 border-black p-5 font-bold transition hover:text-main hover:border-main"
           >Zobacz więcej</button
         ></a
       >
@@ -160,66 +130,39 @@ import Projects from "../components/Projects.astro";
     <section
       class="mt-5 flex flex-col p-5 lg:py-20 lg:grid lg:grid-cols-2 lg:place-items-center"
     >
-      <div class="sm:grid sm:grid-cols-2 gap-10">
-        <div class="lg:mt-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div class="bg-orange-50 p-3 rounded-xl hover:shadow-lg transition">
           <h2 class="text-xl font-bold text-main">Innowacje</h2>
           <p class="mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore.
           </p>
         </div>
-        <div class="mt-10">
-          <h2 class="text-xl font-bold text-main">Innowacje</h2>
+        <div class="p-3 bg-green-50 rounded-xl hover:shadow-lg transition">
+          <div class="flex items-center gap-1">
+            <h2 class="text-xl font-bold text-green-800">Innowacje</h2>
+            <Image src={Eco} class="h-5 w-5" alt="leaf" />
+          </div>
           <p class="mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore.
           </p>
         </div>
-        <div class="mt-10">
-          <h2 class="text-xl font-bold text-main">Innowacje</h2>
-          <p class="mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore.
-          </p>
-        </div>
-        <div class="mt-10">
-          <h2 class="text-xl font-bold text-main">Innowacje</h2>
+        <div
+          class="sm:col-span-2 bg-gray-100 p-4 rounded-xl hover:shadow-lg transition"
+        >
+          <h2 class="text-xl font-bold text-gray-700">Innowacje</h2>
           <p class="mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore.
           </p>
         </div>
       </div>
-      <img
+      <Image
         class="my-10 h-96 rounded-l-full object-cover lg:w-10/12 lg:my-0 lg:place-self-end"
-        src="images/second_section.jpg"
+        src={Second_Section}
         alt=""
       />
     </section>
   </main>
 </Layout>
-<script>
-  // core version + navigation, pagination modules:
-  import Swiper from "swiper";
-  import { Navigation, Pagination } from "swiper/modules";
-  // import Swiper and modules styles
-  import "swiper/css";
-  import "swiper/css/navigation";
-  import "swiper/css/pagination";
-
-  // init Swiper:
-  const swiper = new Swiper(".swiper", {
-    // configure Swiper to use modules
-    modules: [Navigation, Pagination],
-
-    pagination: {
-      el: ".swiper-pagination",
-    },
-    // Navigation arrows
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-  });
-  const howList = [1, 2];
-</script>
