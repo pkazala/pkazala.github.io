@@ -1,10 +1,61 @@
 ---
-import Layout from "../../layouts/Layout.astro"
-import Heading from "../../components/Heading.astro"
+import { Image } from "astro:assets";
+import Office from "../../assets/images/office-2.jpg";
+import Speciality from "../../assets/images/speciality.jpg";
+import Private from "../../assets/images/interior.jpg";
+import Layout from "../../layouts/Layout.astro";
+import Heading from "../../components/Heading.astro";
 ---
 
 <Layout>
-    <main class="p-5">
-        <Heading>Oferta</Heading>
-    </main>
+  <main class="p-10 mt-3">
+    <Heading>Oferta</Heading>
+    <div class="flex mt-10 justify-center">
+      <div class="flex items-center gap-5 flex-wrap justify-center">
+        <div class="shadow-md flex flex-col items-center max-w-80 rounded-md">
+          <Image
+            src={Private}
+            alt="prywatne"
+            class="rounded-t-md h-48 object-cover"
+          />
+          <div class="flex flex-col items-center p-5">
+            <h1 class="text-2xl font-bold">Przestrzenie prywatne</h1>
+            <p class="leading-10">
+              - Lorem ipsum <br /> - Lorem ipsum <br /> - Lorem ipsum
+            </p>
+          </div>
+        </div>
+        <div
+          class="bg-main text-white shadow-lg flex flex-col items-center max-w-80 rounded-md"
+        >
+          <Image
+            src={Office}
+            alt="prywatne"
+            class="rounded-t-md h-52 object-cover"
+          />
+          <div class="flex flex-col items-center p-5 pb-9">
+            <h1 class="text-2xl font-bold">Przestrzenie biurowe</h1>
+            <p class="leading-10">
+              - Lorem ipsum <br /> - Lorem ipsum <br /> - Lorem ipsum
+            </p>
+          </div>
+        </div>
+        <div
+          class="shadow-md flex flex-col items-center max-w-80 rounded-md"
+        >
+          <Image
+            src={Speciality}
+            alt="prywatne"
+            class="rounded-t-md h-48 object-cover"
+          />
+          <div class="flex flex-col items-center p-5">
+            <h1 class="text-2xl font-bold">Przestrzenie specjalne</h1>
+            <p class="leading-10">
+              - Lorem ipsum <br /> - Lorem ipsum <br /> - Lorem ipsum
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </Layout>

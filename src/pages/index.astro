@@ -2,7 +2,8 @@
 import { Image } from "astro:assets";
 import Main from "../assets/images/main.jpg";
 import Arrow from "../assets/arrow.svg";
-import Eco from "../assets/eco.svg";
+import Calendar from "../assets/calendar.svg";
+import Icon from "../assets/images/favicon.png";
 import Two from "../assets/images/2.jpeg";
 import Second_Section from "../assets/images/second_section.jpg";
 import Konsultacja from "../assets/images/konsultacja.png";
@@ -54,7 +55,8 @@ import Point from "../components/Point.astro";
       </div>
     </section>
     <section
-      class="mt-5 flex flex-col bg-gray-100 p-5 lg:py-20 lg:mt-20 lg:grid lg:grid-cols-7 gap-5 xl:rounded-xl"
+      id="o-nas"
+      class="mt-5 flex flex-col bg-gray-100 p-5 lg:py-20 lg:mt-20 lg:grid lg:grid-cols-7 gap-5 xl:rounded-xl items-center"
     >
       <Image
         class="h-96 rounded-r-full object-cover lg:col-span-2"
@@ -62,7 +64,11 @@ import Point from "../components/Point.astro";
         alt=""
       />
       <div class="lg:col-span-3">
-        <h2 class="mt-10">
+        <div class="flex items-center gap-1">
+          <h1 class="text-4xl font-bold">Firma Jarzębski</h1>
+          <Image src={Icon} alt="logo" class="w-12" />
+        </div>
+        <h2 class="mt-5">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -81,7 +87,7 @@ import Point from "../components/Point.astro";
         >
       </div>
       <div
-        class="mt-10 rounded-bl-3xl rounded-tr-3xl bg-white p-5 font-bold text-main shadow-md lg:col-span-2"
+        class="h-fit rounded-bl-3xl rounded-tr-3xl bg-white p-5 font-bold text-main shadow-md lg:col-span-2"
       >
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -92,9 +98,7 @@ import Point from "../components/Point.astro";
     </section>
     <section class="mt-5 p-5 lg:py-20 flex flex-col items-center">
       <h2 class="text-center text-4xl font-bold">Jak działamy</h2>
-      <p class="mt-5 text-center">
-        Działamy sprawnie w 4 krokach.
-      </p>
+      <p class="mt-5 text-center text-xl">Działamy sprawnie w 4 krokach.</p>
       <div class="flex gap-4 mt-5 items-center justify-center flex-wrap">
         <Point body="Konsultacja">
           <Image src={Konsultacja} alt="" />
@@ -127,42 +131,55 @@ import Point from "../components/Point.astro";
         ></a
       >
     </section>
-    <section
-      class="mt-5 flex flex-col p-5 lg:py-20 lg:grid lg:grid-cols-2 lg:place-items-center"
-    >
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div class="bg-orange-50 p-3 rounded-xl hover:shadow-lg transition">
-          <h2 class="text-xl font-bold text-main">Innowacje</h2>
-          <p class="mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore.
-          </p>
-        </div>
-        <div class="p-3 bg-green-50 rounded-xl hover:shadow-lg transition">
-          <div class="flex items-center gap-1">
-            <h2 class="text-xl font-bold text-green-800">Innowacje</h2>
-            <Image src={Eco} class="h-5 w-5" alt="leaf" />
+    <section class="mt-5 p-5 lg:py-20">
+      <h2 class="text-center text-4xl font-bold">Co nas wyróżnia</h2>
+      <p class="mt-5 text-center max-w-[52rem] m-auto text-xl">
+        Nasze wieloletnie doświadczenie pozwala nam dopasować sie do potrzeb
+        każdego klienta i sprawnie realizować nawet najcięższe projekty.
+      </p>
+      <div
+        class="flex flex-col mt-5 lg:grid lg:grid-cols-2 lg:place-items-center"
+      >
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div class="bg-orange-50 p-3 rounded-xl hover:shadow-lg transition">
+            <h2 class="text-xl font-bold text-main">
+              Indywidualne podejście do klienta
+            </h2>
+            <p class="mt-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore.
+            </p>
           </div>
-          <p class="mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore.
-          </p>
+          <div class="p-3 bg-green-50 rounded-xl hover:shadow-lg transition">
+            <div class="flex items-center gap-1">
+              <h2 class="text-xl font-bold text-green-800">
+                Spersonalizowana oferta
+              </h2>
+            </div>
+            <p class="mt-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore.
+            </p>
+          </div>
+          <div
+            class="sm:col-span-2 bg-gray-100 p-4 rounded-xl hover:shadow-lg transition"
+          >
+            <h2 class="text-xl font-bold text-gray-700 flex items-center gap-1">
+              <Image src={Calendar} alt="calendar" class="w-5" />
+              Elastyczne terminy realizacji
+            </h2>
+            <p class="mt-2">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore.
+            </p>
+          </div>
         </div>
-        <div
-          class="sm:col-span-2 bg-gray-100 p-4 rounded-xl hover:shadow-lg transition"
-        >
-          <h2 class="text-xl font-bold text-gray-700">Innowacje</h2>
-          <p class="mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore.
-          </p>
-        </div>
+        <Image
+          class="my-10 h-96 rounded-l-full object-cover lg:w-10/12 lg:my-0 lg:place-self-end"
+          src={Second_Section}
+          alt=""
+        />
       </div>
-      <Image
-        class="my-10 h-96 rounded-l-full object-cover lg:w-10/12 lg:my-0 lg:place-self-end"
-        src={Second_Section}
-        alt=""
-      />
     </section>
   </main>
 </Layout>
