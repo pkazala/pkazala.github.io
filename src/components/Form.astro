@@ -1,0 +1,177 @@
+---
+import { Image } from "astro:assets";
+import Phone from "../assets/phone.svg";
+import Heading from "./Heading.astro";
+---
+
+<section class="grid grid-cols-1 md:grid-cols-2">
+  <div class="p-5 mt-3">
+    <Heading>Kontakt</Heading>
+    <h2 class="text-2xl font-bold my-5">
+      Masz pomysł na projekt lub chcesz dowiedzieć się więcej o tym co możemy
+      dla Ciebie zrobić?
+    </h2>
+    <p class="text-xl text-gray-700">
+      Wyślij do nas wiadomość lub umów się na rozmowę telefoniczną a my
+      odpowiemy na wszystkie pytania oraz udzielimy fachowych porad
+      technicznych.
+    </p>
+  </div>
+  <div class="p-5">
+    <div
+      class="mb-5 bg-[#4F5A4E] text-[#c6eac3] rounded-md p-3 flex  items-center"
+    >
+      <p>
+        <div class="w-10 mr-2">
+            <Image src={Phone} alt="phone">
+        </div>
+        Chcesz pominąć formularz i umówić się bezpośrednio na rozmowę
+        telefoniczną?
+      </p>
+      <button
+        class="text-nowrap h-fit bg-[#96b493] text-white py-2 px-4 rounded-full"
+        >Wybierz termin</button
+      >
+    </div>
+    <form
+      action="https://api.web3forms.com/submit"
+      method="POST"
+      id="form"
+      class="needs-validation"
+      data-astro-reload
+      novalidate
+    >
+      <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+
+      <input
+        type="checkbox"
+        class="hidden"
+        style="display:none"
+        name="botcheck"
+      />
+      <div class="mb-5">
+        <input
+          type="text"
+          placeholder="Imie i nazwisko"
+          required
+          class="w-full px-4 py-3 border placeholder:text-slate-400 rounded-md outline-none focus:ring-4 border-slate-300 focus:border-slate-600 ring-slate-100"
+          name="name"
+        />
+        <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
+          Proszę wpisać swoje imię.
+        </div>
+      </div>
+      <div class="mb-5">
+        <label for="email_address" class="sr-only">Email Address</label><input
+          id="email_address"
+          type="email"
+          placeholder="Adres Email"
+          name="email"
+          required
+          class="w-full px-4 py-3 border placeholder:text-slate-400 rounded-md outline-none focus:ring-4 border-slate-300 focus:border-slate-600 ring-slate-100"
+        />
+        <div class="empty-feedback text-red-400 text-sm mt-1">
+          Proszę wpisać adres email.
+        </div>
+        <div class="invalid-feedback text-red-400 text-sm mt-1">
+          Proszę wpisać poprawny adres email.
+        </div>
+      </div>
+      <div class="mb-3">
+        <textarea
+          name="message"
+          required
+          placeholder="Wiadomość"
+          class="w-full px-4 py-3 border placeholder:text-slate-400 rounded-md outline-none h-36 focus:ring-4 border-slate-300 focus:border-slate-600 ring-slate-100"
+        ></textarea>
+        <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">
+          Proszę wpisać wiadomość.
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="bg-main w-full text-white p-3 rounded-md hover:bg-opacity-80 transition"
+        >Wyślij wiadomość</button
+      >
+      <div id="result" class="mt-3 text-center"></div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .invalid-feedback,
+  .empty-feedback {
+    display: none;
+  }
+
+  .was-validated :placeholder-shown:invalid ~ .empty-feedback {
+    display: block;
+  }
+
+  .was-validated :not(:placeholder-shown):invalid ~ .invalid-feedback {
+    display: block;
+  }
+
+  .is-invalid,
+  .was-validated :invalid {
+    border-color: #dc3545;
+  }
+</style>
+
+<script is:inline>
+  // use astro:page-load event if you are using View Transitions
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+      const form = document.getElementById("form");
+      const result = document.getElementById("result");
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        form.classList.add("was-validated");
+        if (!form.checkValidity()) {
+          form.querySelectorAll(":invalid")[0].focus();
+          return;
+        }
+        const formData = new FormData(form);
+        const object = Object.fromEntries(formData);
+        const json = JSON.stringify(object);
+
+        result.innerHTML = "Sending...";
+
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: json,
+        })
+          .then(async (response) => {
+            let json = await response.json();
+            if (response.status == 200) {
+              result.classList.add("text-green-500");
+              result.innerHTML = json.message;
+            } else {
+              console.log(response);
+              result.classList.add("text-red-500");
+              result.innerHTML = json.message;
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            result.innerHTML = "Something went wrong!";
+          })
+          .then(function () {
+            form.reset();
+            form.classList.remove("was-validated");
+            setTimeout(() => {
+              result.style.display = "none";
+            }, 5000);
+          });
+      });
+    },
+    { once: true }
+  );
+</script>
