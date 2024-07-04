@@ -28,9 +28,10 @@ import Heading from "./Heading.astro";
         Chcesz pominąć formularz i umówić się bezpośrednio na rozmowę
         telefoniczną?
       </p>
-      <button
+      <a
+        href="https://calendly.com/zrbjarzebski/30min"
         class="text-nowrap h-fit bg-[#96b493] text-white py-2 px-4 rounded-full"
-        >Wybierz termin</button
+        >Wybierz termin</a
       >
     </div>
     <form
@@ -41,7 +42,7 @@ import Heading from "./Heading.astro";
       data-astro-reload
       novalidate
     >
-      <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+      <input type="hidden" name="access_key" value={import.meta.env.VITE_ACCESS_CODE} />
 
       <input
         type="checkbox"
