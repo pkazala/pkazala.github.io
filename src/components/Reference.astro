@@ -1,8 +1,14 @@
 ---
 import { Image } from "astro:assets";
-import Referencja from "../assets/images/reference.png";
+import Referencja1 from "../assets/images/Referencja1.jpg";
+import Referencja2 from "../assets/images/Referencja2.jpg";
+import Referencja3 from "../assets/images/Referencja3.jpg";
+import Referencja4 from "../assets/images/Referencja4.jpg";
 ---
 
-<div>
-  <Image reference-button src={Referencja} alt="Referencja" />
+<div class="grid grid-cols-1 sm:grid-cols-2 my-10 gap-10">
+  <Image src={Referencja1} alt="Referencja" class="shadow-lg" />
+  <Image src={Referencja2} alt="Referencja" class="shadow-lg" />
+  <Image src={Referencja3} alt="Referencja" class="shadow-lg" />
+  <Image src={Referencja4} alt="Referencja" class="shadow-lg" />
 </div>
