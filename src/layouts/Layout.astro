@@ -1,143 +1,65 @@
 ---
-import "@fontsource/open-sans";
-import Button from "../components/Button-nav.astro";
-import { Image } from "astro:assets";
-import Menu from "../assets/menu.svg";
-import Logo from "../assets/images/logo.png";
-import Close from "../assets/close.svg";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Piotr Kazala",
+  description = "Personal website of Piotr Kazala, a software engineer in Edinburgh.",
+} = Astro.props;
+
+const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/src/assets/images/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <title>Piotrek Jarzebski</title>
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
   </head>
-  <body id="top" class="w-screen m-auto max-w-full">
-    <nav class="m-auto p-2 px-4 bg-white sticky top-0 z-[100] shadow-xl">
-      <div class="flex justify-between items-center max-w-7xl m-auto">
-        <a href="/#top"
-          ><Image
-            src={Logo}
-            alt="logo"
-            class="p-1 w-44 md:w-56 lg:w-64"
-          /></a
+  <body class="bg-[#fbfbfa] text-ink font-sans antialiased selection:bg-ink selection:text-white">
+    <div class="mx-auto w-[min(100%-32px,680px)]">
+      <header
+        class="flex items-baseline justify-between gap-6 border-b border-ink/10 py-6 text-sm"
+      >
+        <a
+          class="font-medium text-ink"
+          href="/"
+          aria-label="Piotr Kazala home"
         >
-        <ul class="hidden md:flex gap-10 font-semibold text-lg lg:text-xl">
-          <Button href="/#o-nas">O nas</Button>
-          <Button href="/oferta">Oferta</Button>
-          <Button href="/realizacje">Realizacje</Button>
-          <Button href="/referencje">Referencje</Button>
-          <Button href="/kontakt">Kontakt</Button>
-        </ul>
-        <Image
-          id="button"
-          class="h-8 w-8 md:hidden"
-          src={Menu}
-          alt="menu hamburger icon"
-        />
-        <div
-          style="display: none;"
-          id="list"
-          class="fixed left-0 top-0 h-screen w-screen bg-main text-white z-50"
+          <span>Piotr Kazala</span>
+        </a>
+        <nav
+          class="flex items-center gap-4 text-muted"
+          aria-label="Primary navigation"
         >
-          <Image
-            id="button"
-            class="absolute right-4 top-4 h-9 w-9 sm:right-8"
-            src={Close}
-            alt="x"
-          />
-          <ul
-            class="flex h-full w-full flex-col items-center justify-center gap-5 text-3xl"
+          <a
+            class="hover:text-ink"
+            href="/#about">About</a
           >
-            <li><a id="link" href="/#o-nas">O nas</a></li>
-            <li><a id="link" href="/oferta">Oferta</a></li>
-            <li><a id="link" href="/realizacje">Realizacje</a></li>
-            <li><a id="link" href="/referencje">Referencje</a></li>
-            <li><a id="link" href="/kontakt">Kontakt</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </body>
-  <section class="m-auto max-w-7xl">
-    <slot />
-  </section>
-  <section
-    class="max-w-7xl m-auto"
-  >
-    <div class="bg-gray-500 text-white p-5 flex flex-col md:rounded-xl m-5">
-      <div class="bg-white p-2 rounded-xl shadow-md w-max">
-        <Image src={Logo} alt="logo" class="p-1 w-40" />
-      </div>
-      <div class="grid grid-cols-2 mt-2">
-        <div class="mt-2">
-          <h3 class="font-semibold">Email:</h3>
-          <p>zrbjarzebski@op.pl</p>
-        </div>
-        <div class="mt-2">
-          <h3 class="font-semibold">Telefon:</h3>
-          <p>691-442-979</p>
-        </div>
-        <div class="mt-2">
-          <h3 class="font-semibold">Adres:</h3>
-          <p>Rybie 51 <br /> 09-541 Pacyna</p>
-        </div>
-        <div class="mt-2">
-          <h3 class="font-semibold">Godziny pracy:</h3>
-          <p>Pon-Pt 8:00 - 20:00</p>
-        </div>
-      </div>
+          <a class="hover:text-ink" href="/blog/">Blog</a>
+          <a class="hover:text-ink" href="/#contact">Contact</a>
+        </nav>
+      </header>
+
+      <slot />
+
+      <footer
+        class="mt-14 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 py-6 text-sm text-muted"
+      >
+        <p>Edinburgh, via Poland.</p>
+        <p class="font-mono" aria-hidden="true">2026</p>
+      </footer>
     </div>
-  </section>
-  <script>
-    const list: HTMLElement | null = document.getElementById("list");
-    const buttons = document.querySelectorAll("#button");
-    const links = document.querySelectorAll("#link");
-    const handleClick = () => {
-      if (list?.style.display === "none") {
-        list.style.display = "flex";
-        list.classList.remove("move-right-animation");
-        list.classList.add("move-left-animation");
-      } else if (list?.style.display === "flex") {
-        list.classList.remove("move-left-animation");
-        list.classList.add("move-right-animation");
-        setTimeout(() => (list.style.display = "none"), 400);
-        //list.style.display = "none";
-      }
-    };
-    buttons.forEach((button) => {
-      button.addEventListener("click", handleClick);
-    });
-    links.forEach((button) => {
-      button.addEventListener("click", handleClick);
-    });
-  </script>
-  <style>
-    .move-left-animation {
-      animation: moveLeft 0.5s ease;
-    }
-    .move-right-animation {
-      animation: moveRight 0.5s ease;
-    }
-    @keyframes moveLeft {
-      0% {
-        transform: translateX(100vw);
-      }
-      100% {
-        transform: translateX(0);
-      }
-    }
-    @keyframes moveRight {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(100vw);
-      }
-    }
-  </style>
+  </body>
 </html>
