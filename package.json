@@ -1,6 +1,7 @@
 {
   "name": "pkazala.github.io",
   "type": "module",
+  "packageManager": "pnpm@11.9.0",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
