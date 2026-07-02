@@ -1,184 +1,117 @@
 ---
-import { Image } from "astro:assets";
-import Main from "../assets/images/main.jpg";
-import Arrow from "../assets/arrow.svg";
-import Calendar from "../assets/calendar.svg";
-import Icon from "../assets/images/favicon.png";
-import Two from "../assets/images/2.jpeg";
-import Second_Section from "../assets/images/second_section.jpg";
-import Konsultacja from "../assets/images/konsultacja.png";
-import Projekt from "../assets/images/projekt.png";
-import Wycena from "../assets/images/wycena.png";
-import Realizacja from "../assets/images/realizacja.png";
-import Dots from "../assets/images/dots.png";
+import { getCollection } from "astro:content";
+import EuropeGlobe from "../components/EuropeGlobe.astro";
 import Layout from "../layouts/Layout.astro";
-import Projects from "../components/Projects.astro";
-import Point from "../components/Point.astro";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft || !import.meta.env.PROD)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+
+const facts = [
+  "Software engineer at Aberdeen",
+  "Previously Barclays, Aug 2024 - Apr 2026",
+  "BSc Computer Science at Strathclyde",
+];
 ---
 
-<Layout>
+<Layout
+  title="Piotr Kazala"
+  description="Personal website of Piotr Kazala, a software engineer in Edinburgh."
+>
   <main>
-    <section class="p-5 lg:py-20 lg:grid lg:grid-cols-2 gap-10">
-      <div class="lg:grid lg:grid-cols-2 gap-5">
-        <div>
-          <Image
-            class="h-96 w-full rounded-xl object-cover"
-            src={Main}
-            alt="header image"
-          />
-          <a class="mt-2 flex w-fit font-semibold" href="/realizacje"
-            ><button>Nasze projekty</button><Image
-              class="ml-2 mt-1"
-              src={Arrow}
-              alt=""
-            /></a
-          >
-        </div>
-        <h1
-          class="mt-10 lg:mt-0 text-4xl font-extrabold lg:uppercase lg:text-5xl"
-        >
-          Budujemy twoje marzenia
-        </h1>
-      </div>
-      <div class="lg:relative lg:mt-20">
-        <h2
-          class="mt-10 rounded-xl bg-main p-5 text-white lg:absolute z-50 lg:w-64"
-        >
-          <span class="font-bold">Jarzebski</span> to firma która funkcjonuje na
-          polskim rynku od 1410 roku kiedy to wygraliśmy bitwe pod grunwaldem.
-        </h2>
-        <Image
-          class="h-96 w-full lg:w-11/12 lg:absolute lg:right-0 rounded-xl object-cover hidden lg:flex"
-          src={Two}
-          alt="header image"
-        />
-      </div>
-    </section>
-    <section
-      id="o-nas"
-      class="mt-5 flex flex-col bg-gray-100 p-5 lg:py-20 lg:mt-20 lg:grid lg:grid-cols-7 gap-5 xl:rounded-xl items-center"
-    >
-      <Image
-        class="h-96 rounded-r-full object-cover lg:col-span-2"
-        src={Second_Section}
-        alt=""
-      />
-      <div class="lg:col-span-3">
-        <div class="flex items-center gap-1">
-          <h1 class="text-4xl font-bold">Firma Jarzębski</h1>
-          <Image src={Icon} alt="logo" class="w-12" />
-        </div>
-        <h2 class="mt-5">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-          <br /><br />
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-          eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-          sunt in culpa qui officia deserunt mollit anim id est laborum
-        </h2>
-        <a class="mt-2 flex w-fit font-semibold" href="/o-nas"
-          ><button>Czytaj dalej</button><Image
-            class="ml-2 mt-1"
-            src={Arrow}
-            alt=""
-          /></a
-        >
-      </div>
-      <div
-        class="h-fit rounded-bl-3xl rounded-tr-3xl bg-white p-5 font-bold text-main shadow-md lg:col-span-2"
+    <section class="pt-10 sm:pt-16" aria-labelledby="intro-title">
+      <p class="mb-5 font-mono text-sm text-muted">software engineer / edinburgh</p>
+      <h1
+        id="intro-title"
+        class="text-5xl font-semibold leading-[1.05] tracking-normal text-ink sm:text-6xl"
       >
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore.
-        </p>
-        <p class="text-end font-medium text-black lg:mt-5">- Ekipa Jarzebski</p>
-      </div>
-    </section>
-    <section class="mt-5 p-5 lg:py-20 flex flex-col items-center">
-      <h2 class="text-center text-4xl font-bold">Jak działamy</h2>
-      <p class="mt-5 text-center text-xl">Działamy sprawnie w 4 krokach.</p>
-      <div class="flex gap-4 mt-5 items-center justify-center flex-wrap">
-        <Point body="Konsultacja">
-          <Image src={Konsultacja} alt="" />
-        </Point>
-        <Image src={Dots} alt="dots" class="h-3 w-20 mb-6 hidden md:block" />
-        <Point body="Projekt">
-          <Image src={Projekt} alt="" />
-        </Point>
-        <Image src={Dots} alt="dots" class="h-3 w-20 mb-6 hidden md:block" />
-        <Point body="Wycena">
-          <Image src={Wycena} alt="" />
-        </Point>
-        <Image src={Dots} alt="dots" class="h-3 w-20 mb-6 hidden md:block" />
-        <Point body="Realizacja">
-          <Image src={Realizacja} alt="" />
-        </Point>
-      </div>
-    </section>
-    <section
-      class="mt-5 flex flex-col items-center bg-gray-100 p-5 lg:py-20 xl:rounded-xl"
-    >
-      <h2 class="text-center text-4xl font-bold">Projekty</h2>
-      <div class="mt-5">
-        <Projects />
-      </div>
-      <a href="/realizacje"
-        ><button
-          class="mt-5 border-2 border-black p-5 font-bold transition hover:text-main hover:border-main"
-          >Zobacz więcej</button
-        ></a
-      >
-    </section>
-    <section class="mt-5 p-5 lg:py-20">
-      <h2 class="text-center text-4xl font-bold">Co nas wyróżnia</h2>
-      <p class="mt-5 text-center max-w-[52rem] m-auto text-xl">
-        Nasze wieloletnie doświadczenie pozwala nam dopasować sie do potrzeb
-        każdego klienta i sprawnie realizować nawet najcięższe projekty.
+        Piotr Kazala
+      </h1>
+      <p class="mt-6 max-w-2xl text-lg leading-8 text-zinc-700">
+        I build software at that feels right. Currently at Aberdeen.
       </p>
-      <div
-        class="flex flex-col mt-5 lg:grid lg:grid-cols-2 lg:place-items-center"
-      >
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div class="bg-orange-50 p-3 rounded-xl hover:shadow-lg transition">
-            <h2 class="text-xl font-bold text-main">
-              Indywidualne podejście do klienta
-            </h2>
-            <p class="mt-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore.
-            </p>
-          </div>
-          <div class="p-3 bg-green-50 rounded-xl hover:shadow-lg transition">
-            <div class="flex items-center gap-1">
-              <h2 class="text-xl font-bold text-green-800">
-                Spersonalizowana oferta
-              </h2>
-            </div>
-            <p class="mt-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore.
-            </p>
-          </div>
-          <div
-            class="sm:col-span-2 bg-gray-100 p-4 rounded-xl hover:shadow-lg transition"
-          >
-            <h2 class="text-xl font-bold text-gray-700 flex items-center gap-1">
-              <Image src={Calendar} alt="calendar" class="w-5" />
-              Elastyczne terminy realizacji
-            </h2>
-            <p class="mt-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore.
-            </p>
-          </div>
-        </div>
-        <Image
-          class="my-10 h-96 rounded-l-full object-cover lg:w-10/12 lg:my-0 lg:place-self-end"
-          src={Second_Section}
-          alt=""
-        />
+    </section>
+
+    <EuropeGlobe />
+
+    <section
+      id="about"
+      class="grid gap-4 border-b border-ink/10 pb-10 sm:grid-cols-[160px_1fr]"
+    >
+      <h2 class="text-sm font-medium text-muted">Now</h2>
+      <ul class="space-y-2 text-zinc-700">
+        {facts.map((fact) => <li>{fact}</li>)}
+      </ul>
+    </section>
+
+    <section
+      class="grid gap-4 border-b border-ink/10 py-10 sm:grid-cols-[160px_1fr]"
+      aria-labelledby="writing-title"
+    >
+      <div>
+        <h2 id="writing-title" class="text-sm font-medium text-muted">Writing</h2>
+        <a class="mt-2 inline-block text-sm text-muted underline underline-offset-4" href="/blog/">
+          All posts
+        </a>
+      </div>
+      <div class="space-y-5">
+        {
+          posts.map((post) => (
+            <a class="group block" href={`/blog/${post.slug}/`}>
+              <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                <h3 class="font-medium text-ink group-hover:underline group-hover:underline-offset-4">
+                  {post.data.title}
+                </h3>
+                <time class="font-mono text-xs text-muted" datetime={post.data.date.toISOString()}>
+                  {formatDate(post.data.date)}
+                </time>
+              </div>
+              <p class="mt-1 text-sm leading-6 text-muted">{post.data.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section
+      id="photos"
+      class="grid gap-4 border-b border-ink/10 py-10 sm:grid-cols-[160px_1fr]"
+      aria-labelledby="photos-title"
+    >
+      <h2 id="photos-title" class="text-sm font-medium text-muted">Photos</h2>
+      <div>
+        <p class="leading-8 text-zinc-700">
+          A few favourite frames will live here soon. For now, this is a quiet
+          placeholder. Coming soon.
+        </p>
+        <p class="mt-3 font-mono text-xs text-muted">Drop images into public/photos.</p>
+      </div>
+    </section>
+
+    <section
+      id="contact"
+      class="grid gap-4 py-10 sm:grid-cols-[160px_1fr]"
+      aria-labelledby="contact-title"
+    >
+      <h2 id="contact-title" class="text-sm font-medium text-muted">Elsewhere</h2>
+      <div class="flex flex-wrap gap-x-5 gap-y-2">
+        <a class="text-zinc-700 underline underline-offset-4 hover:text-ink" href="https://github.com/pkazala">
+          GitHub
+        </a>
+        <a class="text-zinc-700 underline underline-offset-4 hover:text-ink" href="https://www.linkedin.com/in/piotrkazala/">
+          LinkedIn
+        </a>
+        <a class="text-zinc-700 underline underline-offset-4 hover:text-ink" href="/blog/">
+          Blog
+        </a>
       </div>
     </section>
   </main>

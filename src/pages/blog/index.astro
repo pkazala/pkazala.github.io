@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft || !import.meta.env.PROD)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(date);
+---
+
+<Layout title="Blog" description="Writing and notes from Piotr Kazala.">
+  <main class="pt-10 sm:pt-16">
+    <a class="text-sm text-muted underline underline-offset-4 hover:text-ink" href="/">
+      Back home
+    </a>
+
+    <header class="mt-12 border-b border-ink/10 pb-10">
+      <h1 class="text-5xl font-semibold leading-tight tracking-normal">Writing</h1>
+      <p class="mt-5 text-lg leading-8 text-zinc-700">
+        Technical notes, design observations, photography fragments, and whatever
+        survives the urge to over-edit.
+      </p>
+    </header>
+
+    <section class="divide-y divide-ink/10" aria-label="Blog posts">
+      {
+        posts.map((post) => (
+          <a class="grid gap-2 py-6 sm:grid-cols-[132px_1fr]" href={`/blog/${post.slug}/`}>
+            <time class="font-mono text-xs text-muted" datetime={post.data.date.toISOString()}>
+              {formatDate(post.data.date)}
+            </time>
+            <div>
+              <h2 class="font-medium text-ink hover:underline hover:underline-offset-4">
+                {post.data.title}
+              </h2>
+              <p class="mt-1 text-sm leading-6 text-muted">{post.data.description}</p>
+            </div>
+          </a>
+        ))
+      }
+    </section>
+  </main>
+</Layout>
