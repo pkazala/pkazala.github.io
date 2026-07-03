@@ -103,6 +103,45 @@ function initGlobe(canvas: HTMLCanvasElement) {
 
   const routeCurve = createRouteCurve();
   const startTime = performance.now();
+  const planeForward = new THREE.Vector3();
+  const planeUp = new THREE.Vector3();
+  const planeSide = new THREE.Vector3();
+  const planeLocalForward = new THREE.Vector3(1, 0, 0);
+  const planeRotationMatrix = new THREE.Matrix4();
+  const targetPlaneQuaternion = new THREE.Quaternion();
+  const bankQuaternion = new THREE.Quaternion();
+
+  const updatePlanePose = (
+    sample: ReturnType<typeof sampleFlight>,
+    elapsed: number,
+    smoothing: number,
+  ) => {
+    const position = routeCurve.getPoint(sample.t);
+    const tangent = routeCurve
+      .getTangent(sample.t)
+      .multiplyScalar(sample.direction)
+      .normalize();
+
+    plane.position.copy(position);
+
+    const bank = Math.sin(elapsed * 3.6) * 0.05 + sample.bank;
+    planeForward.copy(tangent);
+    planeUp.copy(position).normalize();
+    planeUp.addScaledVector(planeForward, -planeUp.dot(planeForward)).normalize();
+    planeSide.crossVectors(planeForward, planeUp).normalize();
+    planeRotationMatrix.makeBasis(planeForward, planeUp, planeSide);
+    targetPlaneQuaternion.setFromRotationMatrix(planeRotationMatrix);
+    bankQuaternion.setFromAxisAngle(planeLocalForward, bank);
+    targetPlaneQuaternion.multiply(bankQuaternion);
+
+    if (smoothing >= 1) {
+      plane.quaternion.copy(targetPlaneQuaternion);
+    } else {
+      plane.quaternion.slerp(targetPlaneQuaternion, smoothing);
+    }
+  };
+
+  updatePlanePose(sampleFlight(0), 0, 1);
 
   const resize = () => {
     const rect = canvas.getBoundingClientRect();
@@ -120,15 +159,7 @@ function initGlobe(canvas: HTMLCanvasElement) {
     const elapsed = (performance.now() - startTime) / 1000;
 
     const sample = sampleFlight(elapsed);
-    const position = routeCurve.getPoint(sample.t);
-    const tangent = routeCurve
-      .getTangent(sample.t)
-      .multiplyScalar(sample.direction)
-      .normalize();
-
-    plane.position.copy(position);
-    plane.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), tangent);
-    plane.rotateZ(Math.sin(elapsed * 3.6) * 0.05 + sample.bank);
+    updatePlanePose(sample, elapsed, reduceMotion ? 1 : 0.14);
 
     const propeller = plane.getObjectByName("propeller");
     if (propeller && !reduceMotion) {
@@ -529,7 +560,8 @@ function addRoute(root: THREE.Group) {
     new THREE.BufferGeometry().setFromPoints(points),
     new THREE.LineBasicMaterial({
       color: colors.route,
-      depthTest: false,
+      depthTest: true,
+      depthWrite: false,
       transparent: true,
       opacity: 0.7,
     }),
@@ -572,12 +604,10 @@ function sampleFlight(elapsed: number) {
   const local = outbound ? phase * 2 : (1 - phase) * 2;
   const t = smootherStep(local);
 
-  const turn = Math.max(0, 1 - Math.min(local, 1 - local) / 0.18);
-
   return {
     t,
     direction: outbound ? 1 : -1,
-    bank: (outbound ? 1 : -1) * turn * 0.34,
+    bank: Math.sin(phase * Math.PI * 2) * 0.16,
   };
 }
 
