@@ -2,10 +2,14 @@ import * as THREE from "three";
 
 const canvases = document.querySelectorAll<HTMLCanvasElement>("[data-europe-globe]");
 
-const POLAND = { lat: 52.2297, lon: 21.0122 };
-const EDINBURGH = { lat: 55.9533, lon: -3.1883 };
+const POLAND = { lat: 52.2297, lon: 19.65 };
+const EDINBURGH = { lat: 54.76, lon: -2.6883 };
 
 const RADIUS = 3.1;
+const ROUTE_ALTITUDE = 0.19;
+const ROUTE_APEX_ALTITUDE = 0.95;
+const ROUTE_THICKNESS = 0.0085;
+const AIRPORT_MARKER_RADIUS = 0.022;
 const GEOJSON_URL = `${import.meta.env.BASE_URL}data/custom.geo.json`;
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -16,7 +20,6 @@ const colors = {
   land: 0x2f8fcd,
   poland: 0xff9b9b,
   uk: 0xb38cff,
-  route: 0x6aa8ca,
   red: 0xe82922,
   yellow: 0xf4c400,
   blue: 0x00a8df,
@@ -48,6 +51,13 @@ type CountryFeature = {
 type FeatureCollection = {
   type: "FeatureCollection";
   features: CountryFeature[];
+};
+
+type FlightSample = {
+  t: number;
+  direction: 1 | -1;
+  bank: number;
+  turnEase: number;
 };
 
 const EUROPE_BOUNDS = {
@@ -112,7 +122,7 @@ function initGlobe(canvas: HTMLCanvasElement) {
   const bankQuaternion = new THREE.Quaternion();
 
   const updatePlanePose = (
-    sample: ReturnType<typeof sampleFlight>,
+    sample: FlightSample,
     elapsed: number,
     smoothing: number,
   ) => {
@@ -159,7 +169,8 @@ function initGlobe(canvas: HTMLCanvasElement) {
     const elapsed = (performance.now() - startTime) / 1000;
 
     const sample = sampleFlight(elapsed);
-    updatePlanePose(sample, elapsed, reduceMotion ? 1 : 0.14);
+    const poseSmoothing = THREE.MathUtils.lerp(0.14, 0.09, sample.turnEase);
+    updatePlanePose(sample, elapsed, reduceMotion ? 1 : poseSmoothing);
 
     const propeller = plane.getObjectByName("propeller");
     if (propeller && !reduceMotion) {
@@ -554,48 +565,88 @@ function getRingBounds(ring: LinearRing) {
 
 function addRoute(root: THREE.Group) {
   const curve = createRouteCurve();
-  const points = curve.getPoints(80);
-
-  const route = new THREE.Line(
-    new THREE.BufferGeometry().setFromPoints(points),
-    new THREE.LineBasicMaterial({
-      color: colors.route,
-      depthTest: true,
-      depthWrite: false,
-      transparent: true,
-      opacity: 0.7,
-    }),
-  );
+  const route = createGradientRouteMesh(curve);
 
   root.add(route);
 
   [POLAND, EDINBURGH].forEach((place, index) => {
     const marker = new THREE.Mesh(
-      new THREE.SphereGeometry(0.045, 16, 16),
+      new THREE.SphereGeometry(AIRPORT_MARKER_RADIUS, 16, 16),
       new THREE.MeshStandardMaterial({
         color: index === 0 ? colors.poland : colors.uk,
         emissive: index === 0 ? 0x7d1d1d : 0x5a2d91,
         emissiveIntensity: 0.1,
+        depthWrite: false,
         roughness: 0.3,
       }),
     );
 
-    marker.position.copy(latLonToVector(place.lat, place.lon, RADIUS + 0.18));
+    marker.renderOrder = 2;
+    marker.position.copy(
+      latLonToVector(place.lat, place.lon, RADIUS + ROUTE_ALTITUDE),
+    );
     root.add(marker);
   });
 }
 
-function createRouteCurve() {
-  const start = latLonToVector(POLAND.lat, POLAND.lon, RADIUS + 0.28);
-  const end = latLonToVector(EDINBURGH.lat, EDINBURGH.lon, RADIUS + 0.28);
-  const middle = start.clone().add(end).normalize().multiplyScalar(RADIUS + 0.95);
+function createRouteCurve(altitude = ROUTE_ALTITUDE) {
+  const start = latLonToVector(POLAND.lat, POLAND.lon, RADIUS + altitude);
+  const end = latLonToVector(EDINBURGH.lat, EDINBURGH.lon, RADIUS + altitude);
+  const middle = start
+    .clone()
+    .add(end)
+    .normalize()
+    .multiplyScalar(RADIUS + ROUTE_APEX_ALTITUDE);
 
   return new THREE.QuadraticBezierCurve3(start, middle, end);
 }
 
-function sampleFlight(elapsed: number) {
+function createGradientRouteMesh(curve: THREE.Curve<THREE.Vector3>) {
+  const tubularSegments = 96;
+  const radialSegments = 8;
+  const geometry = new THREE.TubeGeometry(
+    curve,
+    tubularSegments,
+    ROUTE_THICKNESS,
+    radialSegments,
+    false,
+  );
+  const startColor = new THREE.Color(colors.poland);
+  const endColor = new THREE.Color(colors.uk);
+  const vertexColors: number[] = [];
+  const ringSize = radialSegments + 1;
+
+  for (let index = 0; index < geometry.attributes.position.count; index++) {
+    const t = Math.floor(index / ringSize) / tubularSegments;
+    const color = startColor.clone().lerp(endColor, t);
+
+    vertexColors.push(color.r, color.g, color.b);
+  }
+
+  geometry.setAttribute(
+    "color",
+    new THREE.Float32BufferAttribute(vertexColors, 3),
+  );
+
+  const route = new THREE.Mesh(
+    geometry,
+    new THREE.MeshBasicMaterial({
+      vertexColors: true,
+      depthTest: true,
+      depthWrite: false,
+      transparent: true,
+      opacity: 0.58,
+    }),
+  );
+
+  route.renderOrder = 4;
+
+  return route;
+}
+
+function sampleFlight(elapsed: number): FlightSample {
   if (reduceMotion) {
-    return { t: 0.52, direction: 1, bank: 0 };
+    return { t: 0.52, direction: 1, bank: 0, turnEase: 0 };
   }
 
   const duration = 11;
@@ -603,11 +654,14 @@ function sampleFlight(elapsed: number) {
   const outbound = phase < 0.5;
   const local = outbound ? phase * 2 : (1 - phase) * 2;
   const t = smootherStep(local);
+  const endpointDistance = Math.min(local, 1 - local);
+  const turnEase = smootherStep(1 - THREE.MathUtils.clamp(endpointDistance / 0.22, 0, 1));
 
   return {
     t,
     direction: outbound ? 1 : -1,
     bank: Math.sin(phase * Math.PI * 2) * 0.16,
+    turnEase,
   };
 }
 
@@ -678,6 +732,10 @@ function createToyPlane() {
   addStud(plane, -0.74, 0.24, -0.28, yellow, 0.09);
   addStud(plane, -0.74, 0.24, 0.28, yellow, 0.09);
 
+  plane.traverse((child) => {
+    child.renderOrder = 8;
+  });
+
   return plane;
 }
 
@@ -686,13 +744,11 @@ function addBox(
   size: [number, number, number],
   position: [number, number, number],
   material: THREE.Material,
-  radius = 0.03,
 ) {
   const geometry = new THREE.BoxGeometry(size[0], size[1], size[2]);
   const mesh = new THREE.Mesh(geometry, material);
 
   mesh.position.set(position[0], position[1], position[2]);
-  mesh.userData.radius = radius;
 
   group.add(mesh);
 
