@@ -1,4 +1,7 @@
 import * as THREE from "three";
+import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDrawConditionalLineMaterial.js";
+import { LDrawLoader } from "three/examples/jsm/loaders/LDrawLoader.js";
+import { LDrawUtils } from "three/examples/jsm/utils/LDrawUtils.js";
 
 const canvases = document.querySelectorAll<HTMLCanvasElement>("[data-europe-globe]");
 
@@ -11,6 +14,9 @@ const ROUTE_APEX_ALTITUDE = 0.95;
 const ROUTE_THICKNESS = 0.0085;
 const AIRPORT_MARKER_RADIUS = 0.022;
 const GEOJSON_URL = `${import.meta.env.BASE_URL}data/custom.geo.json`;
+const LDRAW_MODEL_URL = `${import.meta.env.BASE_URL}models/small-lego-plane.ldr`;
+const LDRAW_PARTS_LIBRARY_URL =
+  "https://cdn.jsdelivr.net/gh/gkjohnson/ldraw-parts-library@master/complete/ldraw/";
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -108,8 +114,9 @@ function initGlobe(canvas: HTMLCanvasElement) {
   void addLandPatches(root);
   addRoute(root);
 
-  const plane = createToyPlane();
+  const plane = createPlaneGroup();
   root.add(plane);
+  void loadLDrawPlane(plane);
 
   const routeCurve = createRouteCurve();
   const startTime = performance.now();
@@ -665,13 +672,62 @@ function sampleFlight(elapsed: number): FlightSample {
   };
 }
 
+function createPlaneGroup() {
+  const plane = new THREE.Group();
+  plane.add(createToyPlane());
+
+  return plane;
+}
+
+async function loadLDrawPlane(plane: THREE.Group) {
+  const loader = new LDrawLoader();
+
+  loader.setPartsLibraryPath(LDRAW_PARTS_LIBRARY_URL);
+  loader.setConditionalLineMaterial(LDrawConditionalLineMaterial);
+
+  try {
+    await loader.preloadMaterials(`${LDRAW_PARTS_LIBRARY_URL}LDConfig.ldr`);
+
+    const loaded = await loader.loadAsync(LDRAW_MODEL_URL);
+    const model = LDrawUtils.mergeObject(loaded);
+
+    normalizeLDrawPlane(model);
+    plane.clear();
+    plane.add(model);
+  } catch (error) {
+    console.warn("Falling back to procedural LEGO plane:", error);
+  }
+}
+
+function normalizeLDrawPlane(model: THREE.Group) {
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  const longestSide = Math.max(size.x, size.y, size.z);
+  const targetLength = 0.32;
+  const scale = targetLength / longestSide;
+
+  model.scale.setScalar(scale);
+  model.rotation.set(Math.PI, 0, 0);
+  model.updateMatrixWorld(true);
+
+  const transformedBox = new THREE.Box3().setFromObject(model);
+  const transformedCenter = transformedBox.getCenter(new THREE.Vector3());
+
+  model.position.sub(transformedCenter);
+  model.position.y -= transformedBox.min.y - transformedCenter.y;
+
+  model.traverse((child) => {
+    child.renderOrder = 8;
+  });
+}
+
 function createToyPlane() {
   const plane = new THREE.Group();
-  plane.scale.setScalar(0.125);
+  plane.scale.setScalar(0.118);
 
   const red = mat(colors.red, 0.32);
   const yellow = mat(colors.yellow, 0.38);
-  const blue = mat(colors.blue, 0.35);
   const black = mat(colors.black, 0.28);
   const silver = mat(colors.silver, 0.22, 0.35);
 
@@ -683,35 +739,37 @@ function createToyPlane() {
     opacity: 0.55,
   });
 
-  addBox(plane, [1.35, 0.34, 0.34], [0, 0, 0], red);
-  addBox(plane, [0.52, 0.14, 0.36], [-0.05, -0.27, 0], blue);
-  addBox(plane, [0.58, 0.1, 2.42], [0.05, 0.02, 0], yellow);
-  addBox(plane, [0.42, 0.08, 1.0], [-0.72, 0.16, 0], yellow);
-  addBox(plane, [0.1, 0.55, 0.36], [-0.82, 0.4, 0], red);
-  addBox(plane, [0.34, 0.18, 0.32], [0.28, 0.28, 0], glass);
+  addBox(plane, [1.78, 0.3, 0.38], [0, 0, 0], red);
+  addBox(plane, [1.34, 0.14, 0.34], [-0.16, -0.22, 0], red);
+  addBox(plane, [0.72, 0.12, 2.72], [0.12, 0.03, 0], yellow);
+  addBox(plane, [0.62, 0.1, 1.26], [-0.82, 0.1, 0], red);
+  addBox(plane, [0.7, 0.18, 0.44], [0.18, 0.28, 0], red);
+  addCanopy(plane, [0.5, 0.28, 0.46], [0.34, 0.5, 0], glass);
+  addBox(plane, [0.34, 0.14, 0.38], [-0.5, 0.2, 0], red);
+  addTailFin(plane, [-0.96, 0.38, 0], red);
 
   const nose = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.2, 0.25, 0.26, 24),
+    new THREE.CylinderGeometry(0.21, 0.26, 0.3, 24),
     red,
   );
   nose.rotation.z = Math.PI / 2;
-  nose.position.x = 0.78;
+  nose.position.x = 0.98;
   plane.add(nose);
 
   const engine = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.2, 0.2, 0.16, 24),
+    new THREE.CylinderGeometry(0.24, 0.24, 0.18, 24),
     silver,
   );
   engine.rotation.z = Math.PI / 2;
-  engine.position.x = 0.98;
+  engine.position.x = 1.2;
   plane.add(engine);
 
   const propeller = new THREE.Group();
   propeller.name = "propeller";
-  propeller.position.x = 1.09;
+  propeller.position.x = 1.34;
 
-  addBox(propeller, [0.04, 0.4, 0.06], [0, 0, 0], black);
-  addBox(propeller, [0.04, 0.06, 0.4], [0, 0, 0], black);
+  addBox(propeller, [0.05, 0.62, 0.08], [0, 0, 0], black);
+  addBox(propeller, [0.05, 0.08, 0.62], [0, 0, 0], black);
 
   const hub = new THREE.Mesh(
     new THREE.CylinderGeometry(0.055, 0.055, 0.045, 18),
@@ -722,21 +780,99 @@ function createToyPlane() {
 
   plane.add(propeller);
 
-  for (let z = -0.9; z <= 0.9; z += 0.36) {
-    addStud(plane, -0.08, 0.13, z, yellow, 0.12);
-    addStud(plane, 0.24, 0.13, z, yellow, 0.12);
+  for (let z = -1.02; z <= 1.02; z += 0.34) {
+    addStud(plane, -0.12, 0.16, z, yellow, 0.105);
+    addStud(plane, 0.22, 0.16, z, yellow, 0.105);
   }
 
-  addStud(plane, -0.46, 0.23, -0.25, red, 0.1);
-  addStud(plane, -0.46, 0.23, 0.25, red, 0.1);
-  addStud(plane, -0.74, 0.24, -0.28, yellow, 0.09);
-  addStud(plane, -0.74, 0.24, 0.28, yellow, 0.09);
+  addStud(plane, -0.04, 0.44, -0.14, red, 0.085);
+  addStud(plane, -0.04, 0.44, 0.14, red, 0.085);
+  addStud(plane, -0.74, 0.2, -0.3, red, 0.08);
+  addStud(plane, -0.74, 0.2, 0.3, red, 0.08);
+  addStud(plane, -0.98, 0.82, 0, red, 0.085);
 
   plane.traverse((child) => {
     child.renderOrder = 8;
   });
 
   return plane;
+}
+
+function addCanopy(
+  group: THREE.Group,
+  size: [number, number, number],
+  position: [number, number, number],
+  material: THREE.Material,
+) {
+  const [width, height, depth] = size;
+  const x = width / 2;
+  const y = height / 2;
+  const z = depth / 2;
+  const topX = x * 0.62;
+  const topZ = z * 0.72;
+
+  const vertices = new Float32Array([
+    -x, -y, -z,
+    x, -y, -z,
+    x, -y, z,
+    -x, -y, z,
+    -topX, y, -topZ,
+    topX, y, -topZ,
+    topX, y, topZ,
+    -topX, y, topZ,
+  ]);
+
+  const indices = [
+    0, 1, 2, 0, 2, 3,
+    4, 6, 5, 4, 7, 6,
+    0, 4, 5, 0, 5, 1,
+    1, 5, 6, 1, 6, 2,
+    2, 6, 7, 2, 7, 3,
+    3, 7, 4, 3, 4, 0,
+  ];
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+
+  const canopy = new THREE.Mesh(geometry, material);
+  canopy.position.set(position[0], position[1], position[2]);
+  group.add(canopy);
+}
+
+function addTailFin(
+  group: THREE.Group,
+  position: [number, number, number],
+  material: THREE.Material,
+) {
+  const geometry = new THREE.BufferGeometry();
+  const vertices = new Float32Array([
+    -0.18, -0.22, -0.18,
+    0.2, -0.22, -0.18,
+    0.1, 0.42, -0.14,
+    -0.24, 0.42, -0.14,
+    -0.18, -0.22, 0.18,
+    0.2, -0.22, 0.18,
+    0.1, 0.42, 0.14,
+    -0.24, 0.42, 0.14,
+  ]);
+  const indices = [
+    0, 1, 2, 0, 2, 3,
+    4, 6, 5, 4, 7, 6,
+    0, 4, 5, 0, 5, 1,
+    1, 5, 6, 1, 6, 2,
+    2, 6, 7, 2, 7, 3,
+    3, 7, 4, 3, 4, 0,
+  ];
+
+  geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+
+  const fin = new THREE.Mesh(geometry, material);
+  fin.position.set(position[0], position[1], position[2]);
+  group.add(fin);
 }
 
 function addBox(
