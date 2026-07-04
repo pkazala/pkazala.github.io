@@ -1,7 +1,5 @@
 import * as THREE from "three";
-import { LDrawConditionalLineMaterial } from "three/examples/jsm/materials/LDrawConditionalLineMaterial.js";
-import { LDrawLoader } from "three/examples/jsm/loaders/LDrawLoader.js";
-import { LDrawUtils } from "three/examples/jsm/utils/LDrawUtils.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 const canvases = document.querySelectorAll<HTMLCanvasElement>("[data-europe-globe]");
 
@@ -14,9 +12,7 @@ const ROUTE_APEX_ALTITUDE = 0.95;
 const ROUTE_THICKNESS = 0.0085;
 const AIRPORT_MARKER_RADIUS = 0.022;
 const GEOJSON_URL = `${import.meta.env.BASE_URL}data/custom.geo.json`;
-const LDRAW_MODEL_URL = `${import.meta.env.BASE_URL}models/small-lego-plane.ldr`;
-const LDRAW_PARTS_LIBRARY_URL =
-  "https://cdn.jsdelivr.net/gh/gkjohnson/ldraw-parts-library@master/complete/ldraw/";
+const PLANE_MODEL_URL = `${import.meta.env.BASE_URL}models/small-lego-plane.glb`;
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -116,7 +112,7 @@ function initGlobe(canvas: HTMLCanvasElement) {
 
   const plane = createPlaneGroup();
   root.add(plane);
-  void loadLDrawPlane(plane);
+  void loadGltfPlane(plane);
 
   const routeCurve = createRouteCurve();
   const startTime = performance.now();
@@ -679,19 +675,13 @@ function createPlaneGroup() {
   return plane;
 }
 
-async function loadLDrawPlane(plane: THREE.Group) {
-  const loader = new LDrawLoader();
-
-  loader.setPartsLibraryPath(LDRAW_PARTS_LIBRARY_URL);
-  loader.setConditionalLineMaterial(LDrawConditionalLineMaterial);
-
+async function loadGltfPlane(plane: THREE.Group) {
   try {
-    await loader.preloadMaterials(`${LDRAW_PARTS_LIBRARY_URL}LDConfig.ldr`);
+    const loader = new GLTFLoader();
+    const loaded = await loader.loadAsync(PLANE_MODEL_URL);
+    const model = loaded.scene;
 
-    const loaded = await loader.loadAsync(LDRAW_MODEL_URL);
-    const model = LDrawUtils.mergeObject(loaded);
-
-    normalizeLDrawPlane(model);
+    normalizeGltfPlane(model);
     plane.clear();
     plane.add(model);
   } catch (error) {
@@ -699,26 +689,64 @@ async function loadLDrawPlane(plane: THREE.Group) {
   }
 }
 
-function normalizeLDrawPlane(model: THREE.Group) {
+function normalizeGltfPlane(model: THREE.Group) {
   const box = new THREE.Box3().setFromObject(model);
   const size = box.getSize(new THREE.Vector3());
-  const center = box.getCenter(new THREE.Vector3());
   const longestSide = Math.max(size.x, size.y, size.z);
   const targetLength = 0.32;
   const scale = targetLength / longestSide;
 
   model.scale.setScalar(scale);
-  model.rotation.set(Math.PI, 0, 0);
+  model.rotation.set(Math.PI / 2, 0, 0);
   model.updateMatrixWorld(true);
 
   const transformedBox = new THREE.Box3().setFromObject(model);
   const transformedCenter = transformedBox.getCenter(new THREE.Vector3());
 
   model.position.sub(transformedCenter);
-  model.position.y -= transformedBox.min.y - transformedCenter.y;
+  makeGltfPlaneMaterialsUnlit(model);
 
   model.traverse((child) => {
     child.renderOrder = 8;
+  });
+}
+
+function makeGltfPlaneMaterialsUnlit(model: THREE.Group) {
+  const unlitMaterials = new Map<string, THREE.MeshBasicMaterial>();
+
+  model.traverse((child) => {
+    if (!(child instanceof THREE.Mesh)) return;
+
+    const materials = Array.isArray(child.material) ? child.material : [child.material];
+    const convertedMaterials = materials.map((material) => {
+      const existing = unlitMaterials.get(material.uuid);
+
+      if (existing) return existing;
+
+      const source = material as THREE.Material & {
+        alphaMap?: THREE.Texture | null;
+        color?: THREE.Color;
+        map?: THREE.Texture | null;
+      };
+
+      const converted = new THREE.MeshBasicMaterial({
+        alphaMap: source.alphaMap ?? null,
+        color: source.color?.clone() ?? new THREE.Color(0xffffff),
+        map: source.map ?? null,
+        opacity: material.opacity,
+        transparent: material.transparent,
+        depthTest: material.depthTest,
+        depthWrite: material.depthWrite,
+        side: material.side,
+        toneMapped: false,
+      });
+
+      unlitMaterials.set(material.uuid, converted);
+
+      return converted;
+    });
+
+    child.material = Array.isArray(child.material) ? convertedMaterials : convertedMaterials[0];
   });
 }
 
