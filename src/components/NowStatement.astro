@@ -1,0 +1,44 @@
+---
+import CompanyInlineLink from "./CompanyInlineLink.astro";
+
+type Company = {
+  name: string;
+  logoClass: string;
+  logoSrc: string;
+  nameClass: string;
+  staff: string;
+  revenue: string;
+  href: string;
+};
+
+const companies: Record<"barclays" | "aberdeen", Company> = {
+  barclays: {
+    name: "Barclays",
+    logoClass: "bg-[#eaf8fe] text-[#007eb3] ring-[#cceefa]",
+    logoSrc:
+      "https://img.logo.dev/barclays.com?token=pk_SsWg6eepSHG50Ub6bAa_Kg&size=32&format=webp&retina=true",
+    nameClass: "font-medium text-[#007eb3] decoration-[#007eb3]/25",
+    staff: "Placeholder staff count",
+    revenue: "Placeholder revenue",
+    href: "https://home.barclays/",
+  },
+  aberdeen: {
+    name: "Aberdeen",
+    logoClass: "bg-white text-ink ring-ink/15",
+    logoSrc:
+      "https://img.logo.dev/aberdeenplc.com?token=pk_SsWg6eepSHG50Ub6bAa_Kg&size=32&format=webp&retina=true",
+    nameClass: "font-medium text-ink decoration-ink/25",
+    staff: "Placeholder staff count",
+    revenue: "Placeholder revenue",
+    href: "https://www.aberdeeninvestments.com/",
+  },
+};
+---
+
+<p class="w-full text-xl leading-9 text-zinc-700 sm:text-2xl sm:leading-10">
+  Software Engineer with experience across financial services. Previously a
+  graduate at <CompanyInlineLink {...companies.barclays} />, and currently
+  reimagining investment processes at <CompanyInlineLink
+    {...companies.aberdeen}
+  />. Always deeply focused on feel and impact.
+</p>
