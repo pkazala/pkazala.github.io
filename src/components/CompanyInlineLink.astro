@@ -1,0 +1,86 @@
+---
+export type Props = {
+  href: string;
+  logoClass: string;
+  logoSrc: string;
+  name: string;
+  nameClass: string;
+  revenue: string;
+  staff: string;
+};
+
+const { href, logoClass, logoSrc, name, nameClass, revenue, staff } =
+  Astro.props;
+---
+
+<a
+  class="group relative mx-0.5 inline-flex items-baseline gap-1 rounded-md decoration-current underline-offset-4 outline-none transition focus-visible:ring-2 focus-visible:ring-ink/20"
+  href={href}
+  target="_blank"
+  rel="noreferrer"
+  aria-label={`${name} company details`}
+>
+  <span
+    class={`inline-grid size-5 translate-y-0.5 place-items-center overflow-hidden rounded-[5px] ring-1 ${logoClass}`}
+    aria-hidden="true"
+  >
+    <img
+      class="size-full object-contain"
+      src={logoSrc}
+      width="20"
+      height="20"
+      alt=""
+      loading="lazy"
+      decoding="async"
+    />
+  </span>
+  <span
+    class={`underline transition group-hover:decoration-current ${nameClass}`}
+  >
+    {name}
+  </span>
+  <span
+    class="invisible absolute left-0 top-full z-20 mt-3 w-72 max-w-[calc(100vw-2rem)] translate-y-1 rounded-lg border border-ink/10 bg-[#fbfbfa]/95 p-4 text-left opacity-0 shadow-[0_18px_50px_rgba(24,24,27,0.12)] backdrop-blur transition duration-150 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus:visible group-focus:translate-y-0 group-focus:opacity-100 sm:left-1/2 sm:-translate-x-1/2"
+    aria-hidden="true"
+  >
+    <span class="flex items-center gap-3">
+      <span
+        class={`inline-grid size-10 place-items-center overflow-hidden rounded-md ring-1 ${logoClass}`}
+      >
+        <img
+          class="size-full object-contain"
+          src={logoSrc}
+          width="40"
+          height="40"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </span>
+      <span>
+        <span class={`block text-base leading-5 ${nameClass}`}>{name}</span>
+        <span class="mt-0.5 block font-mono text-xs text-muted"
+          >company snapshot</span
+        >
+      </span>
+    </span>
+    <span class="mt-4 grid grid-cols-2 gap-3 border-t border-ink/10 pt-3">
+      <span>
+        <span
+          class="block font-mono text-[11px] uppercase tracking-normal text-muted"
+        >
+          Staff
+        </span>
+        <span class="mt-1 block text-sm text-zinc-700">{staff}</span>
+      </span>
+      <span>
+        <span
+          class="block font-mono text-[11px] uppercase tracking-normal text-muted"
+        >
+          Revenue
+        </span>
+        <span class="mt-1 block text-sm text-zinc-700">{revenue}</span>
+      </span>
+    </span>
+  </span>
+</a>
