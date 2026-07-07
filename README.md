@@ -4,14 +4,21 @@ Personal website for Piotr Kazala, built with Astro and Tailwind.
 
 ## Development
 
-Install Node.js, then install dependencies and run the site locally:
+This project uses `pnpm` because the GitHub Pages workflow pins `pnpm@11.9.0`.
 
 ```sh
-npm install
-npm run dev
+pnpm install
+pnpm run dev
+pnpm run build
 ```
 
 The site is deployed as a static Astro build to GitHub Pages.
+
+## Interactive pieces
+
+- `src/scripts/europe-globe.ts` renders the custom Three.js Europe globe and plane animation.
+- `src/components/PhotoLightbox.tsx` renders the photography strip as a small React island.
+- `src/components/ui/dialog.tsx` provides the shadcn/Radix-style Dialog used by the photo popup.
 
 ## Blog posts
 
@@ -34,4 +41,8 @@ Draft posts are hidden from production builds when `draft: true`.
 
 ## Photos
 
-Homepage photo placeholders can be replaced later with files in `public/photos`.
+Homepage photos are currently loaded from Piotr's public Cloudflare R2 development URL and configured in the `photos` array in `src/pages/index.astro`.
+
+The photo strip uses a simple scroll-snap carousel. Clicking a photo opens it in a transparent Dialog popup; users close it by clicking outside the image or pressing Escape, and move between images with the left/right arrow keys.
+
+For performance, prefer uploading WebP/AVIF variants to R2 and wiring them into responsive `srcset`/`sizes` values before adding many more full-resolution images.

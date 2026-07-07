@@ -1,12 +1,9 @@
-# Photo placeholders
+# Local photo folder
 
-Drop favourite photography files in this folder when you are ready to replace the homepage placeholders.
+The homepage does not currently read images from this folder.
 
-Suggested names used by the MVP:
+Photos are configured in `src/pages/index.astro` and served from Piotr's public Cloudflare R2 development URL. The lightbox lives in `src/components/PhotoLightbox.tsx`.
 
-- `photo-01.jpg`
-- `photo-02.jpg`
-- `photo-03.jpg`
-- `photo-04.jpg`
+Keep this folder for a future local fallback or for files that should be committed with the site.
 
-The current homepage uses CSS placeholders, so it will keep working until these images are added and wired in.
+If local photos are added later, prefer optimized WebP/AVIF variants at a few display widths rather than full-resolution camera JPEGs.
