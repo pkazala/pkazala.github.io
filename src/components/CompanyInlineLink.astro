@@ -5,12 +5,21 @@ export type Props = {
   logoSrc: string;
   name: string;
   nameClass: string;
+  description: string;
   revenue: string;
   staff: string;
 };
 
-const { href, logoClass, logoSrc, name, nameClass, revenue, staff } =
-  Astro.props;
+const {
+  href,
+  logoClass,
+  logoSrc,
+  name,
+  nameClass,
+  description,
+  revenue,
+  staff,
+} = Astro.props;
 ---
 
 <a
@@ -60,7 +69,7 @@ const { href, logoClass, logoSrc, name, nameClass, revenue, staff } =
       <span>
         <span class={`block text-base leading-5 ${nameClass}`}>{name}</span>
         <span class="mt-0.5 block font-mono text-xs text-muted"
-          >company snapshot</span
+          >{description}</span
         >
       </span>
     </span>

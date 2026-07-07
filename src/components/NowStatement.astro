@@ -6,6 +6,7 @@ type Company = {
   logoClass: string;
   logoSrc: string;
   nameClass: string;
+  description: string;
   staff: string;
   revenue: string;
   href: string;
@@ -18,8 +19,9 @@ const companies: Record<"barclays" | "aberdeen", Company> = {
     logoSrc:
       "https://img.logo.dev/barclays.com?token=pk_SsWg6eepSHG50Ub6bAa_Kg&size=32&format=webp&retina=true",
     nameClass: "font-medium text-[#007eb3] decoration-[#007eb3]/25",
-    staff: "Placeholder staff count",
-    revenue: "Placeholder revenue",
+    description: "British universal bank",
+    staff: "100,000",
+    revenue: "£29.1bn",
     href: "https://home.barclays/",
   },
   aberdeen: {
@@ -28,17 +30,17 @@ const companies: Record<"barclays" | "aberdeen", Company> = {
     logoSrc:
       "https://img.logo.dev/aberdeenplc.com?token=pk_SsWg6eepSHG50Ub6bAa_Kg&size=32&format=webp&retina=true",
     nameClass: "font-medium text-ink decoration-ink/25",
-    staff: "Placeholder staff count",
-    revenue: "Placeholder revenue",
+    description: "UK investment company",
+    staff: "4,000",
+    revenue: "£1.34bn",
     href: "https://www.aberdeeninvestments.com/",
   },
 };
 ---
 
 <p class="w-full text-xl leading-9 text-zinc-700 sm:text-2xl sm:leading-10">
-  Software Engineer with experience across financial services. Previously a
-  graduate at <CompanyInlineLink {...companies.barclays} />, and currently
-  reimagining investment processes at <CompanyInlineLink
-    {...companies.aberdeen}
-  />. Always deeply focused on feel and impact.
+  <span class="font-medium text-ink">Building products that feel right.</span>
+  Engineer with experience across financial services, previously a graduate at
+  <CompanyInlineLink {...companies.barclays} />, now reimagining investment
+  processes at <CompanyInlineLink {...companies.aberdeen} />.
 </p>
