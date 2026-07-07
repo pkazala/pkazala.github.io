@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import EuropeGlobe from "../components/EuropeGlobe.astro";
 import NowStatement from "../components/NowStatement.astro";
+import PhotoLightbox from "../components/PhotoLightbox";
 import Layout from "../layouts/Layout.astro";
 
 const posts = (await getCollection("blog"))
@@ -15,6 +16,21 @@ const formatDate = (date: Date) =>
     day: "numeric",
     year: "numeric",
   }).format(date);
+
+const photos = [
+  {
+    src: "https://pub-baa073ca592e4a8eada77d694ff90db6.r2.dev/P1012584.jpeg",
+    alt: "A photograph by Piotr Kazala.",
+  },
+  {
+    src: "https://pub-baa073ca592e4a8eada77d694ff90db6.r2.dev/P1012596.jpeg",
+    alt: "A photograph by Piotr Kazala.",
+  },
+  {
+    src: "https://pub-baa073ca592e4a8eada77d694ff90db6.r2.dev/P1012604.jpeg",
+    alt: "A photograph by Piotr Kazala.",
+  },
+];
 ---
 
 <Layout
@@ -84,13 +100,10 @@ const formatDate = (date: Date) =>
       aria-labelledby="photos-title"
     >
       <h2 id="photos-title" class="text-sm font-medium text-muted">Photos</h2>
-      <div>
-        <p class="leading-8 text-zinc-700">
-          A few favourite frames will live here soon. For now, this is a quiet
-          placeholder. Coming soon.
-        </p>
-        <p class="mt-3 font-mono text-xs text-muted">
-          Drop images into public/photos.
+      <div class="space-y-4">
+        <PhotoLightbox photos={photos} client:load />
+        <p class="font-mono text-xs text-muted">
+          Photos served from Cloudflare R2.
         </p>
       </div>
     </section>
