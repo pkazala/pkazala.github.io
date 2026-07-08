@@ -6,19 +6,20 @@ The homepage photo section is a small interactive React island inside the otherw
 
 Current images are optimized local WebP files in `public/photos`.
 
-The checked-in source JPEGs currently go up to 1086px on the long edge, so the largest generated WebP variant is 1086px rather than an upscaled 1440px.
+The current WebP set tops out at 1086px on the long edge, matching the original source resolution rather than upscaling to 1440px.
 
 ## Files
 
 - `src/pages/index.astro` defines the `photos` array and passes it to the lightbox.
-- `src/components/PhotoLightbox.tsx` renders the scroll-snap strip and popup behavior.
+- `src/components/PhotoLightbox.tsx` renders the carousel and popup behavior.
+- `src/components/ui/carousel.tsx` wraps Embla in the local shadcn style.
 - `src/components/ui/dialog.tsx` wraps Radix Dialog in the local shadcn style.
 - `src/lib/utils.ts` provides the shared `cn` helper.
-- `public/photos` contains the source JPEGs and generated WebP variants.
+- `public/photos` contains the generated WebP variants used by the homepage.
 
 ## Interaction
 
-- The strip uses native horizontal scrolling with scroll snap.
+- The strip uses the local shadcn-style carousel primitive backed by Embla.
 - Clicking a photo opens a transparent Dialog popup.
 - There are intentionally no visible close or navigation buttons.
 - Users close the popup by clicking outside the image or pressing Escape.

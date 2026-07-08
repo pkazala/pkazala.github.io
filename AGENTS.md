@@ -13,12 +13,10 @@ The active app is intentionally small and minimal:
 - `src/components/EuropeGlobe.astro` mounts the globe canvas.
 - `src/scripts/europe-globe.ts` owns all Three.js globe logic.
 - `src/components/PhotoLightbox.tsx` owns the homepage photo carousel and popup.
+- `src/components/ui/carousel.tsx` is the shadcn/Embla carousel primitive used by the photo strip.
 - `src/components/ui/dialog.tsx` is the shadcn/Radix-style Dialog primitive used by the lightbox.
 - `src/lib/utils.ts` contains the shared `cn` helper used by shadcn-style components.
 - `src/styles/global.css` should stay very small; prefer Tailwind utilities in Astro files.
-
-There are old business-site components/assets still in `src/components` and `src/assets`.
-Treat them as legacy unless a route imports them. Do not assume they are active UI.
 
 ## Architecture Notes
 
@@ -45,9 +43,9 @@ See `docs/globe.md` before making substantial globe changes.
 
 - Homepage photos are currently served from optimized local WebP files in `public/photos`.
 - `src/pages/index.astro` defines the `photos` array passed into `PhotoLightbox`.
-- `PhotoLightbox` renders a native scroll-snap multi-slide strip plus a Radix Dialog popup.
+- `PhotoLightbox` renders a shadcn-style Embla carousel plus a Radix Dialog popup.
 - Popup controls are intentionally minimal: click outside the image or press Escape to close; left/right arrow keys navigate between photos.
-- The current source JPEGs top out at 1086px on the long edge, so avoid generating fake 1440px variants from them.
+- The current WebP set tops out at 1086px on the long edge, matching the original source resolution.
 
 See `docs/photos.md` before making substantial photo or lightbox changes.
 

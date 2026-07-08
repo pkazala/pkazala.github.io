@@ -11,4 +11,4 @@ Current generated variants:
 - `photo-03-480.webp`, `photo-03-960.webp`, `photo-03-1086.webp`
 - `photo-04-480.webp`, `photo-04-960.webp`, `photo-04-1086.webp`
 
-The source JPEGs are kept here for now. The current originals only go up to 1086px on the long edge, so do not generate 1440px variants from them.
+The current WebP set tops out at 1086px on the long edge. Do not generate 1440px variants unless future source images are large enough.

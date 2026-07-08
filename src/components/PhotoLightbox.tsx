@@ -3,6 +3,13 @@
 import React, { useState } from "react";
 
 import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./ui/carousel";
 
 type Photo = {
   alt: string;
@@ -34,30 +41,41 @@ export default function PhotoLightbox({ photos }: PhotoLightboxProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <div
-        className="-mx-2 flex snap-x gap-3 overflow-x-auto px-2 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        aria-label="Photo carousel"
+      <Carousel
+        className="w-full px-9 sm:px-10"
+        opts={{
+          align: "start",
+          containScroll: "trimSnaps",
+        }}
       >
-        {photos.map((photo, index) => (
-          <button
-            className="group min-w-[78%] snap-start overflow-hidden rounded-sm border border-ink/10 bg-zinc-100 text-left outline-none transition hover:border-ink/25 focus-visible:ring-2 focus-visible:ring-ink/30 sm:min-w-[calc((100%_-_1.5rem)/3)]"
-            type="button"
-            key={photo.src}
-            onClick={() => openPhoto(index)}
-            aria-label="Open photo"
-          >
-            <img
-              className="aspect-[4/3] h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-              src={photo.src}
-              srcSet={photo.srcSet}
-              sizes="(min-width: 640px) 30vw, 78vw"
-              alt={photo.alt}
-              loading="lazy"
-              decoding="async"
-            />
-          </button>
-        ))}
-      </div>
+        <CarouselContent>
+          {photos.map((photo, index) => (
+            <CarouselItem
+              className="basis-[82%] sm:basis-1/2 lg:basis-1/3"
+              key={photo.src}
+            >
+              <button
+                className="group block w-full rounded-sm text-left outline-none focus-visible:ring-2 focus-visible:ring-ink/25"
+                type="button"
+                onClick={() => openPhoto(index)}
+                aria-label="Open photo"
+              >
+                <img
+                  className="aspect-[4/3] w-full rounded-sm object-cover transition-transform duration-200 ease-out group-hover:scale-[1.01] group-active:scale-[0.99]"
+                  src={photo.src}
+                  srcSet={photo.srcSet}
+                  sizes="(min-width: 1024px) 28vw, (min-width: 640px) 42vw, 78vw"
+                  alt={photo.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="left-0" />
+        <CarouselNext className="right-0" />
+      </Carousel>
 
       <DialogContent
         aria-describedby={undefined}
