@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import EuropeGlobe from "../components/EuropeGlobe.astro";
 import NowStatement from "../components/NowStatement.astro";
+import PhotoLightbox from "../components/PhotoLightbox";
 import Layout from "../layouts/Layout.astro";
 
 const posts = (await getCollection("blog"))
@@ -15,6 +16,33 @@ const formatDate = (date: Date) =>
     day: "numeric",
     year: "numeric",
   }).format(date);
+
+const photos = [
+  {
+    src: "/photos/photo-01-960.webp",
+    srcSet:
+      "/photos/photo-01-480.webp 320w, /photos/photo-01-960.webp 640w, /photos/photo-01-1086.webp 724w",
+    alt: "A photograph by Piotr Kazala.",
+  },
+  {
+    src: "/photos/photo-02-960.webp",
+    srcSet:
+      "/photos/photo-02-480.webp 480w, /photos/photo-02-960.webp 960w, /photos/photo-02-1086.webp 1086w",
+    alt: "A photograph by Piotr Kazala.",
+  },
+  {
+    src: "/photos/photo-03-960.webp",
+    srcSet:
+      "/photos/photo-03-480.webp 320w, /photos/photo-03-960.webp 640w, /photos/photo-03-1086.webp 724w",
+    alt: "A photograph by Piotr Kazala.",
+  },
+  {
+    src: "/photos/photo-04-960.webp",
+    srcSet:
+      "/photos/photo-04-480.webp 480w, /photos/photo-04-960.webp 960w, /photos/photo-04-1086.webp 1086w",
+    alt: "A photograph by Piotr Kazala.",
+  },
+];
 ---
 
 <Layout
@@ -22,7 +50,7 @@ const formatDate = (date: Date) =>
   description="Personal website of Piotr Kazala, a software engineer in Edinburgh."
 >
   <main>
-    <section class="pt-10 sm:pt-16" aria-labelledby="intro-title">
+    <section id="about" class="pt-10 sm:pt-16" aria-labelledby="intro-title">
       <p class="mb-5 font-mono text-sm text-muted">
         software engineer / edinburgh
       </p>
@@ -84,15 +112,7 @@ const formatDate = (date: Date) =>
       aria-labelledby="photos-title"
     >
       <h2 id="photos-title" class="text-sm font-medium text-muted">Photos</h2>
-      <div>
-        <p class="leading-8 text-zinc-700">
-          A few favourite frames will live here soon. For now, this is a quiet
-          placeholder. Coming soon.
-        </p>
-        <p class="mt-3 font-mono text-xs text-muted">
-          Drop images into public/photos.
-        </p>
-      </div>
+      <PhotoLightbox photos={photos} client:load />
     </section>
 
     <section

@@ -1,12 +1,11 @@
-import { defineConfig } from 'astro/config';
-//import node from '@astrojs/node';
+import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
+import { defineConfig } from "astro/config";
 
-// https://astro.build/config
 export default defineConfig({
-  site: 'https://pkazala.github.io',
+  site: "https://pkazala.github.io",
   devToolbar: {
     enabled: false,
   },
-  integrations: [tailwind()]
+  integrations: [tailwind(), react()],
 });
