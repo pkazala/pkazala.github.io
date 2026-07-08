@@ -12,18 +12,20 @@ The active app is intentionally small and minimal:
 - `src/content/config.ts` defines the blog frontmatter schema.
 - `src/components/EuropeGlobe.astro` mounts the globe canvas.
 - `src/scripts/europe-globe.ts` owns all Three.js globe logic.
+- `src/components/PhotoLightbox.tsx` owns the homepage photo carousel and popup.
+- `src/components/ui/carousel.tsx` is the shadcn/Embla carousel primitive used by the photo strip.
+- `src/components/ui/dialog.tsx` is the shadcn/Radix-style Dialog primitive used by the lightbox.
+- `src/lib/utils.ts` contains the shared `cn` helper used by shadcn-style components.
 - `src/styles/global.css` should stay very small; prefer Tailwind utilities in Astro files.
-
-There are old business-site components/assets still in `src/components` and `src/assets`.
-Treat them as legacy unless a route imports them. Do not assume they are active UI.
 
 ## Architecture Notes
 
 - The site is static and deployed to GitHub Pages at `https://pkazala.github.io`.
 - Astro content collections power the blog. Draft posts are hidden in production when `draft: true`.
+- Astro uses Tailwind and a small React island for the photo lightbox. Do not add React broadly unless an interactive component really needs it.
 - The visual direction is clean, quiet, personal, and engineering-focused, with small playful details.
 - Avoid broad CSS rewrites. Most layout/styling belongs in Tailwind classes near the markup.
-- Keep the homepage lean: intro, globe, current facts, writing preview, photo placeholder, links.
+- Keep the homepage lean: intro, globe, current facts, writing preview, photo strip, links.
 
 ## Globe
 
@@ -36,6 +38,16 @@ The globe is custom Three.js, not globe.gl.
 - The globe is intentionally not draggable.
 
 See `docs/globe.md` before making substantial globe changes.
+
+## Photos
+
+- Homepage photos are currently served from optimized local WebP files in `public/photos`.
+- `src/pages/index.astro` defines the `photos` array passed into `PhotoLightbox`.
+- `PhotoLightbox` renders a shadcn-style Embla carousel plus a Radix Dialog popup.
+- Popup controls are intentionally minimal: click outside the image or press Escape to close; left/right arrow keys navigate between photos.
+- The current WebP set tops out at 1086px on the long edge, matching the original source resolution.
+
+See `docs/photos.md` before making substantial photo or lightbox changes.
 
 ## Development
 
@@ -53,10 +65,16 @@ In this Codex environment, Node package-manager shims may not always be on `PATH
 When needed, previous sessions used the bundled Node runtime plus the local Astro binary:
 
 ```sh
-ASTRO_TELEMETRY_DISABLED=1 PATH=/Users/piotrkazala/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:$PATH ./node_modules/.bin/astro build
+ASTRO_TELEMETRY_DISABLED=1 PATH=/Users/piotrkazala/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:/Users/piotrkazala/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin:$PATH ./node_modules/.bin/astro build
 ```
 
 Astro's dev toolbar is disabled in `astro.config.mjs` so visual checks do not show extra UI.
+
+For package-manager commands in this Codex environment, the bundled pnpm path is:
+
+```sh
+PATH=/Users/piotrkazala/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:/Users/piotrkazala/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin:$PATH pnpm --store-dir /Users/piotrkazala/Library/pnpm/store/v11 <command>
+```
 
 ## Deployment
 
@@ -78,4 +96,4 @@ draft: false
 ---
 ```
 
-Photo files are expected under `public/photos`, but the homepage currently uses text placeholders.
+Homepage photos are configured in `src/pages/index.astro` and currently use optimized local WebP files from `public/photos`.

@@ -1,7 +1,9 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-const canvases = document.querySelectorAll<HTMLCanvasElement>("[data-europe-globe]");
+const canvases = document.querySelectorAll<HTMLCanvasElement>(
+  "[data-europe-globe]",
+);
 
 const POLAND = { lat: 52.2297, lon: 19.65 };
 const EDINBURGH = { lat: 54.76, lon: -2.6883 };
@@ -14,7 +16,9 @@ const AIRPORT_MARKER_RADIUS = 0.022;
 const GEOJSON_URL = `${import.meta.env.BASE_URL}data/custom.geo.json`;
 const PLANE_MODEL_URL = `${import.meta.env.BASE_URL}models/small-lego-plane.glb`;
 
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reduceMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
 
 const colors = {
   ocean: 0x7bb9ff,
@@ -24,7 +28,6 @@ const colors = {
   uk: 0xb38cff,
   red: 0xe82922,
   yellow: 0xf4c400,
-  blue: 0x00a8df,
   black: 0x171717,
   silver: 0xbfc4ca,
   glass: 0xbfe9ff,
@@ -140,7 +143,9 @@ function initGlobe(canvas: HTMLCanvasElement) {
     const bank = Math.sin(elapsed * 3.6) * 0.05 + sample.bank;
     planeForward.copy(tangent);
     planeUp.copy(position).normalize();
-    planeUp.addScaledVector(planeForward, -planeUp.dot(planeForward)).normalize();
+    planeUp
+      .addScaledVector(planeForward, -planeUp.dot(planeForward))
+      .normalize();
     planeSide.crossVectors(planeForward, planeUp).normalize();
     planeRotationMatrix.makeBasis(planeForward, planeUp, planeSide);
     targetPlaneQuaternion.setFromRotationMatrix(planeRotationMatrix);
@@ -382,7 +387,9 @@ function addCountryPolygon(
   root.add(border);
 }
 
-function preparePolygonRingsForEurope(polygon: PolygonCoordinates): PolygonCoordinates {
+function preparePolygonRingsForEurope(
+  polygon: PolygonCoordinates,
+): PolygonCoordinates {
   const outer = stripClosingPoint(polygon[0] ?? []);
 
   if (outer.length < 3) return [];
@@ -475,7 +482,10 @@ function createGeoPolygonMesh(
   if (vertices.length === 0) return null;
 
   const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
+  geometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(vertices, 3),
+  );
   geometry.setAttribute("normal", new THREE.Float32BufferAttribute(normals, 3));
   geometry.computeBoundingSphere();
 
@@ -658,7 +668,9 @@ function sampleFlight(elapsed: number): FlightSample {
   const local = outbound ? phase * 2 : (1 - phase) * 2;
   const t = smootherStep(local);
   const endpointDistance = Math.min(local, 1 - local);
-  const turnEase = smootherStep(1 - THREE.MathUtils.clamp(endpointDistance / 0.22, 0, 1));
+  const turnEase = smootherStep(
+    1 - THREE.MathUtils.clamp(endpointDistance / 0.22, 0, 1),
+  );
 
   return {
     t,
@@ -717,7 +729,9 @@ function makeGltfPlaneMaterialsUnlit(model: THREE.Group) {
   model.traverse((child) => {
     if (!(child instanceof THREE.Mesh)) return;
 
-    const materials = Array.isArray(child.material) ? child.material : [child.material];
+    const materials = Array.isArray(child.material)
+      ? child.material
+      : [child.material];
     const convertedMaterials = materials.map((material) => {
       const existing = unlitMaterials.get(material.uuid);
 
@@ -746,7 +760,9 @@ function makeGltfPlaneMaterialsUnlit(model: THREE.Group) {
       return converted;
     });
 
-    child.material = Array.isArray(child.material) ? convertedMaterials : convertedMaterials[0];
+    child.material = Array.isArray(child.material)
+      ? convertedMaterials
+      : convertedMaterials[0];
   });
 }
 
@@ -839,17 +855,35 @@ function addCanopy(
   const topX = x * 0.62;
   const topZ = z * 0.72;
 
+  // prettier-ignore
   const vertices = new Float32Array([
-    -x, -y, -z,
-    x, -y, -z,
-    x, -y, z,
-    -x, -y, z,
-    -topX, y, -topZ,
-    topX, y, -topZ,
-    topX, y, topZ,
-    -topX, y, topZ,
+    -x,
+    -y,
+    -z,
+    x,
+    -y,
+    -z,
+    x,
+    -y,
+    z,
+    -x,
+    -y,
+    z,
+    -topX,
+    y,
+    -topZ,
+    topX,
+    y,
+    -topZ,
+    topX,
+    y,
+    topZ,
+    -topX,
+    y,
+    topZ,
   ]);
 
+  // prettier-ignore
   const indices = [
     0, 1, 2, 0, 2, 3,
     4, 6, 5, 4, 7, 6,
@@ -875,6 +909,7 @@ function addTailFin(
   material: THREE.Material,
 ) {
   const geometry = new THREE.BufferGeometry();
+  // prettier-ignore
   const vertices = new Float32Array([
     -0.18, -0.22, -0.18,
     0.2, -0.22, -0.18,
@@ -885,6 +920,7 @@ function addTailFin(
     0.1, 0.42, 0.14,
     -0.24, 0.42, 0.14,
   ]);
+  // prettier-ignore
   const indices = [
     0, 1, 2, 0, 2, 3,
     4, 6, 5, 4, 7, 6,
