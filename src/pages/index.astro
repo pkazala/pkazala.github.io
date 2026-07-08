@@ -1,8 +1,10 @@
 ---
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import EuropeGlobe from "../components/EuropeGlobe.astro";
 import NowStatement from "../components/NowStatement.astro";
 import PhotoLightbox from "../components/PhotoLightbox";
+import { photoSources } from "../data/photos";
 import Layout from "../layouts/Layout.astro";
 
 const posts = (await getCollection("blog"))
@@ -17,32 +19,50 @@ const formatDate = (date: Date) =>
     year: "numeric",
   }).format(date);
 
-const photos = [
-  {
-    src: "/photos/photo-01-960.webp",
-    srcSet:
-      "/photos/photo-01-480.webp 320w, /photos/photo-01-960.webp 640w, /photos/photo-01-1086.webp 724w",
-    alt: "A photograph by Piotr Kazala.",
-  },
-  {
-    src: "/photos/photo-02-960.webp",
-    srcSet:
-      "/photos/photo-02-480.webp 480w, /photos/photo-02-960.webp 960w, /photos/photo-02-1086.webp 1086w",
-    alt: "A photograph by Piotr Kazala.",
-  },
-  {
-    src: "/photos/photo-03-960.webp",
-    srcSet:
-      "/photos/photo-03-480.webp 320w, /photos/photo-03-960.webp 640w, /photos/photo-03-1086.webp 724w",
-    alt: "A photograph by Piotr Kazala.",
-  },
-  {
-    src: "/photos/photo-04-960.webp",
-    srcSet:
-      "/photos/photo-04-480.webp 480w, /photos/photo-04-960.webp 960w, /photos/photo-04-1086.webp 1086w",
-    alt: "A photograph by Piotr Kazala.",
-  },
-];
+const avifWidths = [480, 960, 1440, 2160, 2880];
+const webpWidths = [480, 960, 1440, 2160];
+
+const toSrcSet = (
+  images: Awaited<ReturnType<typeof getImage>>[],
+  widths: number[],
+) => images.map((image, index) => `${image.src} ${widths[index]}w`).join(", ");
+
+const photos = await Promise.all(
+  photoSources.map(async (photo) => {
+    const [avif, webp] = await Promise.all([
+      Promise.all(
+        avifWidths.map((width) =>
+          getImage({
+            src: photo.src,
+            width,
+            inferSize: true,
+            format: "avif",
+            quality: 54,
+          }),
+        ),
+      ),
+      Promise.all(
+        webpWidths.map((width) =>
+          getImage({
+            src: photo.src,
+            width,
+            inferSize: true,
+            format: "webp",
+            quality: 78,
+          }),
+        ),
+      ),
+    ]);
+
+    return {
+      src: webp[2].src,
+      preloadSrc: avif[3].src,
+      avifSrcSet: toSrcSet(avif, avifWidths),
+      webpSrcSet: toSrcSet(webp, webpWidths),
+      alt: photo.alt,
+    };
+  }),
+);
 ---
 
 <Layout

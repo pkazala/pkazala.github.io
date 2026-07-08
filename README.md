@@ -42,8 +42,8 @@ Draft posts are hidden from production builds when `draft: true`.
 
 ## Photos
 
-Homepage photos are currently loaded from optimized local WebP files in `public/photos` and configured in the `photos` array in `src/pages/index.astro`.
+Homepage photos use full-size originals stored in Cloudflare R2 and are optimized at build time with Astro's image pipeline.
 
 The photo strip uses a shadcn-style Embla carousel. Clicking a photo opens it in a transparent Dialog popup; users close it by clicking outside the image or pressing Escape, and move between images with the left/right arrow keys.
 
-Each photo should have responsive WebP variants and `srcset`/`sizes` values. The current originals only go up to 1086px on the long edge, so the largest generated variant is 1086 rather than an upscaled 1440.
+`src/data/photos.ts` lists the public R2 photo URLs. `src/pages/index.astro` generates AVIF `srcset` values at 480, 960, 1440, 2160, and 2880 pixels. WebP fallback images stop at 2160 pixels to keep the built site smaller.
