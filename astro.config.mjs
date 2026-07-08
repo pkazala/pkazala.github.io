@@ -7,5 +7,8 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
+  image: {
+    domains: ["pub-baa073ca592e4a8eada77d694ff90db6.r2.dev"],
+  },
   integrations: [tailwind(), react()],
 });
