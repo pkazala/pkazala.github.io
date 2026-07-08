@@ -19,15 +19,27 @@ const formatDate = (date: Date) =>
 
 const photos = [
   {
-    src: "https://pub-baa073ca592e4a8eada77d694ff90db6.r2.dev/P1012584.jpeg",
+    src: "/photos/photo-01-960.webp",
+    srcSet:
+      "/photos/photo-01-480.webp 320w, /photos/photo-01-960.webp 640w, /photos/photo-01-1086.webp 724w",
     alt: "A photograph by Piotr Kazala.",
   },
   {
-    src: "https://pub-baa073ca592e4a8eada77d694ff90db6.r2.dev/P1012596.jpeg",
+    src: "/photos/photo-02-960.webp",
+    srcSet:
+      "/photos/photo-02-480.webp 480w, /photos/photo-02-960.webp 960w, /photos/photo-02-1086.webp 1086w",
     alt: "A photograph by Piotr Kazala.",
   },
   {
-    src: "https://pub-baa073ca592e4a8eada77d694ff90db6.r2.dev/P1012604.jpeg",
+    src: "/photos/photo-03-960.webp",
+    srcSet:
+      "/photos/photo-03-480.webp 320w, /photos/photo-03-960.webp 640w, /photos/photo-03-1086.webp 724w",
+    alt: "A photograph by Piotr Kazala.",
+  },
+  {
+    src: "/photos/photo-04-960.webp",
+    srcSet:
+      "/photos/photo-04-480.webp 480w, /photos/photo-04-960.webp 960w, /photos/photo-04-1086.webp 1086w",
     alt: "A photograph by Piotr Kazala.",
   },
 ];
@@ -103,7 +115,7 @@ const photos = [
       <div class="space-y-4">
         <PhotoLightbox photos={photos} client:load />
         <p class="font-mono text-xs text-muted">
-          Photos served from Cloudflare R2.
+          Optimized local WebP photos.
         </p>
       </div>
     </section>

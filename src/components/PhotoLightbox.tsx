@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 
 type Photo = {
   alt: string;
   src: string;
+  srcSet?: string;
 };
 
 type PhotoLightboxProps = {
@@ -38,27 +39,31 @@ export default function PhotoLightbox({ photos }: PhotoLightboxProps) {
         aria-label="Photo carousel"
       >
         {photos.map((photo, index) => (
-          <DialogTrigger asChild key={photo.src}>
-            <button
-              className="group min-w-[78%] snap-start overflow-hidden rounded-sm border border-ink/10 bg-zinc-100 text-left outline-none transition hover:border-ink/25 focus-visible:ring-2 focus-visible:ring-ink/30 sm:min-w-[calc((100%_-_1.5rem)/3)]"
-              type="button"
-              onClick={() => openPhoto(index)}
-              aria-label="Open photo"
-            >
-              <img
-                className="aspect-[4/3] h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-                src={photo.src}
-                alt={photo.alt}
-                loading="lazy"
-                decoding="async"
-              />
-            </button>
-          </DialogTrigger>
+          <button
+            className="group min-w-[78%] snap-start overflow-hidden rounded-sm border border-ink/10 bg-zinc-100 text-left outline-none transition hover:border-ink/25 focus-visible:ring-2 focus-visible:ring-ink/30 sm:min-w-[calc((100%_-_1.5rem)/3)]"
+            type="button"
+            key={photo.src}
+            onClick={() => openPhoto(index)}
+            aria-label="Open photo"
+          >
+            <img
+              className="aspect-[4/3] h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+              src={photo.src}
+              srcSet={photo.srcSet}
+              sizes="(min-width: 640px) 30vw, 78vw"
+              alt={photo.alt}
+              loading="lazy"
+              decoding="async"
+            />
+          </button>
         ))}
       </div>
 
       <DialogContent
         aria-describedby={undefined}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+        }}
         onKeyDown={(event) => {
           if (event.key === "ArrowLeft") {
             event.preventDefault();
@@ -76,6 +81,8 @@ export default function PhotoLightbox({ photos }: PhotoLightboxProps) {
           <img
             className="max-h-[90vh] max-w-[92vw] rounded-sm object-contain"
             src={currentPhoto.src}
+            srcSet={currentPhoto.srcSet}
+            sizes="92vw"
             alt={currentPhoto.alt}
           />
         )}

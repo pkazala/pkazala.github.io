@@ -41,8 +41,8 @@ Draft posts are hidden from production builds when `draft: true`.
 
 ## Photos
 
-Homepage photos are currently loaded from Piotr's public Cloudflare R2 development URL and configured in the `photos` array in `src/pages/index.astro`.
+Homepage photos are currently loaded from optimized local WebP files in `public/photos` and configured in the `photos` array in `src/pages/index.astro`.
 
 The photo strip uses a simple scroll-snap carousel. Clicking a photo opens it in a transparent Dialog popup; users close it by clicking outside the image or pressing Escape, and move between images with the left/right arrow keys.
 
-For performance, prefer uploading WebP/AVIF variants to R2 and wiring them into responsive `srcset`/`sizes` values before adding many more full-resolution images.
+Each photo should have responsive WebP variants and `srcset`/`sizes` values. The current originals only go up to 1086px on the long edge, so the largest generated variant is 1086 rather than an upscaled 1440.

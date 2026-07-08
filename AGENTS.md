@@ -43,11 +43,11 @@ See `docs/globe.md` before making substantial globe changes.
 
 ## Photos
 
-- Homepage photos are currently served from Piotr's public Cloudflare R2 development URL.
+- Homepage photos are currently served from optimized local WebP files in `public/photos`.
 - `src/pages/index.astro` defines the `photos` array passed into `PhotoLightbox`.
 - `PhotoLightbox` renders a native scroll-snap multi-slide strip plus a Radix Dialog popup.
 - Popup controls are intentionally minimal: click outside the image or press Escape to close; left/right arrow keys navigate between photos.
-- Original R2 JPEGs are large. Prefer uploading WebP/AVIF variants to R2 and updating the `photos` array before adding many more images.
+- The current source JPEGs top out at 1086px on the long edge, so avoid generating fake 1440px variants from them.
 
 See `docs/photos.md` before making substantial photo or lightbox changes.
 
@@ -98,4 +98,4 @@ draft: false
 ---
 ```
 
-Homepage photos are configured in `src/pages/index.astro` and currently use public R2 URLs, not `public/photos`.
+Homepage photos are configured in `src/pages/index.astro` and currently use optimized local WebP files from `public/photos`.
