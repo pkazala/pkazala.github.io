@@ -4,11 +4,9 @@
 
 The homepage photo section is a small interactive React island inside the otherwise static Astro site.
 
-Current images are served from Piotr's public Cloudflare R2 development URL:
+Current images are optimized local WebP files in `public/photos`.
 
-- `https://pub-baa073ca592e4a8eada77d694ff90db6.r2.dev/P1012584.jpeg`
-- `https://pub-baa073ca592e4a8eada77d694ff90db6.r2.dev/P1012596.jpeg`
-- `https://pub-baa073ca592e4a8eada77d694ff90db6.r2.dev/P1012604.jpeg`
+The checked-in source JPEGs currently go up to 1086px on the long edge, so the largest generated WebP variant is 1086px rather than an upscaled 1440px.
 
 ## Files
 
@@ -16,7 +14,7 @@ Current images are served from Piotr's public Cloudflare R2 development URL:
 - `src/components/PhotoLightbox.tsx` renders the scroll-snap strip and popup behavior.
 - `src/components/ui/dialog.tsx` wraps Radix Dialog in the local shadcn style.
 - `src/lib/utils.ts` provides the shared `cn` helper.
-- `public/photos` is currently not used by the homepage.
+- `public/photos` contains the source JPEGs and generated WebP variants.
 
 ## Interaction
 
@@ -30,13 +28,15 @@ Keep this behavior simple unless the design direction changes.
 
 ## Performance
 
-The current R2 files are full JPEGs and are larger than ideal for a homepage. Before adding many more photos, prefer uploading optimized variants to R2:
+The current generated WebP variants are:
 
-- WebP or AVIF for modern browsers.
-- A few widths such as 480, 960, and 1440 pixels.
-- Responsive `srcset` and `sizes` entries in the `photos` array.
+- 480px long edge at WebP quality 78.
+- 960px long edge at WebP quality 80.
+- 1086px long edge at WebP quality 82.
 
-Cloudflare Image Resizing or an R2-backed custom image pipeline would be better long term, but static variants are the simplest next step.
+For future higher-resolution originals, use 480, 960, and 1440px long-edge WebP variants. Avoid upscaling small originals.
+
+Cloudflare Image Resizing or an R2-backed custom image pipeline could be useful later, but static local variants are the simplest current setup.
 
 ## Checks
 
