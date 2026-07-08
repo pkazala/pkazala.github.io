@@ -50,7 +50,7 @@ const photos = [
   description="Personal website of Piotr Kazala, a software engineer in Edinburgh."
 >
   <main>
-    <section class="pt-10 sm:pt-16" aria-labelledby="intro-title">
+    <section id="about" class="pt-10 sm:pt-16" aria-labelledby="intro-title">
       <p class="mb-5 font-mono text-sm text-muted">
         software engineer / edinburgh
       </p>
@@ -112,12 +112,7 @@ const photos = [
       aria-labelledby="photos-title"
     >
       <h2 id="photos-title" class="text-sm font-medium text-muted">Photos</h2>
-      <div class="space-y-4">
-        <PhotoLightbox photos={photos} client:load />
-        <p class="font-mono text-xs text-muted">
-          Optimized local WebP photos.
-        </p>
-      </div>
+      <PhotoLightbox photos={photos} client:load />
     </section>
 
     <section
