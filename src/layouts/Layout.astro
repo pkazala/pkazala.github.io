@@ -8,7 +8,7 @@ interface Props {
 
 const {
   title = "Piotr Kazala",
-  description = "Personal website of Piotr Kazala, a software engineer in Edinburgh.",
+  description = "Personal website of Piotr Kazala.",
 } = Astro.props;
 
 const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
@@ -30,7 +30,7 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
   <body class="bg-[#fbfbfa] text-ink font-sans antialiased selection:bg-ink selection:text-white">
     <div class="mx-auto w-[min(100%-32px,680px)]">
       <header
-        class="flex items-baseline justify-between gap-6 border-b border-ink/10 py-6 text-sm"
+        class="flex items-baseline justify-between gap-6 py-6 text-sm"
       >
         <a
           class="font-medium text-ink"
@@ -55,7 +55,7 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
       <slot />
 
       <footer
-        class="mt-14 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 py-6 text-sm text-muted"
+        class="mt-14 flex flex-wrap items-center justify-between gap-3 py-6 text-sm text-muted"
       >
         <p>Edinburgh, via Poland.</p>
         <p class="font-mono" aria-hidden="true">2026</p>
