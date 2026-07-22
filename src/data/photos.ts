@@ -4,6 +4,7 @@ export const photoSources = [
   "P1012584.jpeg",
   "P1012596.jpeg",
   "P1012604.jpeg",
+  "P1012155.jpeg",
 ].map((filename) => ({
   alt: "A photograph by Piotr Kazala.",
   src: `${photoBaseUrl}/${filename}`,

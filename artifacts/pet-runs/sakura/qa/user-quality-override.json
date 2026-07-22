@@ -1,0 +1,8 @@
+{
+  "decision": "package_best_available",
+  "requested_by": "user",
+  "reason": "User requested fast completion and explicitly accepted an imperfect result.",
+  "known_issue": "The 157.5 to 180 look-direction boundary has a visible scale and registration snap.",
+  "deterministic_validation_ok": true,
+  "direction_semantics_ok": true
+}
