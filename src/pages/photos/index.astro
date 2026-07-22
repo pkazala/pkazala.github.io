@@ -1,0 +1,126 @@
+---
+import PhotoLightbox from "../../components/PhotoLightbox";
+import { photoSources, type PhotoCategory } from "../../data/photos";
+import Layout from "../../layouts/Layout.astro";
+import { optimizePhotoSources } from "../../lib/photo-images";
+
+const photos = await optimizePhotoSources(photoSources);
+
+const sections: {
+  definition: string;
+  id: PhotoCategory;
+  origin: string;
+  originFlag: string;
+  originWord?: string;
+  partOfSpeech: string;
+  pronunciation: string;
+  title: string;
+}[] = [
+  {
+    id: "people",
+    title: "People",
+    pronunciation: "/ˈpiːp(ə)l/",
+    partOfSpeech: "noun",
+    definition: "Human stories, gestures, and the moments between them.",
+    originFlag: "🇫🇷",
+    origin: "from Old French",
+    originWord: "pueple",
+  },
+  {
+    id: "landscape",
+    title: "Landscape",
+    pronunciation: "/ˈlan(d)skeɪp/",
+    partOfSpeech: "noun",
+    definition: "The shape of a place, held in light, weather, and time.",
+    originFlag: "🇳🇱",
+    origin: "from Dutch",
+    originWord: "landschap",
+  },
+  {
+    id: "creative",
+    title: "Creative",
+    pronunciation: "/kriˈeɪtɪv/",
+    partOfSpeech: "adjective",
+    definition: "Made through imagination; experiments in colour and form.",
+    originFlag: "🇻🇦",
+    origin: "from Latin",
+    originWord: "creātīvus",
+  },
+];
+
+const previewCount = 10;
+
+const repeatForPreview = (category: PhotoCategory) => {
+  const categoryPhotos = photos.filter((photo) => photo.category === category);
+
+  return Array.from(
+    { length: previewCount },
+    (_, index) => categoryPhotos[index % categoryPhotos.length],
+  );
+};
+---
+
+<Layout
+  title="Photos"
+  description="Photography by Piotr Kazala: people, landscapes, and creative work."
+>
+  <main class="pb-14 pt-10 sm:pb-20 sm:pt-14">
+    <section aria-labelledby="photography-title">
+      <h1
+        id="photography-title"
+        class="text-3xl font-medium tracking-[-0.025em] text-ink"
+      >
+        Photography
+      </h1>
+      <p class="mt-3 text-lg leading-8 text-muted">
+        Aiming to capture the beauty and moments in life.
+      </p>
+    </section>
+
+    <div class="mt-14 space-y-14 sm:mt-20 sm:space-y-20">
+      {
+        sections.map((section) => (
+          <section
+            id={section.id}
+            class="scroll-mt-8"
+            aria-labelledby={`${section.id}-title`}
+          >
+            <div class="mb-5">
+              <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h2
+                  id={`${section.id}-title`}
+                  class="text-xl font-medium italic tracking-[-0.015em] text-ink"
+                >
+                  {section.title}
+                </h2>
+                <p class="font-mono text-xs text-muted">
+                  {section.pronunciation} · {section.partOfSpeech}
+                </p>
+              </div>
+              <p class="mt-1.5 max-w-lg text-sm leading-6 text-muted">
+                {section.definition}
+              </p>
+              <p class="mt-1.5 flex items-center gap-1.5 text-xs text-muted/80">
+                <span aria-hidden="true">{section.originFlag}</span>
+                <span>
+                  {section.origin}
+                  {section.originWord && (
+                    <>
+                      {" "}
+                      <em>{section.originWord}</em>
+                    </>
+                  )}
+                </span>
+              </p>
+            </div>
+            <PhotoLightbox
+              photos={repeatForPreview(section.id)}
+              variant="full"
+              client:load
+            />
+          </section>
+        ))
+      }
+    </div>
+  </main>
+</Layout>
