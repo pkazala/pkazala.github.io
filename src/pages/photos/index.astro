@@ -9,6 +9,8 @@ const photos = await optimizePhotoSources(photoSources);
 const sections: {
   definition: string;
   id: PhotoCategory;
+  origin: string;
+  originFlag: string;
   partOfSpeech: string;
   pronunciation: string;
   title: string;
@@ -19,6 +21,8 @@ const sections: {
     pronunciation: "/ˈpiːp(ə)l/",
     partOfSpeech: "noun",
     definition: "Human stories, gestures, and the moments between them.",
+    originFlag: "🇫🇷",
+    origin: "from Old French, ultimately Latin",
   },
   {
     id: "landscape",
@@ -26,6 +30,8 @@ const sections: {
     pronunciation: "/ˈlan(d)skeɪp/",
     partOfSpeech: "noun",
     definition: "The shape of a place, held in light, weather, and time.",
+    originFlag: "🇳🇱",
+    origin: "from Dutch landschap",
   },
   {
     id: "creative",
@@ -33,6 +39,8 @@ const sections: {
     pronunciation: "/kriˈeɪtɪv/",
     partOfSpeech: "adjective",
     definition: "Made through imagination; experiments in colour and form.",
+    originFlag: "🇻🇦",
+    origin: "from Medieval Latin creātīvus",
   },
 ];
 
@@ -87,6 +95,10 @@ const repeatForPreview = (category: PhotoCategory) => {
               </div>
               <p class="mt-1.5 max-w-lg text-sm leading-6 text-muted">
                 {section.definition}
+              </p>
+              <p class="mt-1.5 flex items-center gap-1.5 text-xs text-muted/80">
+                <span aria-hidden="true">{section.originFlag}</span>
+                <span>{section.origin}</span>
               </p>
             </div>
             <PhotoLightbox
