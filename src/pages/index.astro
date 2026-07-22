@@ -1,11 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import { getImage } from "astro:assets";
 import EuropeGlobe from "../components/EuropeGlobe.astro";
 import NowStatement from "../components/NowStatement.astro";
 import PhotoLightbox from "../components/PhotoLightbox";
 import { photoSources } from "../data/photos";
 import Layout from "../layouts/Layout.astro";
+import { optimizePhotoSources } from "../lib/photo-images";
 
 const posts = (await getCollection("blog"))
   .filter((post) => !post.data.draft || !import.meta.env.PROD)
@@ -19,50 +19,7 @@ const formatDate = (date: Date) =>
     year: "numeric",
   }).format(date);
 
-const avifWidths = [480, 960, 1440, 2160, 2880];
-const webpWidths = [480, 960, 1440, 2160];
-
-const toSrcSet = (
-  images: Awaited<ReturnType<typeof getImage>>[],
-  widths: number[],
-) => images.map((image, index) => `${image.src} ${widths[index]}w`).join(", ");
-
-const photos = await Promise.all(
-  photoSources.map(async (photo) => {
-    const [avif, webp] = await Promise.all([
-      Promise.all(
-        avifWidths.map((width) =>
-          getImage({
-            src: photo.src,
-            width,
-            inferSize: true,
-            format: "avif",
-            quality: 54,
-          }),
-        ),
-      ),
-      Promise.all(
-        webpWidths.map((width) =>
-          getImage({
-            src: photo.src,
-            width,
-            inferSize: true,
-            format: "webp",
-            quality: 78,
-          }),
-        ),
-      ),
-    ]);
-
-    return {
-      src: webp[2].src,
-      preloadSrc: avif[3].src,
-      avifSrcSet: toSrcSet(avif, avifWidths),
-      webpSrcSet: toSrcSet(webp, webpWidths),
-      alt: photo.alt,
-    };
-  }),
-);
+const photos = await optimizePhotoSources(photoSources);
 ---
 
 <Layout title="Piotr Kazala" description="Personal website of Piotr Kazala.">
@@ -120,7 +77,15 @@ const photos = await Promise.all(
       class="grid gap-4 py-10 sm:grid-cols-[160px_1fr]"
       aria-labelledby="photos-title"
     >
-      <h2 id="photos-title" class="text-sm font-medium text-muted">Photos</h2>
+      <div>
+        <h2 id="photos-title" class="text-sm font-medium text-muted">Photos</h2>
+        <a
+          class="mt-2 inline-block text-sm text-muted underline underline-offset-4"
+          href="/photos/"
+        >
+          All photos
+        </a>
+      </div>
       <PhotoLightbox photos={photos} client:load />
     </section>
 

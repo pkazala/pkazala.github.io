@@ -33,11 +33,17 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
     class="bg-paper text-ink font-sans antialiased selection:bg-ink selection:text-white"
   >
     <div class="mx-auto w-[min(100%-32px,680px)]">
-      <header class="flex items-center gap-0 pt-14 sm:pt-20">
-        <DitherLogo client:load />
-        <span class="text-[52px] font-medium leading-[52px] text-ink"
-          >Piotr Kazala</span
+      <header class="pt-14 sm:pt-20">
+        <a
+          class="flex w-fit items-center gap-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
+          href="/"
+          aria-label="Piotr Kazala, home"
         >
+          <DitherLogo client:load />
+          <span class="text-[52px] font-medium leading-[52px] text-ink"
+            >Piotr Kazala</span
+          >
+        </a>
       </header>
 
       <slot />

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The homepage photo section is a small interactive React island inside the otherwise static Astro site.
+The homepage photo section is a small interactive React island inside the otherwise static Astro site. The `/photos/` page presents the same manifest as categorized editorial sections.
 
 Current images use full-size JPEG originals stored in Cloudflare R2.
 
@@ -10,8 +10,10 @@ Astro generates optimized responsive AVIF and WebP variants at build time.
 
 ## Files
 
-- `src/data/photos.ts` lists the public R2 photo URLs and alt text.
-- `src/pages/index.astro` imports that manifest, calls `getImage` from `astro:assets`, and passes optimized image metadata to the lightbox.
+- `src/data/photos.ts` lists the public R2 photo URLs, alt text, and category for each image.
+- `src/lib/photo-images.ts` generates the shared responsive AVIF and WebP image metadata.
+- `src/pages/index.astro` passes the optimized image metadata to the homepage lightbox.
+- `src/pages/photos/index.astro` groups the optimized images into People, Landscape, and Creative sections.
 - `src/components/PhotoLightbox.tsx` renders the carousel and popup behavior.
 - `src/components/ui/carousel.tsx` wraps Embla in the local shadcn style.
 - `src/components/ui/dialog.tsx` wraps Radix Dialog in the local shadcn style.
