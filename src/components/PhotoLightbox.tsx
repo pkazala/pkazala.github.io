@@ -21,9 +21,13 @@ type Photo = {
 
 type PhotoLightboxProps = {
   photos: Photo[];
+  variant?: "full" | "strip";
 };
 
-export default function PhotoLightbox({ photos }: PhotoLightboxProps) {
+export default function PhotoLightbox({
+  photos,
+  variant = "strip",
+}: PhotoLightboxProps) {
   const [open, setOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const preloadedImages = useRef(new Set<string>());
@@ -78,7 +82,7 @@ export default function PhotoLightbox({ photos }: PhotoLightboxProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Carousel
-        className="w-full px-9 sm:px-10"
+        className={variant === "full" ? "w-full" : "w-full px-9 sm:px-10"}
         opts={{
           align: "start",
           containScroll: "trimSnaps",
@@ -87,11 +91,15 @@ export default function PhotoLightbox({ photos }: PhotoLightboxProps) {
         <CarouselContent>
           {photos.map((photo, index) => (
             <CarouselItem
-              className="basis-[82%] sm:basis-1/2 lg:basis-1/3"
+              className={
+                variant === "full"
+                  ? "basis-full"
+                  : "basis-[82%] sm:basis-1/2 lg:basis-1/3"
+              }
               key={photo.src}
             >
               <button
-                className="group block w-full rounded-sm text-left outline-none focus-visible:ring-2 focus-visible:ring-ink/25"
+                className="group block w-full cursor-pointer rounded-sm text-left outline-none transition-transform duration-150 ease-out focus-visible:ring-2 focus-visible:ring-ink/25 active:scale-[0.99]"
                 type="button"
                 onClick={() => openPhoto(index)}
                 onFocus={() =>
@@ -104,15 +112,25 @@ export default function PhotoLightbox({ photos }: PhotoLightboxProps) {
               >
                 <PictureImage
                   photo={photo}
-                  className="aspect-[4/3] w-full rounded-sm object-cover transition-transform duration-200 ease-out group-hover:scale-[1.01] group-active:scale-[0.99]"
-                  sizes="(min-width: 1024px) 28vw, (min-width: 640px) 42vw, 78vw"
+                  className={
+                    variant === "full"
+                      ? "aspect-[4/3] w-full rounded-sm object-cover"
+                      : "aspect-[4/3] w-full rounded-sm object-cover transition-transform duration-200 ease-out group-hover:scale-[1.01]"
+                  }
+                  sizes={
+                    variant === "full"
+                      ? "(min-width: 712px) 680px, calc(100vw - 32px)"
+                      : "(min-width: 1024px) 28vw, (min-width: 640px) 42vw, 78vw"
+                  }
                 />
               </button>
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-0" />
-        <CarouselNext className="right-0" />
+        <CarouselPrevious
+          className={variant === "full" ? "left-3" : "left-0"}
+        />
+        <CarouselNext className={variant === "full" ? "right-3" : "right-0"} />
       </Carousel>
 
       <DialogContent

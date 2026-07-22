@@ -125,7 +125,7 @@ const CarouselPrevious = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "absolute -left-3 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-full border border-ink/10 bg-paper/80 text-sm text-ink backdrop-blur transition-colors hover:bg-white/80 disabled:pointer-events-none disabled:opacity-0",
+        "absolute -left-3 top-1/2 z-10 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-ink/10 bg-paper/80 text-sm text-ink backdrop-blur transition-[background-color,transform] duration-150 ease-out hover:bg-white/80 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-0",
         className,
       )}
       disabled={!canScrollPrevious}
@@ -150,7 +150,7 @@ const CarouselNext = React.forwardRef<
     <button
       ref={ref}
       className={cn(
-        "absolute -right-3 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-full border border-ink/10 bg-paper/80 text-sm text-ink backdrop-blur transition-colors hover:bg-white/80 disabled:pointer-events-none disabled:opacity-0",
+        "absolute -right-3 top-1/2 z-10 flex size-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-ink/10 bg-paper/80 text-sm text-ink backdrop-blur transition-[background-color,transform] duration-150 ease-out hover:bg-white/80 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-0",
         className,
       )}
       disabled={!canScrollNext}

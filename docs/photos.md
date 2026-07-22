@@ -13,7 +13,7 @@ Astro generates optimized responsive AVIF and WebP variants at build time.
 - `src/data/photos.ts` lists the public R2 photo URLs, alt text, and category for each image.
 - `src/lib/photo-images.ts` generates the shared responsive AVIF and WebP image metadata.
 - `src/pages/index.astro` passes the optimized image metadata to the homepage lightbox.
-- `src/pages/photos/index.astro` groups the optimized images into People, Landscape, and Creative sections.
+- `src/pages/photos/index.astro` groups the optimized images into full-width People, Landscape, and Creative carousels.
 - `src/components/PhotoLightbox.tsx` renders the carousel and popup behavior.
 - `src/components/ui/carousel.tsx` wraps Embla in the local shadcn style.
 - `src/components/ui/dialog.tsx` wraps Radix Dialog in the local shadcn style.
