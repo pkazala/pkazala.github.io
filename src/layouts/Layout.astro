@@ -33,7 +33,7 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
     class="bg-paper text-ink font-sans antialiased selection:bg-ink selection:text-white"
   >
     <div class="mx-auto w-[min(100%-32px,680px)]">
-      <header class="flex items-center gap-1 pt-16 sm:pt-24">
+      <header class="flex items-center gap-0 pt-16 sm:pt-24">
         <DitherLogo client:load />
         <span class="text-[52px] font-medium leading-[52px] text-ink"
           >Piotr Kazala</span
@@ -41,13 +41,6 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
       </header>
 
       <slot />
-
-      <footer
-        class="mt-14 flex flex-wrap items-center justify-between gap-3 py-6 text-sm text-muted"
-      >
-        <p>Edinburgh, via Poland.</p>
-        <p class="font-mono" aria-hidden="true">2026</p>
-      </footer>
     </div>
   </body>
 </html>
