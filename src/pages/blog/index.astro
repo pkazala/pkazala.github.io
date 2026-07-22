@@ -20,7 +20,7 @@ const formatDate = (date: Date) =>
       Back home
     </a>
 
-    <header class="mt-12 border-b border-ink/10 pb-10">
+    <header class="mt-12 pb-10">
       <h1 class="text-5xl font-semibold leading-tight tracking-normal">Writing</h1>
       <p class="mt-5 text-lg leading-8 text-zinc-700">
         Technical notes, design observations, photography fragments, and whatever
@@ -28,7 +28,7 @@ const formatDate = (date: Date) =>
       </p>
     </header>
 
-    <section class="divide-y divide-ink/10" aria-label="Blog posts">
+    <section aria-label="Blog posts">
       {
         posts.map((post) => (
           <a class="grid gap-2 py-6 sm:grid-cols-[132px_1fr]" href={`/blog/${post.slug}/`}>

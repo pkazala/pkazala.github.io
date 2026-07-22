@@ -41,11 +41,12 @@ See `docs/globe.md` before making substantial globe changes.
 
 ## Photos
 
-- Homepage photos are currently served from optimized local WebP files in `public/photos`.
-- `src/pages/index.astro` defines the `photos` array passed into `PhotoLightbox`.
+- Homepage source photos live in Cloudflare R2 as full-size JPEG originals.
+- `src/data/photos.ts` lists the public R2 URLs and alt text.
+- `src/pages/index.astro` imports that manifest and uses `getImage` from `astro:assets` to generate responsive AVIF/WebP `srcset` values.
 - `PhotoLightbox` renders a shadcn-style Embla carousel plus a Radix Dialog popup.
 - Popup controls are intentionally minimal: click outside the image or press Escape to close; left/right arrow keys navigate between photos.
-- The current WebP set tops out at 1086px on the long edge, matching the original source resolution.
+- AVIF variants are generated at 480, 960, 1440, 2160, and 2880 pixels. WebP fallback variants stop at 2160 pixels.
 
 See `docs/photos.md` before making substantial photo or lightbox changes.
 
@@ -96,4 +97,4 @@ draft: false
 ---
 ```
 
-Homepage photos are configured in `src/pages/index.astro` and currently use optimized local WebP files from `public/photos`.
+Homepage photos are configured in `src/data/photos.ts` and optimized from full-size originals in Cloudflare R2.

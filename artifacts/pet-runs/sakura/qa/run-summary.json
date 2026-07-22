@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "spriteVersionNumber": 2,
+  "quality_override": true,
+  "run_dir": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura",
+  "spritesheet": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura/final/spritesheet-extended.webp",
+  "validation": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura/final/validation-extended.json",
+  "chroma_despill": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura/qa/chroma-despill-extended.json",
+  "contact_sheet": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura/qa/contact-sheet-extended.png",
+  "direction_sheet": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura/qa/look-directions.png",
+  "direction_semantics": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura/qa/direction-semantics.json",
+  "continuity": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura/qa/look-continuity.json",
+  "review": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura/qa/review.json",
+  "package": "/Users/piotrkazala/Projects/pkazala.github.io/artifacts/pet-runs/sakura/package/sakura"
+}
