@@ -83,8 +83,11 @@ const Carousel = React.forwardRef<
 
       const viewport = api.rootNode();
       let accumulatedDelta = 0;
-      let unlockTimer: number | undefined;
-      let locked = false;
+      let lastDelta = 0;
+      let lastEventAt = 0;
+      let lastNavigationAt = 0;
+      let navigated = false;
+      let resetTimer: number | undefined;
 
       const handleWheel = (event: WheelEvent) => {
         const isHorizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY);
@@ -97,13 +100,47 @@ const Carousel = React.forwardRef<
         if (Math.abs(delta) < 1) return;
 
         event.preventDefault();
-        window.clearTimeout(unlockTimer);
-        unlockTimer = window.setTimeout(() => {
-          accumulatedDelta = 0;
-          locked = false;
-        }, 180);
+        const now = performance.now();
+        const magnitude = Math.abs(delta);
+        const paused = now - lastEventAt > 100;
+        const changedDirection =
+          lastDelta !== 0 &&
+          Math.sign(delta) !== Math.sign(lastDelta) &&
+          magnitude >= 8;
+        const renewedInput =
+          navigated &&
+          now - lastNavigationAt > 140 &&
+          magnitude >= 12 &&
+          magnitude > Math.abs(lastDelta) * 1.8;
+        const sustainedStrongInput =
+          navigated &&
+          now - lastNavigationAt > 260 &&
+          magnitude >= 24 &&
+          magnitude >= Math.abs(lastDelta) * 0.9;
 
-        if (locked) return;
+        if (
+          paused ||
+          changedDirection ||
+          renewedInput ||
+          sustainedStrongInput
+        ) {
+          accumulatedDelta = 0;
+          navigated = false;
+        }
+
+        lastDelta = delta;
+        lastEventAt = now;
+
+        window.clearTimeout(resetTimer);
+        resetTimer = window.setTimeout(() => {
+          accumulatedDelta = 0;
+          lastDelta = 0;
+          lastEventAt = 0;
+          lastNavigationAt = 0;
+          navigated = false;
+        }, 120);
+
+        if (navigated) return;
 
         accumulatedDelta += delta;
 
@@ -116,13 +153,14 @@ const Carousel = React.forwardRef<
         }
 
         accumulatedDelta = 0;
-        locked = true;
+        lastNavigationAt = now;
+        navigated = true;
       };
 
       viewport.addEventListener("wheel", handleWheel, { passive: false });
 
       return () => {
-        window.clearTimeout(unlockTimer);
+        window.clearTimeout(resetTimer);
         viewport.removeEventListener("wheel", handleWheel);
       };
     }, [api, wheelNavigation]);
