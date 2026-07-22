@@ -11,6 +11,17 @@ const sections: { id: PhotoCategory; title: string }[] = [
   { id: "landscape", title: "Landscape" },
   { id: "creative", title: "Creative" },
 ];
+
+const previewCount = 10;
+
+const repeatForPreview = (category: PhotoCategory) => {
+  const categoryPhotos = photos.filter((photo) => photo.category === category);
+
+  return Array.from(
+    { length: previewCount },
+    (_, index) => categoryPhotos[index % categoryPhotos.length],
+  );
+};
 ---
 
 <Layout
@@ -18,9 +29,19 @@ const sections: { id: PhotoCategory; title: string }[] = [
   description="Photography by Piotr Kazala: people, landscapes, and creative work."
 >
   <main class="pb-14 pt-10 sm:pb-20 sm:pt-14">
-    <h1 class="sr-only">Photos</h1>
+    <section aria-labelledby="photography-title">
+      <h1
+        id="photography-title"
+        class="text-3xl font-medium tracking-[-0.025em] text-ink"
+      >
+        Photography
+      </h1>
+      <p class="mt-3 text-lg leading-8 text-muted">
+        Aiming to capture the beauty and moments in life.
+      </p>
+    </section>
 
-    <div class="space-y-14 sm:space-y-20">
+    <div class="mt-14 space-y-14 sm:mt-20 sm:space-y-20">
       {
         sections.map((section) => (
           <section aria-labelledby={`${section.id}-title`}>
@@ -31,7 +52,7 @@ const sections: { id: PhotoCategory; title: string }[] = [
               {section.title}
             </h2>
             <PhotoLightbox
-              photos={photos.filter((photo) => photo.category === section.id)}
+              photos={repeatForPreview(section.id)}
               variant="full"
               client:load
             />

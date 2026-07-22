@@ -6,6 +6,7 @@ import * as React from "react";
 import { cn } from "../../lib/utils";
 
 type CarouselOptions = Parameters<typeof useEmblaCarousel>[0];
+export type CarouselApi = NonNullable<ReturnType<typeof useEmblaCarousel>[1]>;
 
 type CarouselContextValue = {
   carouselRef: ReturnType<typeof useEmblaCarousel>[0];
@@ -29,62 +30,122 @@ function useCarousel() {
 
 const Carousel = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { opts?: CarouselOptions }
->(({ className, opts, children, ...props }, ref) => {
-  const [carouselRef, api] = useEmblaCarousel(opts);
-  const [canScrollPrevious, setCanScrollPrevious] = React.useState(false);
-  const [canScrollNext, setCanScrollNext] = React.useState(false);
+  React.HTMLAttributes<HTMLDivElement> & {
+    opts?: CarouselOptions;
+    setApi?: (api: CarouselApi) => void;
+    wheelNavigation?: boolean;
+  }
+>(
+  (
+    { className, opts, setApi, wheelNavigation = false, children, ...props },
+    ref,
+  ) => {
+    const [carouselRef, api] = useEmblaCarousel(opts);
+    const [canScrollPrevious, setCanScrollPrevious] = React.useState(false);
+    const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-  const updateScrollState = React.useCallback(() => {
-    if (!api) return;
+    const updateScrollState = React.useCallback(() => {
+      if (!api) return;
 
-    setCanScrollPrevious(api.canScrollPrev());
-    setCanScrollNext(api.canScrollNext());
-  }, [api]);
+      setCanScrollPrevious(api.canScrollPrev());
+      setCanScrollNext(api.canScrollNext());
+    }, [api]);
 
-  const scrollPrevious = React.useCallback(() => {
-    api?.scrollPrev();
-  }, [api]);
+    const scrollPrevious = React.useCallback(() => {
+      api?.scrollPrev();
+    }, [api]);
 
-  const scrollNext = React.useCallback(() => {
-    api?.scrollNext();
-  }, [api]);
+    const scrollNext = React.useCallback(() => {
+      api?.scrollNext();
+    }, [api]);
 
-  React.useEffect(() => {
-    if (!api) return;
+    React.useEffect(() => {
+      if (!api) return;
 
-    updateScrollState();
-    api.on("reInit", updateScrollState);
-    api.on("select", updateScrollState);
+      updateScrollState();
+      api.on("reInit", updateScrollState);
+      api.on("select", updateScrollState);
 
-    return () => {
-      api.off("reInit", updateScrollState);
-      api.off("select", updateScrollState);
-    };
-  }, [api, updateScrollState]);
+      return () => {
+        api.off("reInit", updateScrollState);
+        api.off("select", updateScrollState);
+      };
+    }, [api, updateScrollState]);
 
-  return (
-    <CarouselContext.Provider
-      value={{
-        carouselRef,
-        scrollPrevious,
-        scrollNext,
-        canScrollPrevious,
-        canScrollNext,
-      }}
-    >
-      <div
-        ref={ref}
-        className={cn("relative", className)}
-        role="region"
-        aria-roledescription="carousel"
-        {...props}
+    React.useEffect(() => {
+      if (api) {
+        setApi?.(api);
+      }
+    }, [api, setApi]);
+
+    React.useEffect(() => {
+      if (!api || !wheelNavigation) return;
+
+      const viewport = api.rootNode();
+      let accumulatedDelta = 0;
+      let unlockTimer: number | undefined;
+      let locked = false;
+
+      const handleWheel = (event: WheelEvent) => {
+        const isHorizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY);
+        const delta = isHorizontal
+          ? event.deltaX
+          : event.shiftKey
+            ? event.deltaY
+            : 0;
+
+        if (Math.abs(delta) < 1) return;
+
+        event.preventDefault();
+        accumulatedDelta += delta;
+
+        if (locked || Math.abs(accumulatedDelta) < 28) return;
+
+        if (accumulatedDelta > 0) {
+          api.scrollNext();
+        } else {
+          api.scrollPrev();
+        }
+
+        accumulatedDelta = 0;
+        locked = true;
+        window.clearTimeout(unlockTimer);
+        unlockTimer = window.setTimeout(() => {
+          locked = false;
+        }, 220);
+      };
+
+      viewport.addEventListener("wheel", handleWheel, { passive: false });
+
+      return () => {
+        window.clearTimeout(unlockTimer);
+        viewport.removeEventListener("wheel", handleWheel);
+      };
+    }, [api, wheelNavigation]);
+
+    return (
+      <CarouselContext.Provider
+        value={{
+          carouselRef,
+          scrollPrevious,
+          scrollNext,
+          canScrollPrevious,
+          canScrollNext,
+        }}
       >
-        {children}
-      </div>
-    </CarouselContext.Provider>
-  );
-});
+        <div
+          ref={ref}
+          className={cn("relative", className)}
+          role="region"
+          aria-roledescription="carousel"
+          {...props}
+        >
+          {children}
+        </div>
+      </CarouselContext.Provider>
+    );
+  },
+);
 Carousel.displayName = "Carousel";
 
 const CarouselContent = React.forwardRef<
