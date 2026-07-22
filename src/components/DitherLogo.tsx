@@ -18,12 +18,12 @@ export default function DitherLogo() {
 
   return (
     <div
-      className="size-[52px] shrink-0 overflow-hidden mix-blend-multiply"
+      className="size-[1cap] shrink-0 overflow-hidden mix-blend-multiply"
       aria-hidden="true"
     >
       <Dithering
-        width={52}
-        height={52}
+        width="1cap"
+        height="1cap"
         colorBack="#ffffff"
         colorFront="#000000"
         shape="sphere"
