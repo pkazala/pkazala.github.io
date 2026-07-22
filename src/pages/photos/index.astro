@@ -11,6 +11,7 @@ const sections: {
   id: PhotoCategory;
   origin: string;
   originFlag: string;
+  originWord?: string;
   partOfSpeech: string;
   pronunciation: string;
   title: string;
@@ -31,7 +32,8 @@ const sections: {
     partOfSpeech: "noun",
     definition: "The shape of a place, held in light, weather, and time.",
     originFlag: "🇳🇱",
-    origin: "from Dutch landschap",
+    origin: "from Dutch",
+    originWord: "landschap",
   },
   {
     id: "creative",
@@ -40,7 +42,8 @@ const sections: {
     partOfSpeech: "adjective",
     definition: "Made through imagination; experiments in colour and form.",
     originFlag: "🇻🇦",
-    origin: "from Medieval Latin creātīvus",
+    origin: "from Medieval Latin",
+    originWord: "creātīvus",
   },
 ];
 
@@ -98,7 +101,15 @@ const repeatForPreview = (category: PhotoCategory) => {
               </p>
               <p class="mt-1.5 flex items-center gap-1.5 text-xs text-muted/80">
                 <span aria-hidden="true">{section.originFlag}</span>
-                <span>{section.origin}</span>
+                <span>
+                  {section.origin}
+                  {section.originWord && (
+                    <>
+                      {" "}
+                      <em>{section.originWord}</em>
+                    </>
+                  )}
+                </span>
               </p>
             </div>
             <PhotoLightbox
