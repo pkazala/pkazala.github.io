@@ -17,17 +17,20 @@ export default function DitherLogo() {
   }, []);
 
   return (
-    <div className="size-16 shrink-0 overflow-hidden mix-blend-multiply" aria-hidden="true">
+    <div
+      className="size-[52px] shrink-0 overflow-hidden mix-blend-multiply"
+      aria-hidden="true"
+    >
       <Dithering
-        width={64}
-        height={64}
+        width={52}
+        height={52}
         colorBack="#ffffff"
         colorFront="#000000"
         shape="sphere"
         type="4x4"
         size={2}
         speed={shouldAnimate ? 1 : 0}
-        scale={0.6}
+        scale={1}
         rotation={0}
         offsetX={0}
         offsetY={0}
