@@ -29,11 +29,15 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>{pageTitle}</title>
   </head>
-  <body class="bg-[#fbfbfa] text-ink font-sans antialiased selection:bg-ink selection:text-white">
+  <body
+    class="bg-paper text-ink font-sans antialiased selection:bg-ink selection:text-white"
+  >
     <div class="mx-auto w-[min(100%-32px,680px)]">
       <header class="flex items-center gap-1 pt-16 sm:pt-24">
         <DitherLogo client:load />
-        <span class="text-[52px] font-medium leading-[52px] text-ink">Piotr Kazala</span>
+        <span class="text-[52px] font-medium leading-[52px] text-ink"
+          >Piotr Kazala</span
+        >
       </header>
 
       <slot />
