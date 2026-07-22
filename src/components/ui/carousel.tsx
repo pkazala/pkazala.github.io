@@ -97,9 +97,17 @@ const Carousel = React.forwardRef<
         if (Math.abs(delta) < 1) return;
 
         event.preventDefault();
+        window.clearTimeout(unlockTimer);
+        unlockTimer = window.setTimeout(() => {
+          accumulatedDelta = 0;
+          locked = false;
+        }, 180);
+
+        if (locked) return;
+
         accumulatedDelta += delta;
 
-        if (locked || Math.abs(accumulatedDelta) < 28) return;
+        if (Math.abs(accumulatedDelta) < 28) return;
 
         if (accumulatedDelta > 0) {
           api.scrollNext();
@@ -109,10 +117,6 @@ const Carousel = React.forwardRef<
 
         accumulatedDelta = 0;
         locked = true;
-        window.clearTimeout(unlockTimer);
-        unlockTimer = window.setTimeout(() => {
-          locked = false;
-        }, 220);
       };
 
       viewport.addEventListener("wheel", handleWheel, { passive: false });
