@@ -4,18 +4,18 @@
 
 The homepage photo section is a small interactive React island inside the otherwise static Astro site.
 
-Current images are optimized local WebP files in `public/photos`.
+Current images use full-size JPEG originals stored in Cloudflare R2.
 
-The current WebP set tops out at 1086px on the long edge, matching the original source resolution rather than upscaling to 1440px.
+Astro generates optimized responsive AVIF and WebP variants at build time.
 
 ## Files
 
-- `src/pages/index.astro` defines the `photos` array and passes it to the lightbox.
+- `src/data/photos.ts` lists the public R2 photo URLs and alt text.
+- `src/pages/index.astro` imports that manifest, calls `getImage` from `astro:assets`, and passes optimized image metadata to the lightbox.
 - `src/components/PhotoLightbox.tsx` renders the carousel and popup behavior.
 - `src/components/ui/carousel.tsx` wraps Embla in the local shadcn style.
 - `src/components/ui/dialog.tsx` wraps Radix Dialog in the local shadcn style.
 - `src/lib/utils.ts` provides the shared `cn` helper.
-- `public/photos` contains the generated WebP variants used by the homepage.
 
 ## Interaction
 
@@ -24,20 +24,25 @@ The current WebP set tops out at 1086px on the long edge, matching the original 
 - There are intentionally no visible close or navigation buttons.
 - Users close the popup by clicking outside the image or pressing Escape.
 - Users navigate while open with the left and right arrow keys.
+- Larger lightbox images are preloaded after browser idle, and individual images are warmed on hover/focus.
 
 Keep this behavior simple unless the design direction changes.
 
 ## Performance
 
-The current generated WebP variants are:
+The current generated AVIF widths are:
 
-- 480px long edge at WebP quality 78.
-- 960px long edge at WebP quality 80.
-- 1086px long edge at WebP quality 82.
+- 480px
+- 960px
+- 1440px
+- 2160px
+- 2880px
 
-For future higher-resolution originals, use 480, 960, and 1440px long-edge WebP variants. Avoid upscaling small originals.
+The WebP fallback skips the largest width and stops at 2160px to keep the deployed build smaller.
 
-Cloudflare Image Resizing or an R2-backed custom image pipeline could be useful later, but static local variants are the simplest current setup.
+The current formats are AVIF and WebP. The `<img>` fallback also uses WebP, which is supported by modern browsers and avoids generating a large extra JPEG fallback set. Keep originals in R2 large enough for the largest generated width; avoid using iCloud preview exports such as `*_1_105_c.jpeg`.
+
+The public `r2.dev` URLs are used for Astro's build-time optimization. The R2 S3 API endpoint requires authorization for listing and object reads, so automatic bucket discovery would need build-time credentials or a generated manifest.
 
 ## Checks
 

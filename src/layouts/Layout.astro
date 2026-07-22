@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import DitherLogo from "../components/DitherLogo";
 
 interface Props {
   title?: string;
@@ -8,7 +9,7 @@ interface Props {
 
 const {
   title = "Piotr Kazala",
-  description = "Personal website of Piotr Kazala, a software engineer in Edinburgh.",
+  description = "Personal website of Piotr Kazala.",
 } = Astro.props;
 
 const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
@@ -24,38 +25,21 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="256x256" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>{pageTitle}</title>
   </head>
   <body class="bg-[#fbfbfa] text-ink font-sans antialiased selection:bg-ink selection:text-white">
     <div class="mx-auto w-[min(100%-32px,680px)]">
-      <header
-        class="flex items-baseline justify-between gap-6 border-b border-ink/10 py-6 text-sm"
-      >
-        <a
-          class="font-medium text-ink"
-          href="/"
-          aria-label="Piotr Kazala home"
-        >
-          <span>Piotr Kazala</span>
-        </a>
-        <nav
-          class="flex items-center gap-4 text-muted"
-          aria-label="Primary navigation"
-        >
-          <a
-            class="hover:text-ink"
-            href="/#about">About</a
-          >
-          <a class="hover:text-ink" href="/blog/">Blog</a>
-          <a class="hover:text-ink" href="/#contact">Contact</a>
-        </nav>
+      <header class="flex items-center gap-1 pt-16 sm:pt-24">
+        <DitherLogo client:load />
+        <span class="text-[52px] font-medium leading-[52px] text-ink">Piotr Kazala</span>
       </header>
 
       <slot />
 
       <footer
-        class="mt-14 flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 py-6 text-sm text-muted"
+        class="mt-14 flex flex-wrap items-center justify-between gap-3 py-6 text-sm text-muted"
       >
         <p>Edinburgh, via Poland.</p>
         <p class="font-mono" aria-hidden="true">2026</p>

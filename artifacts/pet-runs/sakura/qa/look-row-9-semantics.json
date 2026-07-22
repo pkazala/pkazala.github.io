@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "reviewed_by": "independent_visual_worker",
+  "summary": "The repaired row progresses from upward gaze through screen-right to down-right with stable identity, registration, scale, and smooth adjacent motion.",
+  "directions": [
+    {"degree": "000", "verdict": "pass", "reason": "Both pupils sit high with visible sclera below."},
+    {"degree": "022.5", "verdict": "pass", "reason": "Pupils and muzzle begin moving up-right."},
+    {"degree": "045", "verdict": "pass", "reason": "Stronger up-right head turn continues smoothly."},
+    {"degree": "067.5", "verdict": "pass", "reason": "Near-profile face retains an elevated rightward gaze."},
+    {"degree": "090", "verdict": "pass", "reason": "Nose, muzzle, and visible eye unmistakably point screen-right."},
+    {"degree": "112.5", "verdict": "pass", "reason": "Head and eyes begin a smooth down-right descent."},
+    {"degree": "135", "verdict": "pass", "reason": "Bowed head and lowered gaze clearly read down-right."},
+    {"degree": "157.5", "verdict": "pass", "reason": "Deepest down-right pose continues naturally toward down without reversal."}
+  ]
+}
