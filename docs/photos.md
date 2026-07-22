@@ -2,7 +2,7 @@
 
 ## Overview
 
-The homepage photo section is a small interactive React island inside the otherwise static Astro site.
+The homepage shows a static, lightweight preview linking to each category. The `/photos/` page presents the same manifest as interactive categorized carousels.
 
 Current images use full-size JPEG originals stored in Cloudflare R2.
 
@@ -10,8 +10,10 @@ Astro generates optimized responsive AVIF and WebP variants at build time.
 
 ## Files
 
-- `src/data/photos.ts` lists the public R2 photo URLs and alt text.
-- `src/pages/index.astro` imports that manifest, calls `getImage` from `astro:assets`, and passes optimized image metadata to the lightbox.
+- `src/data/photos.ts` lists the public R2 photo URLs, alt text, and category for each image.
+- `src/lib/photo-images.ts` generates the shared responsive AVIF and WebP image metadata.
+- `src/pages/index.astro` renders one linked preview for each photo category.
+- `src/pages/photos/index.astro` groups the optimized images into viewport-wide People, Landscape, and Creative carousels. Until the full collection is ready, it cycles the current category images to preview ten slides per section.
 - `src/components/PhotoLightbox.tsx` renders the carousel and popup behavior.
 - `src/components/ui/carousel.tsx` wraps Embla in the local shadcn style.
 - `src/components/ui/dialog.tsx` wraps Radix Dialog in the local shadcn style.
@@ -19,11 +21,13 @@ Astro generates optimized responsive AVIF and WebP variants at build time.
 
 ## Interaction
 
-- The strip uses the local shadcn-style carousel primitive backed by Embla.
+- Homepage previews link directly to the corresponding section on `/photos/`.
+- Category galleries use the local shadcn-style carousel primitive backed by Embla.
 - Clicking a photo opens a transparent Dialog popup.
 - There are intentionally no visible close or navigation buttons.
 - Users close the popup by clicking outside the image or pressing Escape.
 - Users navigate while open with the left and right arrow keys.
+- Viewport-wide category carousels support dragging, horizontal trackpad gestures, and Shift+wheel navigation in addition to their arrow controls.
 - Larger lightbox images are preloaded after browser idle, and individual images are warmed on hover/focus.
 
 Keep this behavior simple unless the design direction changes.
