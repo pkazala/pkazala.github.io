@@ -6,10 +6,34 @@ import { optimizePhotoSources } from "../../lib/photo-images";
 
 const photos = await optimizePhotoSources(photoSources);
 
-const sections: { id: PhotoCategory; title: string }[] = [
-  { id: "people", title: "People" },
-  { id: "landscape", title: "Landscape" },
-  { id: "creative", title: "Creative" },
+const sections: {
+  definition: string;
+  id: PhotoCategory;
+  partOfSpeech: string;
+  pronunciation: string;
+  title: string;
+}[] = [
+  {
+    id: "people",
+    title: "People",
+    pronunciation: "/ˈpiːp(ə)l/",
+    partOfSpeech: "noun",
+    definition: "Human stories, gestures, and the moments between them.",
+  },
+  {
+    id: "landscape",
+    title: "Landscape",
+    pronunciation: "/ˈlan(d)skeɪp/",
+    partOfSpeech: "noun",
+    definition: "The shape of a place, held in light, weather, and time.",
+  },
+  {
+    id: "creative",
+    title: "Creative",
+    pronunciation: "/kriˈeɪtɪv/",
+    partOfSpeech: "adjective",
+    definition: "Made through imagination; experiments in colour and form.",
+  },
 ];
 
 const previewCount = 10;
@@ -49,12 +73,22 @@ const repeatForPreview = (category: PhotoCategory) => {
             class="scroll-mt-8"
             aria-labelledby={`${section.id}-title`}
           >
-            <h2
-              id={`${section.id}-title`}
-              class="mb-4 text-xl font-medium tracking-[-0.015em] text-ink"
-            >
-              {section.title}
-            </h2>
+            <div class="mb-5">
+              <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <h2
+                  id={`${section.id}-title`}
+                  class="text-xl font-medium tracking-[-0.015em] text-ink"
+                >
+                  {section.title}
+                </h2>
+                <p class="font-mono text-xs text-muted">
+                  {section.pronunciation} · {section.partOfSpeech}
+                </p>
+              </div>
+              <p class="mt-1.5 max-w-lg text-sm leading-6 text-muted">
+                {section.definition}
+              </p>
+            </div>
             <PhotoLightbox
               photos={repeatForPreview(section.id)}
               variant="full"
