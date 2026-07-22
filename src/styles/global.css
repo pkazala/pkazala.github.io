@@ -2,16 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   margin: 0;
   min-width: 320px;
-}
-
-::selection {
-  color: #fff;
-  background: #2454ff;
 }
