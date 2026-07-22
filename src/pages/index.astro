@@ -2,8 +2,7 @@
 import { getCollection } from "astro:content";
 import EuropeGlobe from "../components/EuropeGlobe.astro";
 import NowStatement from "../components/NowStatement.astro";
-import PhotoLightbox from "../components/PhotoLightbox";
-import { photoSources } from "../data/photos";
+import { photoSources, type PhotoCategory } from "../data/photos";
 import Layout from "../layouts/Layout.astro";
 import { optimizePhotoSources } from "../lib/photo-images";
 
@@ -20,6 +19,17 @@ const formatDate = (date: Date) =>
   }).format(date);
 
 const photos = await optimizePhotoSources(photoSources);
+
+const photoSections: { id: PhotoCategory; title: string }[] = [
+  { id: "people", title: "People" },
+  { id: "landscape", title: "Landscape" },
+  { id: "creative", title: "Creative" },
+];
+
+const photoPreviews = photoSections.map((section) => ({
+  ...section,
+  photo: photos.find((photo) => photo.category === section.id)!,
+}));
 ---
 
 <Layout title="Piotr Kazala" description="Personal website of Piotr Kazala.">
@@ -33,105 +43,145 @@ const photos = await optimizePhotoSources(photoSources);
 
     <EuropeGlobe />
 
-    <section
-      class="grid gap-4 py-10 sm:grid-cols-[160px_1fr]"
-      aria-labelledby="writing-title"
-    >
-      <div>
-        <h2 id="writing-title" class="text-sm font-medium text-muted">
-          Writing
+    <div class="space-y-16 pb-14 pt-12 sm:space-y-20 sm:pb-20 sm:pt-16">
+      <section
+        class="grid gap-5 sm:grid-cols-[144px_1fr]"
+        aria-labelledby="writing-title"
+      >
+        <div>
+          <h2 id="writing-title" class="text-sm font-medium text-muted">
+            Writing
+          </h2>
+          <a
+            class="mt-2 inline-block text-sm text-muted underline underline-offset-4"
+            href="/blog/"
+          >
+            All posts
+          </a>
+        </div>
+        <div class="space-y-5">
+          {
+            posts.map((post) => (
+              <a class="group block" href={`/blog/${post.slug}/`}>
+                <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                  <h3 class="font-medium text-ink group-hover:underline group-hover:underline-offset-4">
+                    {post.data.title}
+                  </h3>
+                  <time
+                    class="font-mono text-xs text-muted"
+                    datetime={post.data.date.toISOString()}
+                  >
+                    {formatDate(post.data.date)}
+                  </time>
+                </div>
+                <p class="mt-1 text-sm leading-6 text-muted">
+                  {post.data.description}
+                </p>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <section
+        id="photos"
+        class="grid gap-5 sm:grid-cols-[144px_1fr]"
+        aria-labelledby="photos-title"
+      >
+        <div>
+          <h2 id="photos-title" class="text-sm font-medium text-muted">
+            Photos
+          </h2>
+          <a
+            class="mt-2 inline-block text-sm text-muted underline underline-offset-4"
+            href="/photos/"
+          >
+            All photos
+          </a>
+        </div>
+        <div class="grid grid-cols-3 gap-2.5">
+          {
+            photoPreviews.map((preview) => (
+              <a
+                class="group min-w-0 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ink/25 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+                href={`/photos/#${preview.id}`}
+              >
+                <div class="aspect-square overflow-hidden rounded-sm bg-zinc-100">
+                  <picture class="block h-full">
+                    <source
+                      srcset={preview.photo.avifSrcSet}
+                      sizes="(min-width: 640px) 160px, calc((100vw - 52px) / 3)"
+                      type="image/avif"
+                    />
+                    <source
+                      srcset={preview.photo.webpSrcSet}
+                      sizes="(min-width: 640px) 160px, calc((100vw - 52px) / 3)"
+                      type="image/webp"
+                    />
+                    <img
+                      class="h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-[1.015]"
+                      src={preview.photo.src}
+                      srcset={preview.photo.webpSrcSet}
+                      sizes="(min-width: 640px) 160px, calc((100vw - 52px) / 3)"
+                      alt={preview.photo.alt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
+                <span class="mt-2 block text-sm text-zinc-700">
+                  {preview.title}
+                </span>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <section
+        id="contact"
+        class="grid gap-5 sm:grid-cols-[144px_1fr]"
+        aria-labelledby="contact-title"
+      >
+        <h2 id="contact-title" class="text-sm font-medium text-muted">
+          Elsewhere
         </h2>
-        <a
-          class="mt-2 inline-block text-sm text-muted underline underline-offset-4"
-          href="/blog/"
-        >
-          All posts
-        </a>
-      </div>
-      <div class="space-y-5">
-        {
-          posts.map((post) => (
-            <a class="group block" href={`/blog/${post.slug}/`}>
-              <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-                <h3 class="font-medium text-ink group-hover:underline group-hover:underline-offset-4">
-                  {post.data.title}
-                </h3>
-                <time
-                  class="font-mono text-xs text-muted"
-                  datetime={post.data.date.toISOString()}
-                >
-                  {formatDate(post.data.date)}
-                </time>
-              </div>
-              <p class="mt-1 text-sm leading-6 text-muted">
-                {post.data.description}
-              </p>
-            </a>
-          ))
-        }
-      </div>
-    </section>
-
-    <section
-      id="photos"
-      class="grid gap-4 py-10 sm:grid-cols-[160px_1fr]"
-      aria-labelledby="photos-title"
-    >
-      <div>
-        <h2 id="photos-title" class="text-sm font-medium text-muted">Photos</h2>
-        <a
-          class="mt-2 inline-block text-sm text-muted underline underline-offset-4"
-          href="/photos/"
-        >
-          All photos
-        </a>
-      </div>
-      <PhotoLightbox photos={photos} client:load />
-    </section>
-
-    <section
-      id="contact"
-      class="grid gap-4 pb-14 pt-10 sm:grid-cols-[160px_1fr] sm:pb-20"
-      aria-labelledby="contact-title"
-    >
-      <h2 id="contact-title" class="text-sm font-medium text-muted">
-        Elsewhere
-      </h2>
-      <div class="flex flex-wrap gap-2">
-        <a
-          class="inline-flex h-8 items-center gap-2 rounded-full border border-ink/10 bg-white/60 px-3 text-sm font-medium text-zinc-700 transition-[background-color,border-color,transform] duration-150 ease-out hover:border-ink/20 hover:bg-white active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-          href="https://github.com/pkazala"
-        >
-          <svg
-            class="size-4"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden="true"
+        <div class="flex flex-wrap gap-2">
+          <a
+            class="inline-flex h-8 items-center gap-2 rounded-full border border-ink/10 bg-white/60 px-3 text-sm font-medium text-zinc-700 transition-[background-color,border-color,transform] duration-150 ease-out hover:border-ink/20 hover:bg-white active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            href="https://github.com/pkazala"
           >
-            <path
-              fill-rule="evenodd"
-              d="M12 2C6.477 2 2 6.486 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.867-.014-1.702-2.782.605-3.369-1.344-3.369-1.344-.455-1.158-1.11-1.466-1.11-1.466-.908-.621.069-.608.069-.608 1.003.071 1.531 1.033 1.531 1.033.892 1.53 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.688-.103-.254-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.027A9.564 9.564 0 0 1 12 6.84a9.55 9.55 0 0 1 2.504.337c1.909-1.296 2.748-1.027 2.748-1.027.545 1.378.202 2.396.1 2.65.64.701 1.028 1.595 1.028 2.688 0 3.848-2.337 4.695-4.566 4.943.359.31.679.923.679 1.86 0 1.343-.012 2.426-.012 2.755 0 .268.18.58.688.482A10.023 10.023 0 0 0 22 12.021C22 6.486 17.523 2 12 2Z"
-              clip-rule="evenodd"></path>
-          </svg>
-          GitHub
-        </a>
-        <a
-          class="inline-flex h-8 items-center gap-2 rounded-full border border-ink/10 bg-white/60 px-3 text-sm font-medium text-zinc-700 transition-[background-color,border-color,transform] duration-150 ease-out hover:border-ink/20 hover:bg-white active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
-          href="https://www.linkedin.com/in/piotrkazala/"
-        >
-          <svg
-            class="size-4"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            aria-hidden="true"
+            <svg
+              class="size-4"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M12 2C6.477 2 2 6.486 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.483 0-.237-.009-.867-.014-1.702-2.782.605-3.369-1.344-3.369-1.344-.455-1.158-1.11-1.466-1.11-1.466-.908-.621.069-.608.069-.608 1.003.071 1.531 1.033 1.531 1.033.892 1.53 2.341 1.088 2.91.832.091-.647.349-1.088.635-1.338-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.688-.103-.254-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.027A9.564 9.564 0 0 1 12 6.84a9.55 9.55 0 0 1 2.504.337c1.909-1.296 2.748-1.027 2.748-1.027.545 1.378.202 2.396.1 2.65.64.701 1.028 1.595 1.028 2.688 0 3.848-2.337 4.695-4.566 4.943.359.31.679.923.679 1.86 0 1.343-.012 2.426-.012 2.755 0 .268.18.58.688.482A10.023 10.023 0 0 0 22 12.021C22 6.486 17.523 2 12 2Z"
+                clip-rule="evenodd"></path>
+            </svg>
+            GitHub
+          </a>
+          <a
+            class="inline-flex h-8 items-center gap-2 rounded-full border border-ink/10 bg-white/60 px-3 text-sm font-medium text-zinc-700 transition-[background-color,border-color,transform] duration-150 ease-out hover:border-ink/20 hover:bg-white active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            href="https://www.linkedin.com/in/piotrkazala/"
           >
-            <path
-              d="M6.5 8.25H3V21h3.5V8.25ZM4.75 3A2.04 2.04 0 1 0 4.75 7.08 2.04 2.04 0 0 0 4.75 3ZM21 13.69c0-3.84-2.05-5.63-4.79-5.63a4.15 4.15 0 0 0-3.76 2.07V8.25H9V21h3.5v-6.31c0-1.66.32-3.27 2.38-3.27 2.03 0 2.06 1.9 2.06 3.38V21H21v-7.31Z"
-            ></path>
-          </svg>
-          LinkedIn
-        </a>
-      </div>
-    </section>
+            <svg
+              class="size-4"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                d="M6.5 8.25H3V21h3.5V8.25ZM4.75 3A2.04 2.04 0 1 0 4.75 7.08 2.04 2.04 0 0 0 4.75 3ZM21 13.69c0-3.84-2.05-5.63-4.79-5.63a4.15 4.15 0 0 0-3.76 2.07V8.25H9V21h3.5v-6.31c0-1.66.32-3.27 2.38-3.27 2.03 0 2.06 1.9 2.06 3.38V21H21v-7.31Z"
+              ></path>
+            </svg>
+            LinkedIn
+          </a>
+        </div>
+      </section>
+    </div>
   </main>
 </Layout>

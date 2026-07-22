@@ -100,7 +100,7 @@ export default function PhotoLightbox({
         <CarouselContent
           className={
             variant === "full"
-              ? "cursor-grab px-4 active:cursor-grabbing sm:px-6"
+              ? "ml-0 cursor-grab active:cursor-grabbing"
               : undefined
           }
         >
@@ -108,7 +108,7 @@ export default function PhotoLightbox({
             <CarouselItem
               className={
                 variant === "full"
-                  ? "h-[420px] basis-auto"
+                  ? "h-[420px] basis-auto pl-3"
                   : "basis-[82%] sm:basis-1/2 lg:basis-1/3"
               }
               key={`${photo.src}-${index}`}
