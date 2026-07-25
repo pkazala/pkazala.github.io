@@ -10,8 +10,8 @@ export type PhotoSource = {
 
 const filesByCategory: Record<PhotoCategory, string[]> = {
   people: [
-    "P1001198.webp",
     "P1001286.webp",
+    "P1001198.webp",
     "P1001731.webp",
     "P1001867.webp",
     "P1012106.webp",
@@ -19,21 +19,20 @@ const filesByCategory: Record<PhotoCategory, string[]> = {
     "P1012584.webp",
   ],
   landscape: [
-    "P1000842.webp",
+    "P1001815.webp",
     "P1001122.webp",
     "P1001590.webp",
     "P1001790.webp",
     "P1001799.webp",
-    "P1001815.webp",
     "P1001831.webp",
     "P1001868.webp",
     "P1012100.webp",
     "P1012155.webp",
   ],
   creative: [
+    "P1001283.webp",
     "P1000838.webp",
     "P1000842.webp",
-    "P1001283.webp",
     "P1001384.webp",
     "P1001399.webp",
     "P1001744.webp",
