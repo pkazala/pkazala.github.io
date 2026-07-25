@@ -1,16 +1,7 @@
 ---
-import CompanyInlineLink from "./CompanyInlineLink.astro";
-
-type Company = {
-  name: string;
-  logoClass: string;
-  logoSrc: string;
-  nameClass: string;
-  description: string;
-  staff: string;
-  revenue: string;
-  href: string;
-};
+import CompanyInlineLink, {
+  type Props as Company,
+} from "./CompanyInlineLink.astro";
 
 const companies: Record<"barclays" | "aberdeen", Company> = {
   barclays: {
@@ -30,6 +21,7 @@ const companies: Record<"barclays" | "aberdeen", Company> = {
     logoSrc:
       "https://img.logo.dev/aberdeenplc.com?token=pk_SsWg6eepSHG50Ub6bAa_Kg&size=32&format=webp&retina=true",
     nameClass: "font-medium text-ink decoration-ink/25",
+    mobilePopoverAlignment: "right",
     description: "Global investment firm",
     staff: "4,000",
     revenue: "£1.34bn",

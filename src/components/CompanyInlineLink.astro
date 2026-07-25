@@ -5,6 +5,7 @@ export type Props = {
   logoSrc: string;
   name: string;
   nameClass: string;
+  mobilePopoverAlignment?: "left" | "right";
   description: string;
   revenue: string;
   staff: string;
@@ -16,14 +17,21 @@ const {
   logoSrc,
   name,
   nameClass,
+  mobilePopoverAlignment = "left",
   description,
   revenue,
   staff,
 } = Astro.props;
+
+const mobilePopoverPosition =
+  mobilePopoverAlignment === "right"
+    ? "right-0 sm:left-1/2 sm:right-auto"
+    : "left-0 sm:left-1/2";
 ---
 
 <a
   class="group relative mx-0.5 inline-flex items-baseline gap-1 rounded-md decoration-current underline-offset-4 outline-none transition focus-visible:ring-2 focus-visible:ring-ink/20"
+  data-company-link
   href={href}
   target="_blank"
   rel="noreferrer"
@@ -49,7 +57,8 @@ const {
     {name}
   </span>
   <span
-    class="invisible absolute left-0 top-full z-20 mt-3 w-72 max-w-[calc(100vw-2rem)] translate-y-1 rounded-lg border border-ink/10 bg-[#fbfbfa]/95 p-4 text-left opacity-0 shadow-[0_18px_50px_rgba(24,24,27,0.12)] backdrop-blur transition duration-150 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus:visible group-focus:translate-y-0 group-focus:opacity-100 sm:left-1/2 sm:-translate-x-1/2"
+    class={`invisible absolute top-full z-20 mt-3 w-72 max-w-[calc(100vw-2rem)] translate-y-1 rounded-lg border border-ink/10 bg-[#fbfbfa]/95 p-4 text-left opacity-0 shadow-[0_18px_50px_rgba(24,24,27,0.12)] backdrop-blur transition duration-150 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus:visible group-focus:translate-y-0 group-focus:opacity-100 sm:-translate-x-1/2 ${mobilePopoverPosition}`}
+    data-company-popup
     aria-hidden="true"
   >
     <span class="flex items-center gap-3">
@@ -93,3 +102,37 @@ const {
     </span>
   </span>
 </a>
+
+<script>
+  const companyLinks = document.querySelectorAll<HTMLElement>(
+    "[data-company-link]",
+  );
+
+  const setPopupHidden = (link: HTMLElement, hidden: boolean) => {
+    const popup = link.querySelector<HTMLElement>("[data-company-popup]");
+    if (popup) popup.hidden = hidden;
+  };
+
+  companyLinks.forEach((link) => {
+    link.addEventListener("pointerenter", () => setPopupHidden(link, false));
+    link.addEventListener("pointerdown", () => setPopupHidden(link, false));
+    link.addEventListener("focusin", () => setPopupHidden(link, false));
+  });
+
+  document.addEventListener("pointerdown", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+
+    companyLinks.forEach((link) => {
+      if (link.contains(target)) return;
+
+      setPopupHidden(link, true);
+      if (
+        document.activeElement instanceof HTMLElement &&
+        link.contains(document.activeElement)
+      ) {
+        document.activeElement.blur();
+      }
+    });
+  });
+</script>
