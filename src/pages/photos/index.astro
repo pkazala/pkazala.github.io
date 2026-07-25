@@ -1,4 +1,5 @@
 ---
+import DitherLogo from "../../components/DitherLogo";
 import PhotoLightbox from "../../components/PhotoLightbox";
 import { photoSources, type PhotoCategory } from "../../data/photos";
 import Layout from "../../layouts/Layout.astro";
@@ -121,6 +122,16 @@ const repeatForPreview = (category: PhotoCategory) => {
           </section>
         ))
       }
+    </div>
+
+    <div class="mt-14 flex justify-center sm:mt-20">
+      <a
+        class="inline-flex rounded-sm text-[52px] leading-none transition-transform duration-150 ease-out active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
+        href="/"
+        aria-label="Back to home"
+      >
+        <DitherLogo client:load />
+      </a>
     </div>
   </main>
 </Layout>
