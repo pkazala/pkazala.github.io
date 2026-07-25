@@ -41,7 +41,7 @@ See `docs/globe.md` before making substantial globe changes.
 
 ## Photos
 
-- Homepage source photos live in Cloudflare R2 as full-size JPEG originals.
+- Homepage source photos live in Cloudflare R2 as full-size WebP originals.
 - `src/data/photos.ts` lists the public R2 URLs and alt text.
 - `src/pages/index.astro` imports that manifest and uses `getImage` from `astro:assets` to generate responsive AVIF/WebP `srcset` values.
 - `PhotoLightbox` renders a shadcn-style Embla carousel plus a Radix Dialog popup.

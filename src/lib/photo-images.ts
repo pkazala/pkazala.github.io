@@ -2,8 +2,8 @@ import { getImage } from "astro:assets";
 
 import type { PhotoSource } from "../data/photos";
 
-const avifWidths = [480, 960, 1440, 2160, 2880];
-const webpWidths = [480, 960, 1440, 2160];
+const avifWidths = [640, 1280, 2160];
+const webpWidths = [640, 1280, 2160];
 
 const toSrcSet = (
   images: Awaited<ReturnType<typeof getImage>>[],
@@ -40,12 +40,12 @@ export const optimizePhotoSources = async (sources: PhotoSource[]) =>
 
       return {
         ...photo,
-        src: webp[2].src,
-        preloadSrc: avif[3].src,
+        src: webp[1].src,
+        preloadSrc: avif[2].src,
         avifSrcSet: toSrcSet(avif, avifWidths),
         webpSrcSet: toSrcSet(webp, webpWidths),
-        width: webp[2].attributes.width,
-        height: webp[2].attributes.height,
+        width: webp[1].attributes.width,
+        height: webp[1].attributes.height,
       };
     }),
   );

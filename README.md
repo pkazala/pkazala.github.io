@@ -42,8 +42,8 @@ Draft posts are hidden from production builds when `draft: true`.
 
 ## Photos
 
-Homepage photos use full-size originals stored in Cloudflare R2 and are optimized at build time with Astro's image pipeline.
+Homepage photos use full-size WebP originals stored in Cloudflare R2 and are optimized at build time with Astro's image pipeline.
 
 The photo strip uses a shadcn-style Embla carousel. Clicking a photo opens it in a transparent Dialog popup; users close it by clicking outside the image or pressing Escape, and move between images with the left/right arrow keys.
 
-`src/data/photos.ts` lists the public R2 photo URLs. `src/pages/index.astro` generates AVIF `srcset` values at 480, 960, 1440, 2160, and 2880 pixels. WebP fallback images stop at 2160 pixels to keep the built site smaller.
+`src/data/photos.ts` lists the public R2 photo URLs. The shared photo optimizer generates AVIF and WebP `srcset` values at 640, 1280, and 2160 pixels.
