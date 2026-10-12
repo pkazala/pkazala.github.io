@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import DitherLogo from "../components/DitherLogo";
+import WebAnalytics from "../components/WebAnalytics.astro";
 
 interface Props {
   title?: string;
@@ -46,5 +47,6 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
 
       <slot />
     </div>
+    <WebAnalytics />
   </body>
 </html>

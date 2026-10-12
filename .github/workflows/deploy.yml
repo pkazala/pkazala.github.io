@@ -24,6 +24,8 @@ jobs:
 
       - name: Install, build, and upload your site
         uses: withastro/action@v6
+        env:
+          PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN: ${{ vars.PUBLIC_CLOUDFLARE_WEB_ANALYTICS_TOKEN }}
         with:
           package-manager: pnpm@11.9.0
 

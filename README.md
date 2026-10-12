@@ -14,6 +14,10 @@ pnpm run build
 
 The site is deployed as a static Astro build to GitHub Pages.
 
+## Observability
+
+Cloudflare Web Analytics can collect traffic and real-user performance metrics on every page. It is disabled until a public site token is configured, and is always disabled in the development server. See [the setup and verification guide](docs/observability.md).
+
 ## Interactive pieces
 
 - `src/scripts/europe-globe.ts` renders the custom Three.js Europe globe and plane animation.
