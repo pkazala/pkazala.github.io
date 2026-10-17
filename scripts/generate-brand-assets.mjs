@@ -22,6 +22,11 @@ const output = new URL("../public/", import.meta.url);
 await mkdir(output, { recursive: true });
 await writeFile(new URL("logo-p.svg", output), logo);
 await writeFile(new URL("logo-p-mask.svg", output), svg(glyph(letter)));
+// A tightly framed, tile-free page mark; the favicon geometry stays separate.
+await writeFile(
+  new URL("logo-bars.svg", output),
+  '<svg xmlns="http://www.w3.org/2000/svg" width="240" height="450" viewBox="0 0 24 45"><path fill="#a8a8a8" d="M0 5.5a5.5 5.5 0 0 1 11 0v34a5.5 5.5 0 0 1-11 0ZM13 5.5a5.5 5.5 0 0 1 11 0V20a5.5 5.5 0 0 1-11 0Z"/></svg>\n',
+);
 await writeFile(new URL("favicon.svg", output), small);
 
 const icons = [];
