@@ -1,5 +1,5 @@
 ---
-import DitherLogo from "../../components/DitherLogo";
+import PersonalLogo from "../../components/PersonalLogo";
 import PhotoLightbox from "../../components/PhotoLightbox";
 import { photoSources, type PhotoCategory } from "../../data/photos";
 import Layout from "../../layouts/Layout.astro";
@@ -126,7 +126,7 @@ const photosByCategory = Object.fromEntries(
         href="/"
         aria-label="Back to home"
       >
-        <DitherLogo client:load />
+        <PersonalLogo client:load />
       </a>
     </div>
   </main>

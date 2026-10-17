@@ -32,11 +32,19 @@ const photoPreviews = photoSections.map((section) => ({
 }));
 ---
 
-<Layout title="Piotr Kazala" description="Personal website of Piotr Kazala.">
+<Layout
+  home
+  title="Piotr Kazala"
+  description="Personal website of Piotr Kazala."
+>
   <main class="overflow-x-clip">
-    <section id="about" class="pt-6" aria-labelledby="intro-title">
-      <h1 id="intro-title" class="sr-only">Piotr Kazala</h1>
-      <NowStatement />
+    <section id="about" class="pt-14 sm:pt-20" aria-labelledby="intro-title">
+      <h1 id="intro-title" class="text-[52px] font-medium leading-[52px]">
+        Piotr Kazala
+      </h1>
+      <div class="mt-6">
+        <NowStatement />
+      </div>
     </section>
 
     <EuropeGlobe />

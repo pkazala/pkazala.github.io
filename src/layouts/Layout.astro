@@ -1,16 +1,18 @@
 ---
 import "../styles/global.css";
-import DitherLogo from "../components/DitherLogo";
+import PersonalLogo from "../components/PersonalLogo";
 import WebAnalytics from "../components/WebAnalytics.astro";
 
 interface Props {
   title?: string;
   description?: string;
+  home?: boolean;
 }
 
 const {
   title = "Piotr Kazala",
   description = "Personal website of Piotr Kazala.",
+  home = false,
 } = Astro.props;
 
 const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
@@ -26,7 +28,10 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <link rel="icon" type="image/png" sizes="256x256" href="/favicon.png" />
+    <link rel="icon" sizes="any" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>{pageTitle}</title>
   </head>
@@ -34,14 +39,14 @@ const pageTitle = title === "Piotr Kazala" ? title : `${title} | Piotr Kazala`;
     class="bg-paper text-ink font-sans antialiased selection:bg-ink selection:text-white"
   >
     <div class="mx-auto w-[min(100%-32px,680px)]">
-      <header class="pt-14 sm:pt-20">
+      <header class={home ? "pt-6 sm:pt-8" : "pt-14 sm:pt-20"}>
         <a
-          class="flex w-fit items-center gap-1 rounded-sm text-[52px] font-medium leading-[52px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
+          class="flex w-fit items-center gap-2 rounded-sm text-[52px] font-medium leading-[52px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 focus-visible:ring-offset-4 focus-visible:ring-offset-paper"
           href="/"
           aria-label="Piotr Kazala, home"
         >
-          <DitherLogo client:load />
-          <span class="text-ink">Piotr Kazala</span>
+          <PersonalLogo client:load />
+          {!home && <span class="text-ink">Piotr Kazala</span>}
         </a>
       </header>
 

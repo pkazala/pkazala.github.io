@@ -4,6 +4,7 @@
   "packageManager": "pnpm@11.9.0",
   "version": "0.0.1",
   "scripts": {
+    "generate:brand": "node scripts/generate-brand-assets.mjs",
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
