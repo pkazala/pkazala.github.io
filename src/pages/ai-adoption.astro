@@ -1,0 +1,107 @@
+---
+import WebAnalytics from "../components/WebAnalytics.astro";
+
+const title = "The geography of AI adoption";
+const description =
+  "Explore and compare estimated generative AI adoption across 147 economies. An interactive world map using Microsoft AI Economy Institute data for Q2 2026.";
+const canonical = new URL("/ai-adoption/", Astro.site).href;
+const image = new URL("/images/ai-adoption-preview.png", Astro.site).href;
+const mapUrl = "https://world-data-ai-adoption.piotr-kazala.chatgpt.site/";
+const imageAlt =
+  "A dot map of estimated AI adoption across the world, colored blue for lower adoption and red for higher adoption. Global adoption is 18.8% of adults aged 15–64 in Q2 2026.";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#fffcf7" />
+    <title>{title} | Piotr Kazala</title>
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Piotr Kazala" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@p_kazala" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+  </head>
+  <body>
+    <nav aria-label="Page navigation">
+      <a href="/">← Piotr Kazala</a>
+      <a href={mapUrl} target="_blank" rel="noreferrer">Open full screen ↗</a>
+    </nav>
+    <main>
+      <iframe
+        src={mapUrl}
+        title="Interactive AI adoption map with country comparisons"
+        allow="fullscreen"
+        allowfullscreen></iframe>
+    </main>
+    <WebAnalytics />
+  </body>
+</html>
+
+<style>
+  :global(html) {
+    background: #fffcf7;
+    color: #373149;
+    font-family: "Avenir Next", Avenir, system-ui, sans-serif;
+  }
+  :global(body) {
+    margin: 0;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    min-height: 42px;
+    padding: 0 24px;
+    border-bottom: 1px solid #e9e2ed;
+    font-size: 12px;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  a:focus-visible {
+    outline: 2px solid #4889d0;
+    outline-offset: 4px;
+  }
+  main {
+    flex: 1;
+    min-height: 0;
+  }
+  iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  @media (max-width: 600px) {
+    nav {
+      padding: 0 18px;
+    }
+  }
+</style>
